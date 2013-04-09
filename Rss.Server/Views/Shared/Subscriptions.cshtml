@@ -1,0 +1,49 @@
+﻿<section>
+    <div id="subscription-nav">
+        <h2>Subscriptions</h2>
+
+        <ul id="folderContainer"></ul>
+        <ul id="feedContainer"></ul>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(function ($) {
+        $.ajax({
+            url: '/api/folder'
+        }).done(function (data) {
+            console.log(data);
+            $('#folderTemplate').tmpl(data.Folders).appendTo('#folderContainer');
+            $('#feedTemplate').tmpl(data.Feeds).appendTo('#feedContainer');
+
+            $('li.folder > ul').toggle();
+
+            $('.expander').click(function () {
+                $(this).next('li.folder').children('ul').toggle();
+
+                console.log($(this).text());
+
+                if ($(this).text() == '+') {
+                    $(this).text('-');
+                } else {
+                    $(this).text('+');
+                }
+            });
+        });
+    });
+</script>
+
+<script id="folderTemplate" type="text/x-jQuery-tmpl">
+    <a href="#" class="expander">+</a>
+    <li class="folder TODO:unread"><a href="/home/folder/${Id}">${Name} (TODO: count)</a>
+        <ul>
+            {{each Feeds}}
+        <li class="feed TODO:unread"><a href="/home/feed/${Id}">${Name} (TODO: count)</a></li>
+            {{/each}}
+        </ul>
+    </li>
+</script>
+
+<script id="feedTemplate" type="text/x-jQuery-tmpl">
+    <li class="feed TODO:unread"><a href="/home/feed/${Id}">${Name} (TODO: count)</a></li>
+</script>

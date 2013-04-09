@@ -1,0 +1,30 @@
+﻿@model Rss.Server.Models.Folder
+
+@{
+    ViewBag.Title = "Folder";
+}
+
+
+<h2>@Model.Name</h2>
+
+@{
+    foreach (var feed in Model.Feeds)
+    {
+    <div>
+        <h3>@feed.Name</h3>
+        <div>
+            @{
+        foreach (var item in feed.Items)
+        {
+
+                <h3>@item.Name</h3>
+                <sub>@item.PublishedDateTime</sub>
+                <p>@Html.Raw(item.Raw)</p>
+                <hr />
+        }
+            }
+        </div>
+    </div>
+    }
+}
+
