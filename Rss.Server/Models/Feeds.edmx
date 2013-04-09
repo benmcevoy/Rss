@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FeedsDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="FeedsDBModelStoreContainer">
+          <EntitySet Name="Feed" EntityType="FeedsDBModel.Store.Feed" store:Type="Tables" />
+          <EntitySet Name="Folder" EntityType="FeedsDBModel.Store.Folder" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="FeedsDBModel.Store.Item" store:Type="Tables" />
+          <AssociationSet Name="FK_Feed_Folder" Association="FeedsDBModel.Store.FK_Feed_Folder">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="Feed" EntitySet="Feed" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Feed" Association="FeedsDBModel.Store.FK_Item_Feed">
+            <End Role="Feed" EntitySet="Feed" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Feed">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="2000" />
+          <Property Name="FolderId" Type="uniqueidentifier" />
+          <Property Name="LastUpdateDateTime" Type="datetime" />
+          <Property Name="FeedUrl" Type="nvarchar" />
+          <Property Name="HtmlUrl" Type="nvarchar" />
+          <Property Name="LastBuildDate" Type="datetime" />
+          <Property Name="UpdatePeriod" Type="nvarchar" MaxLength="100" />
+          <Property Name="UpdateFrequency" Type="nvarchar" MaxLength="100" />
+          <Property Name="FavIcon" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="2000" />
+          <Property Name="LastUpdateDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Raw" Type="ntext" />
+          <Property Name="Name" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Content" Type="ntext" />
+          <Property Name="ReadDateTime" Type="datetime" />
+          <Property Name="FeedId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Snippet" Type="nvarchar" MaxLength="200" />
+          <Property Name="PublishedDateTime" Type="datetime" />
+          <Property Name="LinkId" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <Association Name="FK_Feed_Folder">
+          <End Role="Folder" Type="FeedsDBModel.Store.Folder" Multiplicity="0..1" />
+          <End Role="Feed" Type="FeedsDBModel.Store.Feed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Feed">
+              <PropertyRef Name="FolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Feed">
+          <End Role="Feed" Type="FeedsDBModel.Store.Feed" Multiplicity="1" />
+          <End Role="Item" Type="FeedsDBModel.Store.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Feed">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="FeedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FeedsDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FeedsDBEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Feeds" EntityType="FeedsDBModel.Feed" />
+          <EntitySet Name="Folders" EntityType="FeedsDBModel.Folder" />
+          <EntitySet Name="Items" EntityType="FeedsDBModel.Item" />
+          <AssociationSet Name="FK_Feed_Folder" Association="FeedsDBModel.FK_Feed_Folder">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="Feed" EntitySet="Feeds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Feed" Association="FeedsDBModel.FK_Item_Feed">
+            <End Role="Feed" EntitySet="Feeds" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Feed">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="2000" Unicode="true" FixedLength="false" />
+          <Property Name="FolderId" Type="Guid" Nullable="true" />
+          <Property Name="LastUpdateDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Items" Relationship="FeedsDBModel.FK_Item_Feed" FromRole="Feed" ToRole="Item" />
+          <Property Type="String" Name="FeedUrl" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HtmlUrl" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastBuildDate" Precision="3" />
+          <Property Type="String" Name="UpdatePeriod" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UpdateFrequency" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FavIcon" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="2000" Unicode="true" FixedLength="false" />
+          <Property Name="LastUpdateDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Feeds" Relationship="FeedsDBModel.FK_Feed_Folder" FromRole="Folder" ToRole="Feed" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Raw" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="2000" Unicode="true" FixedLength="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ReadDateTime" Type="DateTime" Precision="3" />
+          <Property Name="FeedId" Type="Guid" Nullable="false" />
+          <Property Type="String" Name="Snippet" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="PublishedDateTime" Precision="3" />
+          <Property Type="String" Name="LinkId" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Feed_Folder">
+          <End Role="Folder" Type="FeedsDBModel.Folder" Multiplicity="0..1" />
+          <End Role="Feed" Type="FeedsDBModel.Feed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Feed">
+              <PropertyRef Name="FolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Feed">
+          <End Role="Feed" Type="FeedsDBModel.Feed" Multiplicity="1" />
+          <End Role="Item" Type="FeedsDBModel.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Feed">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="FeedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FeedsDBModelStoreContainer" CdmEntityContainer="FeedsDBEntities">
+          <EntitySetMapping Name="Feeds">
+            <EntityTypeMapping TypeName="FeedsDBModel.Feed">
+              <MappingFragment StoreEntitySet="Feed">
+                <ScalarProperty Name="FavIcon" ColumnName="FavIcon" />
+                <ScalarProperty Name="UpdateFrequency" ColumnName="UpdateFrequency" />
+                <ScalarProperty Name="UpdatePeriod" ColumnName="UpdatePeriod" />
+                <ScalarProperty Name="LastBuildDate" ColumnName="LastBuildDate" />
+                <ScalarProperty Name="HtmlUrl" ColumnName="HtmlUrl" />
+                <ScalarProperty Name="FeedUrl" ColumnName="FeedUrl" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FolderId" ColumnName="FolderId" />
+                <ScalarProperty Name="LastUpdateDateTime" ColumnName="LastUpdateDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Folders">
+            <EntityTypeMapping TypeName="FeedsDBModel.Folder">
+              <MappingFragment StoreEntitySet="Folder">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LastUpdateDateTime" ColumnName="LastUpdateDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="FeedsDBModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="LinkId" ColumnName="LinkId" />
+                <ScalarProperty Name="PublishedDateTime" ColumnName="PublishedDateTime" />
+                <ScalarProperty Name="Snippet" ColumnName="Snippet" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Raw" ColumnName="Raw" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ReadDateTime" ColumnName="ReadDateTime" />
+                <ScalarProperty Name="FeedId" ColumnName="FeedId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
