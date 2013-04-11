@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Rss.Server.Models;
+﻿using Rss.Server.Models;
 using System;
 using System.Linq;
 using RssFeed = Rss.Manager.Feed;
@@ -8,9 +7,9 @@ namespace Rss.Server.Services
 {
     public class FeedService : IFeedService
     {
-        private readonly FeedsDBEntities _context;
+        private readonly FeedsDbEntities _context;
 
-        public FeedService(FeedsDBEntities context)
+        public FeedService(FeedsDbEntities context)
         {
             _context = context;
         }
@@ -58,7 +57,7 @@ namespace Rss.Server.Services
                 foreach (var rssItem in rssFeed.Items)
                 {
                     // exist?
-                    var item = feed.Items.FirstOrDefault(i => i.LinkId == rssItem.Id);
+                    var item = feed.Items.FirstOrDefault(i => i.LinkUrl == rssItem.Id);
                     // update
                     if (item != null)
                     {
@@ -74,7 +73,7 @@ namespace Rss.Server.Services
                     feed.Items.Add(new Item
                     {
                         Id = Guid.NewGuid(),
-                        LinkId = rssItem.Id,
+                        LinkUrl = rssItem.Id,
                         Name = rssItem.Title,
                         Raw = rssItem.Description,
                         Content = rssItem.Description,

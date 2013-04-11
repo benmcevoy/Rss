@@ -9,7 +9,7 @@
 @{
     foreach (var item in Model.Items)
     {
-    <h3>@item.Name</h3>
+        <h3><a href="@item.LinkUrl" target="_blank">@item.Name</a></h3>
     <sub>@item.PublishedDateTime</sub>
     <p>@Html.Raw(item.Raw)</p>
     <hr />
