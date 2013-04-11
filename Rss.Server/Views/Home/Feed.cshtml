@@ -4,14 +4,16 @@
     ViewBag.Title = "Feed";
 }
 
-<h2>@Model.Name</h2>
+<h2>@Model.Name (in <a href="/home/folder/@Model.FolderId">@Model.FolderName</a>)</h2>
 <sub>@Model.HtmlUrl</sub>
 @{
     foreach (var item in Model.Items)
     {
+    <div class="item">
         <h3><a href="@item.LinkUrl" target="_blank">@item.Name</a></h3>
-    <sub>@item.PublishedDateTime</sub>
-    <p>@Html.Raw(item.Raw)</p>
-    <hr />
+        <sub>@item.PublishedDateTime</sub>
+        <p>@Html.Raw(item.Content)</p>
+        <hr />
+    </div>
     }
 }

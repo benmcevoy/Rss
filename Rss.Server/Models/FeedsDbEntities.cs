@@ -6,16 +6,18 @@ namespace Rss.Server.Models
     public class FeedsDbEntities : DbContext
     {
         public FeedsDbEntities()
-            : base("name=FeedsDBEntities")
+            : base("name=FeedsDbEntities")
         {
-            Configuration.LazyLoadingEnabled = true;
+            Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = true;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new FolderMap());
-            modelBuilder.Configurations.Add(new FeedMap()); 
+            // defaults
+            modelBuilder.Entity<Folder>().ToTable("Folder");
+            modelBuilder.Entity<Feed>().ToTable("Feed");
+            // explicit
             modelBuilder.Configurations.Add(new ItemMap());
         }
 

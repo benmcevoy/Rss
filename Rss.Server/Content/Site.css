@@ -15,7 +15,7 @@ body {
 }
 
 a {
-    color: #333;
+    color: #33F;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -24,7 +24,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: #33F;
     }
 
     a:hover {
@@ -42,5 +42,5 @@ mark {
     padding-right: 5px;
 }
 
-ul { list-style: none;}
+ul.nobullet { list-style: none;}
 .expander { float: left;}

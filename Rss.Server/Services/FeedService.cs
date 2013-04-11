@@ -34,7 +34,10 @@ namespace Rss.Server.Services
 
         public Feed Get(Guid id, ReadOptions readOptions = ReadOptions.Unread)
         {
-            var feed = _context.Feeds.Include("Items").Single(f => f.Id == id);
+            var feed = _context.Feeds
+                            .Include("Folder")
+                            .Include("Items")
+                            .Single(f => f.Id == id);
 
             feed.Items = feed.Items.OrderByDescending(i => i.PublishedDateTime).ToList();
 
@@ -62,9 +65,10 @@ namespace Rss.Server.Services
                     if (item != null)
                     {
                         item.Name = rssItem.Title;
-                        item.Raw = rssItem.Description;
-                        item.Content = rssItem.Description;
-                        item.FeedId = feed.Id;
+                        item.Raw = rssItem.Raw;
+                        item.Content = rssItem.Content;
+                        item.Snippet = rssItem.Snippet;
+                        //item.FeedId = feed.Id;
                         item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
                         continue;
                     }
@@ -75,9 +79,10 @@ namespace Rss.Server.Services
                         Id = Guid.NewGuid(),
                         LinkUrl = rssItem.Id,
                         Name = rssItem.Title,
-                        Raw = rssItem.Description,
-                        Content = rssItem.Description,
-                        FeedId = feed.Id,
+                        Raw = rssItem.Raw,
+                        Content = rssItem.Content,
+                        Snippet = rssItem.Snippet,
+                        //FeedId = feed.Id,
                         PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
                     });
                 }
@@ -88,7 +93,7 @@ namespace Rss.Server.Services
             }
         }
 
-        private DateTime? GetPublishedDateTime(string publishedDateTime)
+        private DateTime GetPublishedDateTime(string publishedDateTime)
         {
             var publishedDate = DateTime.UtcNow;
 

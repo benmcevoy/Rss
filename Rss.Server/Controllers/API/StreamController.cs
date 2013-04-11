@@ -21,7 +21,7 @@ namespace Rss.Server.Controllers.API
         /// <returns></returns>
         public IEnumerable<Item> Get()
         {
-            throw new NotImplementedException();
+            return _itemService.Get(12);
         }
     }
 }
