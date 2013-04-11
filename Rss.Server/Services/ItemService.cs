@@ -7,9 +7,9 @@ namespace Rss.Server.Services
 {
     public class ItemService : IItemService
     {
-        private readonly FeedsDBEntities _context;
+        private readonly FeedsDbEntities _context;
 
-        public ItemService(FeedsDBEntities context)
+        public ItemService(FeedsDbEntities context)
         {
             _context = context;
         }

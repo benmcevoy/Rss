@@ -9,10 +9,10 @@
     @Scripts.Render("~/bundles/jquery")
 </head>
     <body>
-        <div style="float:left; margin-right: 40px">
+        <div style="float:left; margin-right: 40px; min-width:300px;">
             @{ Html.RenderPartial("Subscriptions"); }
         </div>
-        <div style="float:left;">
+        <div style="float:left;max-width: 800px;">
             @RenderBody()
         </div>
         <div style="clear: both">&nbsp;</div>

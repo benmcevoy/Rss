@@ -151,30 +151,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Feed.cs">
-      <DependentUpon>Feeds.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Feeds.Context.cs">
-      <DependentUpon>Feeds.Context.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\Feeds.cs">
-      <DependentUpon>Feeds.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\Feeds.Designer.cs">
-      <DependentUpon>Feeds.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\Folder.cs">
-      <DependentUpon>Feeds.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Item.cs">
-      <DependentUpon>Feeds.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Feed.cs" />
+    <Compile Include="Models\FeedsDbEntities.cs" />
+    <Compile Include="Models\Folder.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\Mappings\FeedMap.cs" />
+    <Compile Include="Models\Mappings\FolderMap.cs" />
+    <Compile Include="Models\Mappings\ItemMap.cs" />
     <Compile Include="Models\MarkOptions.cs" />
     <Compile Include="Models\ReadOptions.cs" />
     <Compile Include="Models\RootFolder.cs" />
@@ -193,23 +176,6 @@
     <Content Include="Scripts\jQuery.tmpl.js" />
     <Content Include="Scripts\jQuery.tmpl.min.js" />
     <Content Include="_notes.txt" />
-    <EntityDeploy Include="Models\Feeds.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Feeds.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Feeds.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Feeds.edmx</DependentUpon>
-      <LastGenOutput>Feeds.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Feeds.edmx.diagram">
-      <DependentUpon>Feeds.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\Feeds.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Feeds.edmx</DependentUpon>
-      <LastGenOutput>Feeds.cs</LastGenOutput>
-    </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -251,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rss.Manager\Rss.Manager.csproj">
@@ -272,15 +239,14 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>52496</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:55688/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://rss.local</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -1,5 +1,6 @@
 ﻿using Rss.Server.Services;
 using System.Web.Http;
+using System.Threading;
 
 namespace Rss.Server.Controllers.API
 {
@@ -15,7 +16,7 @@ namespace Rss.Server.Controllers.API
         public string Get()
         {
             _feedService.Refresh();
-            return "OK";
+            return "Refresh complete";
         }
     }
 }
