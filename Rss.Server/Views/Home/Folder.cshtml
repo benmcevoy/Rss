@@ -11,19 +11,7 @@
     foreach (var feed in Model.Feeds)
     {
     <div>
-        <h3><a href="@feed.HtmlUrl" target="_blank">@feed.Name</a></h3>
-        <div>
-            @{
-        foreach (var item in feed.Items)
-        {
-
-                <h3><a href="@item.LinkUrl" target="_blank">@item.Name</a></h3>
-                <sub>@item.PublishedDateTime</sub>
-                <p>@Html.Raw(item.Raw)</p>
-                <hr />
-        }
-            }
-        </div>
+        <h3><a href="\home\feed\@feed.Id">@feed.Name</a></h3>
     </div>
     }
 }

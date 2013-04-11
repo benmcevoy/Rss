@@ -21,12 +21,14 @@ namespace Rss.Server.Services
 
         public Item Get(Guid id)
         {
-            return _context.Items.Single(i => i.Id == id);
+            return _context.Items.Include("Feed").Single(i => i.Id == id);
         }
 
-        public IEnumerable<Item> Get()
+        public IEnumerable<Item> Get(int count)
         {
-            throw new NotImplementedException();
+            return _context.Items.Include("Feed")
+                .OrderByDescending(i => i.PublishedDateTime)
+                .Take(count);
         }
     }
 }

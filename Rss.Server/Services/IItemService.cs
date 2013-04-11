@@ -8,7 +8,7 @@ namespace Rss.Server.Services
     {
         Item Get(Guid id);
 
-        IEnumerable<Item> Get();
+        IEnumerable<Item> Get(int count);
 
         void Read(Guid id);
     }

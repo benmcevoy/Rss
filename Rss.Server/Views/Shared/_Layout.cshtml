@@ -9,13 +9,19 @@
     @Scripts.Render("~/bundles/jquery")
 </head>
     <body>
+        <a href="/home">home</a>|<a href="/system">system</a>
+        
+        <div style="clear: both">&nbsp;</div>        
+
         <div style="float:left; margin-right: 40px; min-width:300px;">
             @{ Html.RenderPartial("Subscriptions"); }
         </div>
         <div style="float:left;max-width: 800px;">
             @RenderBody()
         </div>
-        <div style="clear: both">&nbsp;</div>
+        
+        <div style="clear: both">&nbsp;</div>        
+        
         @RenderSection("scripts", required: false)
     </body>
 </html>

@@ -2,8 +2,8 @@
     <div id="subscription-nav">
         <h2>Subscriptions</h2>
 
-        <ul id="folderContainer"></ul>
-        <ul id="feedContainer"></ul>
+        <ul id="folderContainer" class="nobullet"></ul>
+        <ul id="feedContainer" class="nobullet"></ul>
     </div>
 </section>
 
@@ -36,7 +36,7 @@
 <script id="folderTemplate" type="text/x-jQuery-tmpl">
     <a href="#" class="expander">+</a>
     <li class="folder TODO:unread"><a href="/home/folder/${Id}">${Name} (TODO: count)</a>
-        <ul>
+        <ul class="nobullet">
             {{each Feeds}}
         <li class="feed TODO:unread"><a href="/home/feed/${Id}">${Name} (TODO: count)</a></li>
             {{/each}}
