@@ -10,9 +10,9 @@ namespace Rss.Server.Controllers.API
 {
     public class OpmlController : ApiController
     {
-        private readonly FeedsDBEntities _context;
+        private readonly FeedsDbEntities _context;
 
-        public OpmlController(FeedsDBEntities context)
+        public OpmlController(FeedsDbEntities context)
         {
             _context = context;
         }

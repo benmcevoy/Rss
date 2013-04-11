@@ -6,9 +6,9 @@ namespace Rss.Server.Services
 {
     public class FolderService : IFolderService
     {
-        private readonly FeedsDBEntities _context;
+        private readonly FeedsDbEntities _context;
 
-        public FolderService(FeedsDBEntities context)
+        public FolderService(FeedsDbEntities context)
         {
             _context = context;
         }
@@ -20,10 +20,32 @@ namespace Rss.Server.Services
 
         public RootFolder GetRoot()
         {
+            var folders = _context.Folders.Include("Feeds").ToList();
+            var looseFeeds = _context.Feeds.Where(f => f.FolderId == null).ToList();
+
+            // reproject to avoid enumerating Items
+            // TODO: should use view models?
             var root = new RootFolder
                 {
-                    Folders = _context.Folders.Include("Feeds").ToList(),
-                    Feeds = _context.Feeds.Where(f => f.FolderId == null).ToList()
+                    Folders = folders.Select(f => new Folder
+                        {
+                        Name = f.Name,
+                        Id = f.Id,
+                        Feeds = f.Feeds.Select(feed => new Feed
+                            {
+                                Id = feed.Id,
+                                FavIcon = feed.FavIcon,
+                                FeedUrl = feed.FeedUrl,
+                                FolderId = feed.FolderId,
+                                HtmlUrl = feed.HtmlUrl,
+                                LastBuildDate = feed.LastBuildDate,
+                                LastUpdateDateTime = feed.LastUpdateDateTime,
+                                Name = feed.Name,
+                                UpdateFrequency = feed.UpdateFrequency,
+                                UpdatePeriod = feed.UpdatePeriod
+                            }).ToList()
+                        }),
+                    Feeds = looseFeeds
                 };
 
             return root;
