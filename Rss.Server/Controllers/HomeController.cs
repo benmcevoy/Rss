@@ -9,11 +9,13 @@ namespace Rss.Server.Controllers
     {
         private readonly IFeedService _feedService;
         private readonly IFolderService _folderService;
+        private readonly IItemService _itemService;
 
-        public HomeController(IFeedService feedService, IFolderService folderService)
+        public HomeController(IFeedService feedService, IFolderService folderService, IItemService itemService)
         {
             _feedService = feedService;
             _folderService = folderService;
+            _itemService = itemService;
         }
 
         public ActionResult Index()
@@ -30,6 +32,12 @@ namespace Rss.Server.Controllers
         public ActionResult Feed(Guid id)
         {
             var model = _feedService.Get(id, ReadOptions.Unread);
+            return View(model);
+        }
+
+        public ActionResult Item(Guid id)
+        {
+            var model = _itemService.Get(id);
             return View(model);
         }
     }

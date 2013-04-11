@@ -94,35 +94,35 @@ namespace Rss.Manager
                     if (test.Any())
                     {
                         return (from f in channelElement.Elements("item")
-                                let xElement = f.Element("link")
-                                where xElement != null
-                                let element = f.Element(_purlNamespace + "encoded")
-                                where element != null
-                                let xElement1 = f.Element("title")
-                                where xElement1 != null
-                                let element1 = f.Element("pubDate")
-                                where element1 != null
-                                select new Item(xElement.Value,
-                                                element.Value,
-                                                xElement1.Value,
-                                                element1.Value)).ToList();
+                                let link = f.Element("link")
+                                where link != null
+                                let encoded = f.Element(_purlNamespace + "encoded")
+                                where encoded != null
+                                let title = f.Element("title")
+                                where title != null
+                                let pubDate = f.Element("pubDate")
+                                where pubDate != null
+                                select new Item(link.Value,
+                                                encoded.Value,
+                                                title.Value,
+                                                pubDate.Value)).ToList();
                     }
                 }
 
                 if (channelElement != null)
                     return (from f in channelElement.Elements("item")
-                            let xElement2 = f.Element("link")
-                            where xElement2 != null
-                            let element2 = f.Element("description")
-                            where element2 != null
-                            let xElement3 = f.Element("title")
-                            where xElement3 != null
-                            let element3 = f.Element("pubDate")
-                            where element3 != null
-                            select new Item(xElement2.Value,
-                                            element2.Value,
-                                            xElement3.Value,
-                                            element3.Value)).ToList();
+                            let link = f.Element("link")
+                            where link != null
+                            let description = f.Element("description")
+                            where description != null
+                            let title = f.Element("title")
+                            where title != null
+                            let pubDate = f.Element("pubDate")
+                            where pubDate != null
+                            select new Item(link.Value,
+                                            description.Value,
+                                            title.Value,
+                                            pubDate.Value)).ToList();
             }
             return null;
         }
@@ -142,18 +142,18 @@ namespace Rss.Manager
             catch { }
 
             return (from f in xml.Descendants(_atomNamespace + "entry")
-                    let xElement1 = f.Element(_atomNamespace + "id")
-                    where xElement1 != null
-                    let element1 = f.Element(_atomNamespace + "content")
-                    where element1 != null
-                    let xElement2 = f.Element(_atomNamespace + "title")
-                    where xElement2 != null
-                    let element2 = f.Element(_atomNamespace + "published")
-                    where element2 != null
-                    select new Item(xElement1.Value,
-                                    element1.Value,
-                                    xElement2.Value,
-                                    element2.Value)).ToList();
+                    let id = f.Element(_atomNamespace + "id")
+                    where id != null
+                    let content = f.Element(_atomNamespace + "content")
+                    where content != null
+                    let title = f.Element(_atomNamespace + "title")
+                    where title != null
+                    let published = f.Element(_atomNamespace + "published")
+                    where published != null
+                    select new Item(id.Value,
+                                    content.Value,
+                                    title.Value,
+                                    published.Value)).ToList();
         }
 
         private XDocument GetXml(Uri feedUri)

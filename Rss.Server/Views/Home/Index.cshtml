@@ -1,13 +1,36 @@
 ﻿<header>
     <h1>
-        <a href="~/">RSS Feeds</a>
+        <a href="~/">Stream</a>
     </h1>
 </header>
 
 <div id="body">
     <section>
-        home
+        <ul id="stream" class="nobullet"></ul>
 
     </section>
 </div>
 
+
+<script type="text/javascript">
+    $(function ($) {
+        $.ajax({
+            url: '/api/stream'
+        }).done(function (data) {
+            console.log(data);
+            $('#itemTemplate').tmpl(data).appendTo('#stream');
+        });
+    });
+</script>
+
+<script id="itemTemplate" type="text/x-jQuery-tmpl">
+    <li class="item TODO:unread">
+        <div>
+            <a href="/home/feed/${FeedId}">${FeedName}</a>
+        </div>
+        <div>
+            <a href="/home/item/${Id}"><strong>${Name}</strong> (${PublishedDateTime})</a>
+        </div>
+        <hr />
+    </li>
+</script>

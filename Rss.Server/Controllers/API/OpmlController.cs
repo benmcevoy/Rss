@@ -657,25 +657,24 @@ namespace Rss.Server.Controllers.API
             return "OK";
         }
 
-        private Guid AddFolder(Manager.Folder rssFolder)
+        private Folder AddFolder(Manager.Folder rssFolder)
         {
             var folder = _context.Folders.FirstOrDefault(f => f.Name == rssFolder.Name);
 
             if (folder != null)
-                return folder.Id;
+                return folder;
 
-            var folderId = Guid.NewGuid();
+            folder = _context.Folders.Create();
 
-            _context.Folders.Add(new Folder
-                {
-                    Name = rssFolder.Name,
-                    Id = folderId
-                });
+            folder.Name = rssFolder.Name;
+            folder.Id = Guid.NewGuid();
 
-            return folderId;
+            _context.Folders.Add(folder);
+
+            return folder;
         }
 
-        private void AddFeed(Guid? folderId, Manager.Feed feed)
+        private void AddFeed(Folder folder, Manager.Feed feed)
         {
             var feedId = Guid.NewGuid();
             var feedUrl = feed.FeedUri.ToString();
@@ -686,22 +685,22 @@ namespace Rss.Server.Controllers.API
             if (_context.Feeds.FirstOrDefault(f => f.FeedUrl == feedUrl) != null)
                 return;
 
-            _context.Feeds.Add(new Feed
+            folder.Feeds.Add(new Feed
                 {
                     Id = feedId,
-                    FolderId = folderId,
+                    //FolderId = folderId,
                     Name = feed.Title,
                     FeedUrl = feed.FeedUri.ToString(),
-                    HtmlUrl = feed.HtmlUri.ToString(),
-                    Items = new Collection<Item>(feed.Items.Select(i => new Item
-                        {
-                            Id= Guid.NewGuid(),
-                            Name = i.Title,
-                            Raw = i.Description,
-                            Content = i.Description,
-                            FeedId = feedId,
-                            PublishedDateTime = DateTime.Now //i.PublishedDateTime,
-                        }).ToList())
+                    HtmlUrl = feed.HtmlUri.ToString()
+                    //Items = new Collection<Item>(feed.Items.Select(i => new Item
+                    //    {
+                    //        Id= Guid.NewGuid(),
+                    //        Name = i.Title,
+                    //        Raw = i.Content,
+                    //        Content = i.Content,
+                    //        FeedId = feedId,
+                    //        PublishedDateTime = DateTime.Now //i.PublishedDateTime,
+                    //    }).ToList())
                 });
         }
     }

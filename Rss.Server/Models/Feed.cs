@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
-    
+
 namespace Rss.Server.Models
 {
+
     public class Feed
     {
         public Feed()
         {
             Items = new HashSet<Item>();
         }
-    
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }
@@ -29,7 +30,18 @@ namespace Rss.Server.Models
         public string UpdateFrequency { get; set; }
 
         public string FavIcon { get; set; }
-    
+
+        internal virtual Folder Folder { get; set; }
+
         public virtual ICollection<Item> Items { get; set; }
+
+        public string FolderName
+        {
+            get
+            {
+                return Folder != null ? Folder.Name : "";
+            }
+        }
     }
 }
+

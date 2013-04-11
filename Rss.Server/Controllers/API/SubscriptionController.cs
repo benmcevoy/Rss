@@ -11,7 +11,7 @@ namespace Rss.Server.Controllers.API
     {
         public void Post(string feedUrl)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
