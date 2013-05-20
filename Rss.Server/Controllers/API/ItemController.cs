@@ -17,12 +17,14 @@ namespace Rss.Server.Controllers.API
         /// set item as read
         /// </summary>
         /// <param name="id"></param>
-        public void Read(Guid id)
+        [HttpPost]
+        public void Read([FromBody]Guid id)
         {
             _itemService.Read(id);
         }
 
-        public void Unread(Guid id)
+        [HttpPost]
+        public void Unread([FromBody]Guid id)
         {
             throw new NotImplementedException();
         }

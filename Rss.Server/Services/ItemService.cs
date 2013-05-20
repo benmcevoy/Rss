@@ -16,7 +16,11 @@ namespace Rss.Server.Services
 
         public void Read(Guid id)
         {
-            throw new NotImplementedException();
+            var item = _context.Items.Find(id);
+
+            item.ReadDateTime = DateTime.Now;
+
+            _context.SaveChanges();
         }
 
         public Item Get(Guid id)
@@ -28,6 +32,7 @@ namespace Rss.Server.Services
         {
             return _context.Items.Include("Feed")
                 .OrderByDescending(i => i.PublishedDateTime)
+                .Where(i => i.ReadDateTime == null)
                 .Take(count);
         }
     }

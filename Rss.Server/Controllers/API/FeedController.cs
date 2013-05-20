@@ -1,5 +1,6 @@
 ﻿using Rss.Server.Filters;
 using Rss.Server.Models;
+using Rss.Server.PostModel;
 using Rss.Server.Services;
 using System;
 using System.Web.Http;
@@ -31,6 +32,7 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpGet]
         public Feed All(Guid id)
         {
             return _feedService.Get(id, ReadOptions.All);
@@ -39,9 +41,9 @@ namespace Rss.Server.Controllers.API
         /// <summary>
         /// unsubscribe from this feed
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        public void Unsubscribe(Guid id)
+        [HttpPost]
+        public void Unsubscribe([FromBody]Guid id)
         {
             _feedService.Unsubscribe(id);
         }
@@ -49,18 +51,18 @@ namespace Rss.Server.Controllers.API
         /// <summary>
         /// rename the feed
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        public void Rename(Guid id, string name)
+        [HttpPost]
+        public void Rename(RenameDto renameDto)
         {
-            _feedService.Rename(id, name);
+            _feedService.Rename(renameDto.Id, renameDto.Name);
         }
 
         /// <summary>
         /// mark all items in this feed as read
         /// </summary>
         /// <param name="id"></param>
-        public void Mark(Guid id)
+        [HttpPost]
+        public void Mark([FromBody]Guid id)
         {
             _feedService.Mark(id, MarkOptions.All);
         }
@@ -68,11 +70,16 @@ namespace Rss.Server.Controllers.API
         /// <summary>
         /// Move this feed into the folder
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="folderId"></param>
-        public void MoveToFolder(Guid id, Guid folderId)
+        [HttpPost]
+        public void MoveToFolder(MoveFeedToFolderDto moveFeedToFolderDto)
         {
             throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public void Refresh([FromBody] Guid id)
+        {
+            _feedService.Refresh(id);
         }
     }
 }

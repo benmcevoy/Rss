@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Rss.Server
 {
@@ -10,13 +10,30 @@ namespace Rss.Server
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "ControllerAndActionAndId",
+                routeTemplate: "api/{controller}/{action}/{id}",
+                 defaults: new { action = "get", id = RouteParameter.Optional}
             );
 
-            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            RemoveXmlSerializer(config);
+
+            SetJsonCamelCase(config);
+        }
+
+        private static void RemoveXmlSerializer(HttpConfiguration config)
+        {
+            var appXmlType =
+                config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+        }
+
+        private static void SetJsonCamelCase(HttpConfiguration config)
+        {
+            var formatters = config.Formatters;
+            var jsonFormatter = formatters.JsonFormatter;
+            var settings = jsonFormatter.SerializerSettings;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

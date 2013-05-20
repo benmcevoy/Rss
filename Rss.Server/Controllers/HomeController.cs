@@ -38,6 +38,7 @@ namespace Rss.Server.Controllers
         public ActionResult Item(Guid id)
         {
             var model = _itemService.Get(id);
+            _itemService.Read(id);
             return View(model);
         }
     }

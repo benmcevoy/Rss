@@ -7,10 +7,8 @@
 <div id="body">
     <section>
         <ul id="stream" class="nobullet"></ul>
-
     </section>
 </div>
-
 
 <script type="text/javascript">
     $(function ($) {
@@ -26,10 +24,10 @@
 <script id="itemTemplate" type="text/x-jQuery-tmpl">
     <li class="item TODO:unread">
         <div>
-            <a href="/home/feed/${FeedId}">${FeedName}</a>
+            <a href="/home/feed/${feedId}">${feedName}</a>
         </div>
         <div>
-            <a href="/home/item/${Id}"><strong>${Name}</strong> (${PublishedDateTime})</a>
+            <a href="/home/item/${id}"><strong>${name}</strong> (${publishedDateTime})</a>
         </div>
         <hr />
     </li>

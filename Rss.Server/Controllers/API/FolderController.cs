@@ -1,5 +1,6 @@
 ﻿using Rss.Server.Filters;
 using Rss.Server.Models;
+using Rss.Server.PostModel;
 using Rss.Server.Services;
 using System;
 using System.Web.Http;
@@ -13,18 +14,29 @@ namespace Rss.Server.Controllers.API
 
         public FolderController(IFolderService folderService, IFeedService feedService)
         {
-            _folderService = folderService;
-            _feedService = feedService;
+            _folderService =  folderService;
+            _feedService =  feedService;
         }
 
         /// <summary>
         /// get the root folder
         /// </summary>
         /// <returns></returns>
-        [ApiCache(60)]
+        //[ApiCache(60)]
         public RootFolder Get()
         {
-            return _folderService.GetRoot();
+            try
+            {
+
+                return _folderService.GetRoot();
+            }
+            catch(Exception ex)
+            {
+                return new RootFolder()
+                    {
+                        Name = ex.ToString()
+                    };
+            }
         }
 
         /// <summary>
@@ -43,7 +55,8 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public void Unsubscribe(Guid id)
+        [HttpPost]
+        public void Unsubscribe([FromBody]Guid id)
         {
             var folder = _folderService.Get(id);
 
@@ -58,19 +71,19 @@ namespace Rss.Server.Controllers.API
         /// <summary>
         /// rename the folder
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
         /// <returns></returns>
-        public void Rename(Guid id, string name)
+        [HttpPost]
+        public void Rename(RenameDto renameDto)
         {
-            _feedService.Rename(id, name);
+            _feedService.Rename(renameDto.Id, renameDto.Name);
         }
 
         /// <summary>
         /// mark all feeds and items in this folder as read
         /// </summary>
         /// <param name="id"></param>
-        public Folder Mark(Guid id)
+        [HttpPost] 
+        public Folder Mark([FromBody]Guid id)
         {
             throw new NotImplementedException();
         }
