@@ -4,15 +4,37 @@
     ViewBag.Title = "Feed";
 }
 
-<h2>@Model.Name (in <a href="/home/folder/@Model.FolderId">@Model.FolderName</a>)</h2>
+<h2>@Model.Name @if (Model.FolderId.HasValue)
+                {
+    @:(in <a href="/home/folder/@Model.FolderId">@Model.FolderName</a>)
+                }</h2>
 <sub>@Model.HtmlUrl</sub>
+
+<input type="button" value="Unsubscribe" 
+               class="post-mode-simple"
+               data-action="/api/feed/unsubscribe"
+               data-id="@Model.Id"
+               data-redirectaction="/home/folder/@Model.FolderId"/>
+
+<input type="button" value="Refresh" 
+       class="post-mode-simple"
+       data-action="/api/feed/refresh"
+       data-id="@Model.Id"
+       data-redirectaction="/home/feed/@Model.Id"/>
+
+<input type="button" value="Mark all as read" 
+               class="post-mode-simple"
+               data-action="/api/feed/mark"
+               data-id="@Model.Id"
+               data-redirectaction="/home/feed/@Model.Id"/>
+
+
 @{
     foreach (var item in Model.Items)
     {
     <div class="item">
-        <h3><a href="@item.LinkUrl" target="_blank">@item.Name</a></h3>
+        <h3><a href="/home/item/@item.Id">@item.Name</a></h3>
         <sub>@item.PublishedDateTime</sub>
-        <p>@Html.Raw(item.Content)</p>
         <hr />
     </div>
     }
