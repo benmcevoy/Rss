@@ -1,6 +1,7 @@
 ﻿using Rss.Server.Models;
 using System;
 using System.Linq;
+using System.Data.Entity;
 using RssFeed = Rss.Manager.Feed;
 
 namespace Rss.Server.Services
@@ -34,10 +35,21 @@ namespace Rss.Server.Services
 
         public Feed Get(Guid id, ReadOptions readOptions = ReadOptions.Unread)
         {
-            var feed = _context.Feeds
-                            .Include("Folder")
-                            .Include("Items")
-                            .Single(f => f.Id == id);
+            var feed = _context.Feeds.Find(id);
+
+            if (feed == null)
+            {
+                return null;
+            }
+
+            _context.Entry(feed).Reference(f => f.Folder).Load();
+
+            _context.Entry(feed)
+                .Collection(f => f.Items)
+                .Query()
+                // TODO: should respect readOptions
+                .Where(i => i.ReadDateTime == null)
+                .Load();
 
             feed.Items = feed.Items.OrderByDescending(i => i.PublishedDateTime).ToList();
 
@@ -46,51 +58,56 @@ namespace Rss.Server.Services
 
         public void Mark(Guid id, MarkOptions markOptions)
         {
-            throw new NotImplementedException();
+            var feed = Get(id);
+
+            foreach (var item in feed.Items)
+            {
+                item.ReadDateTime = DateTime.Now;
+            }
+
+            _context.SaveChanges();
         }
 
-        public void Refresh()
+        public void Refresh(Guid id)
         {
-            foreach (var feed in _context.Feeds)
+            var feed = _context.Feeds
+                            .Include("Items")
+                            .Single(f => f.Id == id);
+            var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
+
+            rssFeed.GetItemsFromWeb();
+
+            foreach (var rssItem in rssFeed.Items)
             {
-                var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
-
-                rssFeed.GetItemsFromWeb();
-
-                foreach (var rssItem in rssFeed.Items)
+                // exist?
+                var item = feed.Items.FirstOrDefault(i => i.LinkUrl == rssItem.Id);
+                // update
+                if (item != null)
                 {
-                    // exist?
-                    var item = feed.Items.FirstOrDefault(i => i.LinkUrl == rssItem.Id);
-                    // update
-                    if (item != null)
-                    {
-                        item.Name = rssItem.Title;
-                        item.Raw = rssItem.Raw;
-                        item.Content = rssItem.Content;
-                        item.Snippet = rssItem.Snippet;
-                        //item.FeedId = feed.Id;
-                        item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
-                        continue;
-                    }
-
-                    // insert
-                    feed.Items.Add(new Item
-                    {
-                        Id = Guid.NewGuid(),
-                        LinkUrl = rssItem.Id,
-                        Name = rssItem.Title,
-                        Raw = rssItem.Raw,
-                        Content = rssItem.Content,
-                        Snippet = rssItem.Snippet,
-                        //FeedId = feed.Id,
-                        PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
-                    });
+                    item.Name = rssItem.Title;
+                    item.Raw = rssItem.Raw;
+                    item.Content = rssItem.Content;
+                    item.Snippet = rssItem.Snippet;
+                    item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
+                    continue;
                 }
 
-                feed.LastUpdateDateTime = DateTime.UtcNow;
-
-                _context.SaveChanges();
+                // insert
+                feed.Items.Add(new Item
+                {
+                    Id = Guid.NewGuid(),
+                    LinkUrl = rssItem.Id,
+                    Name = rssItem.Title,
+                    Raw = rssItem.Raw,
+                    Content = rssItem.Content,
+                    Snippet = rssItem.Snippet,
+                    PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
+                });
             }
+
+            feed.LastUpdateDateTime = DateTime.UtcNow;
+
+            _context.SaveChanges();
         }
 
         private DateTime GetPublishedDateTime(string publishedDateTime)

@@ -20,7 +20,7 @@ using System.Web.Mvc;
 using Rss.Server.App_Start.DI;
 using StructureMap;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(Rss.Server.App_Start.StructuremapMvc), "Start")]
+
 
 namespace Rss.Server.App_Start {
     public static class StructuremapMvc {

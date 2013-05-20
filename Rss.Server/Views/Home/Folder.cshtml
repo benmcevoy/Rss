@@ -11,8 +11,15 @@
     foreach (var feed in Model.Feeds)
     {
     <div>
-        <h3><a href="\home\feed\@feed.Id">@feed.Name</a></h3>
+        <h3><a href="/home/feed/@feed.Id">@feed.Name</a> (COUNT)</h3>
+
+        <div class="action-container">
+            <input type="button" value="Unsubscribe" 
+               class="post-mode-simple"
+               data-action="/api/feed/unsubscribe"
+               data-id="@feed.Id"/>
+        </div>
+
     </div>
     }
 }
-

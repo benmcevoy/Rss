@@ -1,21 +1,20 @@
 ﻿using Rss.Server.Services;
 using System.Web.Http;
-using System.Threading;
 
 namespace Rss.Server.Controllers.API
 {
     public class RefreshController : ApiController
     {
-        private readonly IFeedService _feedService;
+        private readonly IRefreshService _feedService;
 
-        public RefreshController(IFeedService feedService)
+        public RefreshController(IRefreshService refreshService)
         {
-            _feedService = feedService;
+            _feedService = refreshService;
         }
 
         public string Get()
         {
-            _feedService.Refresh();
+            _feedService.RefreshAllFeeds();
             return "Refresh complete";
         }
     }

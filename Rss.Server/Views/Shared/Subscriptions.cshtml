@@ -13,8 +13,8 @@
             url: '/api/folder'
         }).done(function (data) {
             console.log(data);
-            $('#folderTemplate').tmpl(data.Folders).appendTo('#folderContainer');
-            $('#feedTemplate').tmpl(data.Feeds).appendTo('#feedContainer');
+            $('#folderTemplate').tmpl(data.folders).appendTo('#folderContainer');
+            $('#feedTemplate').tmpl(data.feeds).appendTo('#feedContainer');
 
             $('li.folder > ul').toggle();
 
@@ -35,15 +35,15 @@
 
 <script id="folderTemplate" type="text/x-jQuery-tmpl">
     <a href="#" class="expander">+</a>
-    <li class="folder TODO:unread"><a href="/home/folder/${Id}">${Name} (TODO: count)</a>
+    <li class="folder TODO:unread"><a href="/home/folder/${id}">${name} (TODO: count)</a>
         <ul class="nobullet">
-            {{each Feeds}}
-        <li class="feed TODO:unread"><a href="/home/feed/${Id}">${Name} (TODO: count)</a></li>
+            {{each feeds}}
+        <li class="feed TODO:unread"><a href="/home/feed/${id}">${name} (TODO: count)</a></li>
             {{/each}}
         </ul>
     </li>
 </script>
 
 <script id="feedTemplate" type="text/x-jQuery-tmpl">
-    <li class="feed TODO:unread"><a href="/home/feed/${Id}">${Name} (TODO: count)</a></li>
+    <li class="feed TODO:unread"><a href="/home/feed/${id}">${name} (TODO: count)</a></li>
 </script>
