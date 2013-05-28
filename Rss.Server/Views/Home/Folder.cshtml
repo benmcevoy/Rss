@@ -1,17 +1,29 @@
-﻿@model Rss.Server.Models.Folder
+﻿@using Rss.Server.Models
+@model Rss.Server.Models.Folder
 
 @{
     ViewBag.Title = "Folder";
 }
 
 
-<h2>@Model.Name</h2>
+<h2>@Model.Name
+    <input type="button" value="Refresh" 
+           class="post-mode-simple"
+           data-action="/api/folder/Refresh"
+           data-id="@Model.Id"/>
+    
+    <input type="button" value="Mark all as read" 
+               class="post-mode-simple"
+               data-action="/api/folder/mark"
+               data-id="@Model.Id"
+               data-redirectaction="/home/folder/@Model.Id"/>
+</h2>
 
 @{
     foreach (var feed in Model.Feeds)
     {
     <div>
-        <h3><a href="/home/feed/@feed.Id">@feed.Name</a> (COUNT)</h3>
+        <h3 class="@GetUnreadClass(feed)"><a href="/home/feed/@feed.Id">@feed.Name</a> (@feed.ItemCount)</h3>
 
         <div class="action-container">
             <input type="button" value="Unsubscribe" 
@@ -21,5 +33,17 @@
         </div>
 
     </div>
+    }
+}
+
+@helper GetUnreadClass(Feed feed)
+{
+    if (feed.ItemCount > 0)
+    {
+        @Html.Raw("unread");
+    }
+    else
+    {
+        @Html.Raw("read");
     }
 }

@@ -18,5 +18,9 @@ namespace Rss.Server.Services
         void Rename(Guid id, string name);
 
         void Create(string name);
+
+        void Refresh(Guid id);
+
+        void Mark(Guid id, MarkOptions markOptions);
     }
 }

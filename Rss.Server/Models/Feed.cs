@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rss.Server.Models
 {
@@ -42,6 +43,8 @@ namespace Rss.Server.Models
                 return Folder != null ? Folder.Name : "";
             }
         }
+
+        public int ItemCount { get; set; }
     }
 }
 
