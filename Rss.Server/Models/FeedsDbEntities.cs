@@ -16,8 +16,9 @@ namespace Rss.Server.Models
         {
             // defaults
             modelBuilder.Entity<Folder>().ToTable("Folder");
-            modelBuilder.Entity<Feed>().ToTable("Feed");
+            
             // explicit
+            modelBuilder.Configurations.Add(new FeedMap());
             modelBuilder.Configurations.Add(new ItemMap());
         }
 

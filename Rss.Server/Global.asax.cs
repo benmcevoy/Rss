@@ -1,4 +1,7 @@
-﻿using Rss.Server.App_Start;
+﻿using System.Diagnostics;
+using Clutch.Diagnostics.EntityFramework;
+using Rss.Server.App_Start;
+using StackExchange.Profiling;
 using System;
 using System.Text;
 using System.Web;
@@ -24,6 +27,12 @@ namespace Rss.Server
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            DbTracing.Enable(
+                    new GenericDbTracingListener()
+                        .OnFinished(c => Debug.WriteLine("-- Command finished - time: {0}{1}{2}", c.Duration, Environment.NewLine, c.Command.ToTraceString()))
+                        .OnFailed(c => Debug.WriteLine("-- Command failed - time: {0}{1}{2}", c.Duration, Environment.NewLine, c.Command.ToTraceString()))
+                );
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -34,11 +43,8 @@ namespace Rss.Server
             sb.Append("Source:" + Environment.NewLine + ctx.Server.GetLastError().Source);
             sb.Append("Message:" + Environment.NewLine + ctx.Server.GetLastError().Message);
             sb.Append("Stack Trace:" + Environment.NewLine + ctx.Server.GetLastError().StackTrace);
-            
-            ctx.Response.Write(sb.ToString());
-            
 
-            
+            ctx.Response.Write(sb.ToString());
         }
     }
 }
