@@ -35,15 +35,15 @@
 
 <script id="folderTemplate" type="text/x-jQuery-tmpl">
     <a href="#" class="expander">+</a>
-    <li class="folder TODO:unread"><a href="/home/folder/${id}">${name} (TODO: count)</a>
+    <li class="folder ${unreadClass}"><a href="/home/folder/${id}">${name} (${itemCount})</a>
         <ul class="nobullet">
             {{each feeds}}
-        <li class="feed TODO:unread"><a href="/home/feed/${id}">${name} (TODO: count)</a></li>
+        <li class="feed ${unreadClass}"><a href="/home/feed/${id}">${name} (${itemCount})</a></li>
             {{/each}}
         </ul>
     </li>
 </script>
 
 <script id="feedTemplate" type="text/x-jQuery-tmpl">
-    <li class="feed TODO:unread"><a href="/home/feed/${id}">${name} (TODO: count)</a></li>
+    <li class="feed ${unreadClass}"><a href="/home/feed/${id}">${name} (${itemCount})</a></li>
 </script>

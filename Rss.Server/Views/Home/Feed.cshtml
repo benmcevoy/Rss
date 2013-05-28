@@ -4,11 +4,11 @@
     ViewBag.Title = "Feed";
 }
 
-<h2>@Model.Name @if (Model.FolderId.HasValue)
+<h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a> @if (Model.FolderId.HasValue)
                 {
     @:(in <a href="/home/folder/@Model.FolderId">@Model.FolderName</a>)
                 }</h2>
-<sub>@Model.HtmlUrl</sub>
+<sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 
 <input type="button" value="Unsubscribe" 
                class="post-mode-simple"
