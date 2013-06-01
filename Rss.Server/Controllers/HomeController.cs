@@ -1,5 +1,6 @@
 ﻿using Rss.Server.Models;
 using Rss.Server.Services;
+using Rss.Server.ViewModels;
 using System;
 using System.Web.Mvc;
 
@@ -25,8 +26,16 @@ namespace Rss.Server.Controllers
 
         public ActionResult Folder(Guid id)
         {
-            var model = _folderService.Get(id);
-            return View(model);
+            var items = _folderService.GetItems(id, ReadOptions.Unread);
+
+            var vm = new FolderItemsViewModel
+                {
+                    Items = items,
+                    FolderId = id,
+                    FolderName = _folderService.Get(id).Name
+                };
+            
+            return View(vm);
         }
 
         public ActionResult Feed(Guid id)

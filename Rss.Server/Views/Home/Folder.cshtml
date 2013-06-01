@@ -1,49 +1,40 @@
 ﻿@using Rss.Server.Models
-@model Rss.Server.Models.Folder
+@model Rss.Server.ViewModels.FolderItemsViewModel
 
 @{
     ViewBag.Title = "Folder";
 }
 
-
-<h2>@Model.Name
+<h1><a href="/home/folder/@Model.FolderId">@Model.FolderName</a>
     <input type="button" value="Refresh" 
            class="post-mode-simple"
            data-action="/api/folder/Refresh"
-           data-id="@Model.Id"/>
-    
+           data-id="@Model.FolderId"/>
+
     <input type="button" value="Mark all as read" 
                class="post-mode-simple"
                data-action="/api/folder/mark"
-               data-id="@Model.Id"
-               data-redirectaction="/home/folder/@Model.Id"/>
-</h2>
+               data-id="@Model.FolderId"
+               data-redirectaction="/home/folder/@Model.FolderId"/>
+</h1>
 
-@{
-    foreach (var feed in Model.Feeds)
-    {
-    <div>
-        <h3 class="@GetUnreadClass(feed)"><a href="/home/feed/@feed.Id">@feed.Name</a> (@feed.ItemCount)</h3>
-
-        <div class="action-container">
-            <input type="button" value="Unsubscribe" 
-               class="post-mode-simple"
-               data-action="/api/feed/unsubscribe"
-               data-id="@feed.Id"/>
-        </div>
-
-    </div>
-    }
-}
-
-@helper GetUnreadClass(Feed feed)
-{
-    if (feed.ItemCount > 0)
-    {
-        @Html.Raw("unread");
-    }
-    else
-    {
-        @Html.Raw("read");
-    }
-}
+<div id="body">
+    <section>
+        <ul id="stream" class="nobullet">
+            @{
+                foreach (var item in Model.Items)
+                {
+                <li class="item">
+                    <div>
+                        <a href="/home/feed/@item.FeedId">@item.FeedName</a>
+                    </div>
+                    <div>
+                        <a href="/home/item/@item.Id"><strong>@item.Name</strong> (@item.PublishedDateTime)</a>
+                    </div>
+                    <hr />
+                </li>
+                }
+            }
+        </ul>
+    </section>
+</div>

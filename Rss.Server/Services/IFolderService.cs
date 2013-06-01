@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rss.Server.Models;
 
 namespace Rss.Server.Services
@@ -8,6 +9,8 @@ namespace Rss.Server.Services
         Folder Get(Guid id);
 
         RootFolder GetRoot();
+
+        IEnumerable<Item> GetItems(Guid id, ReadOptions readOptions);
 
         void AddFeed(Guid id, Guid feedId);
 
