@@ -226,6 +226,7 @@
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Services\RefreshService.cs" />
     <Compile Include="ViewModels\FeedViewModel.cs" />
+    <Compile Include="ViewModels\FolderItemsViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
   </ItemGroup>

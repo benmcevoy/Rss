@@ -27,7 +27,7 @@ namespace Rss.Server.Models
 
         public string UpdatePeriod { get; set; }
 
-        public string UpdateFrequency { get; set; }
+        public int UpdateFrequency { get; set; }
 
         public string FavIcon { get; set; }
 

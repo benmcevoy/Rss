@@ -1,5 +1,7 @@
-﻿using Rss.Server.Models;
+﻿using System.Collections.Generic;
+using Rss.Server.Models;
 using System;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Rss.Server.Services
@@ -69,7 +71,7 @@ FROM Folder INNER JOIN Feed
             // project into anonymous type.  You are not allowed to project into a mapped entity
             var feeds = _context.Feeds
               .Where(f => f.FolderId == null)
-              .Select(f => new 
+              .Select(f => new
               {
                   Feed = f,
                   ItemCount = f.Items.Count(i => i.ReadDateTime == null)
@@ -201,6 +203,16 @@ FROM Folder INNER JOIN Feed
             {
                 _feedService.Mark(feed.Id, markOptions);
             }
+        }
+
+        public IEnumerable<Item> GetItems(Guid id, ReadOptions readOptions)
+        {
+            return _context.Items
+                    .Include(i => i.Feed)
+                    .Where(f =>
+                        f.Feed.FolderId == id
+                                    && f.ReadDateTime == null)
+                    .OrderBy(i => i.PublishedDateTime);
         }
     }
 }
