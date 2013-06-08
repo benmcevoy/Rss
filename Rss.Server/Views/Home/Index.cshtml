@@ -22,13 +22,16 @@
 </script>
 
 <script id="itemTemplate" type="text/x-jQuery-tmpl">
-    <li class="item TODO:unread">
+    <li class="item">
         <div>
             <a href="/home/feed/${feedId}">${feedName}</a>
         </div>
         <div>
             <a href="/home/item/${id}"><strong>${name}</strong> (${publishedDateTime})</a>
         </div>
+        <p>
+            ${snippet}
+        </p>
         <hr />
     </li>
 </script>
