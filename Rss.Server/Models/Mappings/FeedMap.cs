@@ -10,6 +10,8 @@ namespace Rss.Server.Models.Mappings
 
             Ignore(x => x.ItemCount);
 
+            HasMany(x => x.Items).WithRequired(x => x.Feed).WillCascadeOnDelete(true);
+
             ToTable("Feed");
         }
     }

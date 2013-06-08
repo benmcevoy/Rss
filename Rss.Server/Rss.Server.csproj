@@ -209,6 +209,7 @@
     <Compile Include="Models\FolderWithItemCount.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Mappings\FeedMap.cs" />
+    <Compile Include="Models\Mappings\FolderMapping.cs" />
     <Compile Include="Models\Mappings\ItemMap.cs" />
     <Compile Include="Models\MarkOptions.cs" />
     <Compile Include="Models\ReadOptions.cs" />
