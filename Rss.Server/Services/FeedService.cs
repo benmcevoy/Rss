@@ -17,7 +17,9 @@ namespace Rss.Server.Services
 
         public void Unsubscribe(Guid id)
         {
-            var feed = Get(id);
+            var feed = _context.Feeds
+                .Include("Items")
+                .Single(f => f.Id == id);
 
             _context.Feeds.Remove(feed);
 
@@ -26,7 +28,7 @@ namespace Rss.Server.Services
 
         public void Rename(Guid id, string name)
         {
-            var feed = Get(id);
+            var feed = _context.Feeds.Find(id);
 
             feed.Name = name;
 
@@ -58,8 +60,11 @@ namespace Rss.Server.Services
 
         public void Mark(Guid id, MarkOptions markOptions)
         {
-            var feed = Get(id);
+            var feed = _context.Feeds
+                .Include("Items")
+                .Single(f => f.Id == id);
 
+            // TOOD: respect markOptions
             foreach (var item in feed.Items)
             {
                 item.ReadDateTime = DateTime.Now;
@@ -73,6 +78,10 @@ namespace Rss.Server.Services
             var feed = _context.Feeds
                             .Include("Items")
                             .Single(f => f.Id == id);
+
+            if (feed.LastUpdateDateTime > GetExpiryDate(feed))
+                return;
+
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
 
             rssFeed.GetItemsFromWeb();
@@ -110,7 +119,7 @@ namespace Rss.Server.Services
             _context.SaveChanges();
         }
 
-        private DateTime GetPublishedDateTime(string publishedDateTime)
+        private static DateTime GetPublishedDateTime(string publishedDateTime)
         {
             var publishedDate = DateTime.UtcNow;
 
@@ -122,6 +131,23 @@ namespace Rss.Server.Services
             }
 
             return publishedDate;
+        }
+
+        private static DateTime GetExpiryDate(Feed feed)
+        {
+            if (feed.UpdatePeriod.ToLowerInvariant() == "hourly")
+            {
+                return DateTime.UtcNow.AddHours(-feed.UpdateFrequency);
+            }
+
+            if (feed.UpdatePeriod.ToLowerInvariant() == "daily")
+            {
+                return DateTime.UtcNow.AddDays(-feed.UpdateFrequency);
+            }
+
+            return feed.UpdatePeriod.ToLowerInvariant() == "weekly" ?
+                DateTime.UtcNow.AddDays(-7 * feed.UpdateFrequency) :
+                DateTime.UtcNow.AddDays(-1); //default
         }
     }
 }
