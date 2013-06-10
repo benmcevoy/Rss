@@ -18,6 +18,17 @@ namespace Rss.Server
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/knockout")
+                .Include("~/Scripts/knockout-2.2.1.js"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/rss")
+                            .Include("~/Scripts/rss/namespace.js", "~/Scripts/rss/communication.js")
+                            .IncludeDirectory("~/Scripts/rss/Models", "*.js")
+                            .IncludeDirectory("~/Scripts/rss/ViewModels", "*ViewModel.js")
+                            // site must come last
+                            .Include("~/Scripts/rss/site.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
         }

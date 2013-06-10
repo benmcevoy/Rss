@@ -4,25 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-    <script src="~/Scripts/rss/site.js"></script>
-</head>
-    <body>
-        <a href="/home">home</a>|<a href="/system">system</a>
-        
-        <div style="clear: both">&nbsp;</div>        
+    
 
-        <div style="float:left; margin-right: 40px; min-width:300px;">
-            @{ Html.RenderPartial("Subscriptions"); }
-        </div>
-        <div style="float:left;max-width: 800px;">
-            @RenderBody()
-        </div>
-        
-        <div style="clear: both">&nbsp;</div>        
-        
-        @RenderSection("scripts", required: false)
-    </body>
+</head>
+<body>
+    <a href="/home">home</a>|<a href="/system">system</a>
+
+    <div style="clear: both">&nbsp;</div>
+
+    <div style="float: left; margin-right: 40px; min-width: 300px;">
+        @{ Html.RenderPartial("Subscriptions"); }
+    </div>
+    <div style="float: left; max-width: 800px;" id="panel">
+        @RenderBody()
+    </div>
+
+    <div style="clear: both">&nbsp;</div>
+
+    @RenderSection("scripts", required: false)
+    
+    @Scripts.Render("~/bundles/knockout")
+    <script src="~/Scripts/rss/subscription.json.js"></script>
+    @Scripts.Render("~/bundles/rss")
+
+</body>
 </html>

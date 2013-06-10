@@ -35,20 +35,20 @@ namespace Rss.Server.Controllers
                     FolderName = _folderService.Get(id).Name
                 };
             
-            return View(vm);
+            return PartialView(vm);
         }
 
         public ActionResult Feed(Guid id)
         {
             var model = _feedService.Get(id, ReadOptions.Unread);
-            return View(model);
+            return PartialView(model);
         }
 
         public ActionResult Item(Guid id)
         {
             var model = _itemService.Get(id);
             _itemService.Read(id);
-            return View(model);
+            return PartialView(model);
         }
     }
 }
