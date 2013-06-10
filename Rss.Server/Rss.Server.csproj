@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\JsonContentNegotiator.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -322,7 +323,12 @@
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\rss\communication.js" />
+    <Content Include="Scripts\rss\Models\Item.js" />
+    <Content Include="Scripts\rss\namespace.js" />
     <Content Include="Scripts\rss\site.js" />
+    <Content Include="Scripts\rss\subscription.json.js" />
+    <Content Include="Scripts\rss\ViewModels\SubscriptionsViewModel.js" />
     <Content Include="_notes.txt" />
     <None Include="Properties\PublishProfiles\default.pubxml" />
     <Content Include="Scripts\jquery-2.0.0.min.map" />

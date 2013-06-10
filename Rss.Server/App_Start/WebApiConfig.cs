@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Rss.Server.App_Start;
 
 namespace Rss.Server
 {
@@ -12,28 +14,24 @@ namespace Rss.Server
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",
                 routeTemplate: "api/{controller}/{action}/{id}",
-                 defaults: new { action = "get", id = RouteParameter.Optional}
+                 defaults: new { action = "get", id = RouteParameter.Optional }
             );
 
-            RemoveXmlSerializer(config);
-
-            SetJsonCamelCase(config);
+            SetContentNegotiator(config);
         }
 
-        private static void RemoveXmlSerializer(HttpConfiguration config)
+        private static void SetContentNegotiator(HttpConfiguration config)
         {
-            var appXmlType =
-                config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
-            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
-        }
+            var jsonFormatter = new JsonMediaTypeFormatter
+                {
+                    SerializerSettings =
+                        {
+                            Formatting = Formatting.Indented,
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }
+                };
 
-        private static void SetJsonCamelCase(HttpConfiguration config)
-        {
-            var formatters = config.Formatters;
-            var jsonFormatter = formatters.JsonFormatter;
-            var settings = jsonFormatter.SerializerSettings;
-            settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(jsonFormatter));
         }
     }
 }
