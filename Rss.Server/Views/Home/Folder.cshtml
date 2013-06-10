@@ -5,17 +5,18 @@
     ViewBag.Title = "Folder";
 }
 
-<h1><a href="/home/folder/@Model.FolderId">@Model.FolderName</a>
+<h1><a class="ajax" rel="#panel" href="/home/folder/@Model.FolderId">@Model.FolderName</a>
     <input type="button" value="Refresh" 
-           class="post-mode-simple"
-           data-action="/api/folder/Refresh"
+           class="ajax"
+           data-postaction="/api/folder/Refresh"
            data-id="@Model.FolderId"/>
 
     <input type="button" value="Mark all as read" 
-               class="post-mode-simple"
-               data-action="/api/folder/mark"
+               class="ajax"
+               data-postaction="/api/folder/mark"
                data-id="@Model.FolderId"
-               data-redirectaction="/home/folder/@Model.FolderId"/>
+               data-getaction="/home/folder/@Model.FolderId"
+               data-getpanel='#panel' />
 </h1>
 
 <div id="body">
@@ -26,10 +27,10 @@
                 {
                 <li class="item">
                     <div>
-                        <a href="/home/feed/@item.FeedId">@item.FeedName</a>
+                        <a class="ajax" rel="#panel" href="/home/feed/@item.FeedId">@item.FeedName</a>
                     </div>
                     <div>
-                        <a href="/home/item/@item.Id"><strong>@item.Name</strong> (@item.PublishedDateTime)</a>
+                        <a class="ajax" rel="#panel" href="/home/item/@item.Id"><strong>@item.Name</strong> (@item.PublishedDateTime)</a>
                     </div>
                     <p>
                         @item.Snippet
