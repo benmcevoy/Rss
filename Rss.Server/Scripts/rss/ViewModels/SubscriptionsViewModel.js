@@ -6,6 +6,11 @@ rss.viewModels.SubscriptionsViewModel = function () {
     self.feeds = ko.observableArray([]);
     self.folders = ko.observableArray([]);
 
+    // subscriptions
+    rss.messenger.subscribe(function (id) { self.readItem(id); }, self, "readItem");
+    rss.messenger.subscribe(function (id) { self.readFeed(id); }, self, "readFeed");
+    rss.messenger.subscribe(function (id) { self.readFolder(id); }, self, "readFolder");
+
     // load
     $.getJSON('/api/folder', function (data) {
         var feeds = $.map(data.feeds, function (item) { return new rss.models.Item(item); });
@@ -13,48 +18,92 @@ rss.viewModels.SubscriptionsViewModel = function () {
 
         self.feeds(feeds);
         self.folders(folders);
-        
+
         $('li.folder > ul').hide();
     });
 
-    // public commands
-    self.readItem = function (feedid) {
-        var match = ko.utils.arrayFirst(self.feeds(), function (item) { return item.id === feedid; });
+    // private methods
+    var findFeed = function (feedid) {
+        var feed = ko.utils.arrayFirst(self.feeds(), function (item) { return item.id === feedid; });
         var folderIndex = -1;
 
-        if (!match) {
+        if (!feed) {
             for (var i = 0; i < self.folders().length; i++) {
-                match = ko.utils.arrayFirst(self.folders()[i].items(), function (item) {
+                feed = ko.utils.arrayFirst(self.folders()[i].items(), function (item) {
                     return item.id === feedid;
                 });
 
-                if (match) {
+                if (feed) {
                     folderIndex = i;
                     break;
                 }
             }
         }
 
-        if (match) {
-            match.read();
-            if (folderIndex > -1) {
-                self.folders()[folderIndex].read();
+        return { feed: feed, folderIndex: folderIndex };
+    };
+
+    var findFolder = function (folderid) {
+        var folder = ko.utils.arrayFirst(self.folders(), function (item) {
+            return item.id === folderid;
+        });
+
+        return folder;
+    };
+
+    // public commands
+    self.readItem = function (feedid) {
+        var match = findFeed(feedid);
+
+        if (match.feed) {
+
+            match.feed.read();
+
+            if (match.folderIndex > -1) {
+                self.folders()[match.folderIndex].read();
             }
+        }
+    };
+
+    self.readFeed = function (feedid) {
+        var match = findFeed(feedid);
+
+        if (match.feed) {
+            var count = match.feed.itemCount();
+
+            match.feed.itemCount(0);
+            match.feed.unreadClass('read');
+
+            if (match.folderIndex > -1) {
+                var folder = self.folders()[match.folderIndex];
+                var folderCount = folder.itemCount();
+                var result = folderCount - count;
+
+                if (result <= 0) {
+                    result = 0;
+                    folder.unreadClass('read');
+                }
+
+                folder.itemCount(result);
+            }
+        }
+    };
+
+    self.readFolder = function (folderid) {
+        var folder = findFolder(folderid);
+
+        for (var i = 0; i < folder.items().length; i++) {
+            self.readFeed(folder.items()[i].id);
         }
     };
 
     // events
     $('body').on('click', '.expander', function () {
         $(this).next('li.folder').children('ul').toggle();
-        if ($(this).text() == '+') {
-            $(this).text('-');
-        } else {
+        if ($(this).text() == '-') {
             $(this).text('+');
+        } else {
+            $(this).text('-');
         }
-    });
-
-    $('body').on('click', '.item a', function () {
-        var data = $(this).data();
-        self.readItem(data.feedid);
     });
 }

@@ -25,18 +25,24 @@
                data-getpanel='#panel' />
 
 <input type="button" value="Mark all as read" 
-               class="ajax"
+       class="ajax"
+               data-command="readFeed"
                data-postaction="/api/feed/mark"
-               data-id="@Model.Id"
+               data-commandargument="@Model.Id"
                data-getaction="/home/feed/@Model.Id"
-               data-getpanel='#panel' />
+               data-getpanel="#panel" />
 
 
 @{
     foreach (var item in Model.Items)
     {
     <div class="item">
-        <h3><a class="ajax" rel="#panel" data-feedid="@item.FeedId" href="/home/item/@item.Id">@item.Name</a></h3>
+        <h3><a class="ajax item" 
+               rel="#panel" 
+               data-command="readItem"
+               data-commandargument="@item.FeedId"
+               @*data-feedid="@item.FeedId" *@
+               href="/home/item/@item.Id">@item.Name</a></h3>
         <sub>@item.PublishedDateTime</sub>
         <p>@item.Snippet</p>
         <hr />

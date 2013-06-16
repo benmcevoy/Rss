@@ -1,10 +1,13 @@
-﻿
+﻿rss.messenger = new ko.subscribable();
+
 rss.communication = (function ($) {
     var bindSimplePost = function () {
         $('body').on('click', 'input.ajax', function () {
             var data = $(this).data();
 
             ajaxPostAndGet(data.id, data.postaction, data.getaction, data.getpanel);
+
+            publish(data);
         });
     };
 
@@ -13,11 +16,20 @@ rss.communication = (function ($) {
             e.preventDefault();
 
             var $this = $(this);
+            var data = $this.data();
             var action = $this.attr('href');
             var panel = $this.attr('rel');
 
             ajaxGet(action, panel);
+
+            publish(data);
         });
+    };
+
+    var publish = function(data) {
+        if (data.command) {
+            rss.messenger.notifySubscribers(data.commandargument, data.command);
+        }
     };
 
     var ajaxPostAndGet = function (id, postaction, getaction, getpanel) {
@@ -50,5 +62,7 @@ rss.communication = (function ($) {
     });
 
     // expose public stuff here
-    return {};
+    return {
+        publish : publish
+    };
 }(jQuery));
