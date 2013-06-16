@@ -2,18 +2,59 @@
 rss.viewModels.SubscriptionsViewModel = function () {
     var self = this;
 
-    // data
-    self.items = ko.observableArray([
-        new rss.models.Item(1, 'dev', 123),
-        new rss.models.Item(2, 'test', 12),
-        new rss.models.Item(3, 'again', 6)
-    ]);
+    // properties
+    self.feeds = ko.observableArray([]);
+    self.folders = ko.observableArray([]);
 
-    // commands
-    self.incrementCount = function () {
-        console.log(self.items()[0]);
-        self.items()[0].count(456);
+    // load
+    $.getJSON('/api/folder', function (data) {
+        var feeds = $.map(data.feeds, function (item) { return new rss.models.Item(item); });
+        var folders = $.map(data.folders, function (item) { return new rss.models.Item(item); });
+
+        self.feeds(feeds);
+        self.folders(folders);
+        
+        $('li.folder > ul').hide();
+    });
+
+    // public commands
+    self.readItem = function (feedid) {
+        var match = ko.utils.arrayFirst(self.feeds(), function (item) { return item.id === feedid; });
+        var folderIndex = -1;
+
+        if (!match) {
+            for (var i = 0; i < self.folders().length; i++) {
+                match = ko.utils.arrayFirst(self.folders()[i].items(), function (item) {
+                    return item.id === feedid;
+                });
+
+                if (match) {
+                    folderIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (match) {
+            match.read();
+            if (folderIndex > -1) {
+                self.folders()[folderIndex].read();
+            }
+        }
     };
 
+    // events
+    $('body').on('click', '.expander', function () {
+        $(this).next('li.folder').children('ul').toggle();
+        if ($(this).text() == '+') {
+            $(this).text('-');
+        } else {
+            $(this).text('+');
+        }
+    });
 
+    $('body').on('click', '.item a', function () {
+        var data = $(this).data();
+        self.readItem(data.feedid);
+    });
 }
