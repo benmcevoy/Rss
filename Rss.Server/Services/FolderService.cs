@@ -212,7 +212,7 @@ FROM Folder INNER JOIN Feed
                     .Where(f =>
                         f.Feed.FolderId == id
                                     && f.ReadDateTime == null)
-                    .OrderBy(i => i.PublishedDateTime);
+                    .OrderByDescending(i => i.PublishedDateTime);
         }
     }
 }

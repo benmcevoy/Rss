@@ -36,7 +36,7 @@
     foreach (var item in Model.Items)
     {
     <div class="item">
-        <h3><a class="ajax" rel="#panel" href="/home/item/@item.Id">@item.Name</a></h3>
+        <h3><a class="ajax" rel="#panel" data-feedid="@item.FeedId" href="/home/item/@item.Id">@item.Name</a></h3>
         <sub>@item.PublishedDateTime</sub>
         <p>@item.Snippet</p>
         <hr />

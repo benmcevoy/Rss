@@ -17,10 +17,8 @@
 
 using System.Web.Http;
 using System.Web.Mvc;
-using Rss.Server.App_Start.DI;
 using StructureMap;
-
-
+using Rss.Server.DependencyResolution;
 
 namespace Rss.Server.App_Start {
     public static class StructuremapMvc {

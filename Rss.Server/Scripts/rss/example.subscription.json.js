@@ -891,14 +891,14 @@
         {
             "id": "be3b277c-f827-47db-9e79-12b3d35fcb95",
             "name": "Beta Exam Announcements",
-            "itemCount": 0,
-            "unreadClass": "read"
+            "itemCount": 3,
+            "unreadClass": "unread"
         },
         {
             "id": "777d98eb-70d4-4b9b-9573-955d2ae48ca2",
             "name": "bookmarks",
-            "itemCount": 0,
-            "unreadClass": "read"
+            "itemCount": 2,
+            "unreadClass": "unread"
         },
         {
             "id": "47383a71-85f9-4888-a123-c7a6413f268b",

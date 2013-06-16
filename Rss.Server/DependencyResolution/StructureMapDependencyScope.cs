@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StructureMapDependencyScope.cs" company="Web Advanced">
 // Copyright 2012 Web Advanced (www.webadvanced.com)
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ using System.Web.Http.Dependencies;
 using Microsoft.Practices.ServiceLocation;
 using StructureMap;
 
-namespace $rootnamespace$.DependencyResolution
+namespace Rss.Server.DependencyResolution
 {
     /// <summary>
     /// The structure map dependency scope.
@@ -68,27 +68,6 @@ namespace $rootnamespace$.DependencyResolution
         public void Dispose()
         {
             this.Container.Dispose();
-        }
-
-        /// <summary>
-        /// The get service.
-        /// </summary>
-        /// <param name="serviceType">
-        /// The service type.
-        /// </param>
-        /// <returns>
-        /// The System.Object.
-        /// </returns>
-        public object GetService(Type serviceType)
-        {
-            if (serviceType == null)
-            {
-                return null;
-            }
-
-            return serviceType.IsAbstract || serviceType.IsInterface
-                       ? this.Container.TryGetInstance(serviceType)
-                       : this.Container.GetInstance(serviceType);
         }
 
         /// <summary>
