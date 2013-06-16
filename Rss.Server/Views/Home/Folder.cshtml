@@ -12,9 +12,10 @@
            data-id="@Model.FolderId"/>
 
     <input type="button" value="Mark all as read" 
-               class="ajax"
+           class="ajax"
+               data-command="readFolder"
                data-postaction="/api/folder/mark"
-               data-id="@Model.FolderId"
+               data-commandargument="@Model.FolderId"
                data-getaction="/home/folder/@Model.FolderId"
                data-getpanel='#panel' />
 </h1>
@@ -30,7 +31,12 @@
                         <a class="ajax" rel="#panel" href="/home/feed/@item.FeedId">@item.FeedName</a>
                     </div>
                     <div>
-                        <a class="ajax" rel="#panel" href="/home/item/@item.Id"><strong>@item.Name</strong> (@item.PublishedDateTime)</a>
+                        <a class="ajax item" 
+                           rel="#panel" 
+                           data-command="readItem"
+                           data-commandargument="@item.FeedId"
+                           @*data-feedid="@item.FeedId" *@
+                           href="/home/item/@item.Id"><strong>@item.Name</strong> (@item.PublishedDateTime)</a>
                     </div>
                     <p>
                         @item.Snippet
