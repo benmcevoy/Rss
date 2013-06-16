@@ -1,4 +1,5 @@
-﻿using Rss.Server.Models;
+﻿using System.Data;
+using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
