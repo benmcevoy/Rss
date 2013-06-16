@@ -26,7 +26,12 @@
             <a class="ajax" rel="#panel" href="/home/feed/${feedId}">${feedName}</a>
         </div>
         <div>
-            <a class="ajax" rel="#panel" href="/home/item/${id}"><strong>${name}</strong> (${publishedDateTime})</a>
+            <a  class="ajax item" 
+                rel="#panel" 
+                data-command="readItem"
+                data-commandargument="${feedId}"
+                @*data-feedid="${feedId}" *@
+                href="/home/item/${id}"><strong>${name}</strong> (${publishedDateTime})</a>
         </div>
         <p>
             ${snippet}
