@@ -5,17 +5,17 @@
     ViewBag.Title = "Folder";
 }
 
-<h1><a class="ajax" 
+<h1><a class="command" 
        data-command="folder"
        data-commandargument="@Model.FolderId">@Model.FolderName</a>
 
     <input type="button" value="Refresh" 
-           class="ajax"
+           class="command"
            data-command="refreshFolder"
            data-commandargument="@Model.FolderId"/>
 
     <input type="button" value="Mark all as read" 
-           class="ajax"
+           class="command"
                data-command="readFolder"
                data-commandargument="@Model.FolderId"/>
 </h1>
@@ -28,12 +28,12 @@
                 {
                 <li class="item">
                     <div>
-                        <a class="ajax" 
+                        <a class="command" 
                             data-command="feed"
                             data-commandargument="@item.FeedId">@item.FeedName</a>
                     </div>
                     <div>
-                        <a class="ajax item" 
+                        <a class="command item" 
                            data-command="readItem"
                            data-commandargument="{ feedId: '@item.FeedId', itemId: '@item.Id' }">
                             <strong>@item.Name</strong> (@item.PublishedDateTime)

@@ -11,11 +11,11 @@ rss.commands.invoke = function (data) {
 };
 
 rss.commands.bind = function () {
-    $('body').on('click', 'input.ajax', function () {
+    $('body').on('click', 'input.command', function () {
         rss.commands.invoke($(this).data());
     });
 
-    $('body').on('click', 'a.ajax', function (e) {
+    $('body').on('click', 'a.command', function (e) {
         e.preventDefault();
         rss.commands.invoke($(this).data());
     });
