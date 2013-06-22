@@ -1,5 +1,5 @@
 ﻿
-rss.models.Item = function (data) {
+rss.viewModels.ItemViewModel = function (data) {
     var self = this;
 
     // properties    
@@ -10,7 +10,7 @@ rss.models.Item = function (data) {
     self.items = ko.observableArray([]);
 
     if (data.feeds) {
-        var feeds = $.map(data.feeds, function (item) { return new rss.models.Item(item); });
+        var feeds = $.map(data.feeds, function (item) { return new rss.viewModels.ItemViewModel(item); });
         self.items(feeds);
     }
     
