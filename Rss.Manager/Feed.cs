@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,11 +15,8 @@ namespace Rss.Manager
 
         public Feed(Uri feedUri)
         {
-            var xml = GetXml(feedUri);
-
             FeedUri = feedUri;
             Items = new List<Item>();
-            Title = GetTitle(xml);
             HtmlUri = feedUri;
         }
 
@@ -35,6 +33,8 @@ namespace Rss.Manager
             var xml = GetXml(FeedUri);
 
             if (xml.Root == null) return;
+
+            Title = GetTitle(xml);
 
             switch (xml.Root.Name.LocalName.ToLower())
             {
@@ -178,6 +178,11 @@ namespace Rss.Manager
                     }
 
                     response.Close();
+
+                    //Debug.WriteLine("{0} Date: {1}", feedUri, response.Headers["Date"]);
+                    //Debug.WriteLine("{0} Last-Modified: {1}", feedUri, response.Headers["Last-Modified"]);
+                    //Debug.WriteLine("{0} Expires: {1}", feedUri, response.Headers["Expires"]);
+                    //Debug.WriteLine("{0} ETag: {1}", feedUri, response.Headers["ETag"]);
                 }
             }
             catch (Exception)
@@ -205,6 +210,10 @@ namespace Rss.Manager
         public string UpdateFrequency { get; set; }
 
         public string UpdatePeriod { get; set; }
+
+        public string ETag { get; set; }
+
+        public DateTime CacheExpiry { get; set; }
 
         public override bool Equals(object obj)
         {
