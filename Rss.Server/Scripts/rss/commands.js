@@ -8,11 +8,9 @@ rss.commands.invoke = function (data) {
     if (commandToInvoke) {
         commandToInvoke(data);
     }
-
-    //var commandToInvoke = eval('(rss.commands.' + data.command + 'Command(data))');
 };
 
-rss.commands.bindCommands = function () {
+rss.commands.bind = function () {
     $('body').on('click', 'input.ajax', function () {
         rss.commands.invoke($(this).data());
     });
