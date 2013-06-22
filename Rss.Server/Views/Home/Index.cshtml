@@ -23,12 +23,12 @@
 <script id="itemTemplate" type="text/x-jQuery-tmpl">
     <li class="item">
         <div>
-            <a class="ajax" 
+            <a class="command" 
                 data-command="feed"
                 data-commandargument="${feedId}">${feedName}</a>
         </div>
         <div>
-            <a  class="ajax item" 
+            <a  class="command item" 
                 data-command="readItem"
                 data-commandargument="{feedId: '${feedId}', itemId: '${id}' }">
                 <strong>${name}</strong> (${publishedDateTime})</a>

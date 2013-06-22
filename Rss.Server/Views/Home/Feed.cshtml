@@ -7,31 +7,31 @@
 <h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a>
     @if (Model.FolderId.HasValue)
                                                              {
-        @:(in <a class="ajax" 
+        @:(in <a class="command" 
         data-command="folder"
         data-commandargument="@Model.FolderId">@Model.FolderName</a>)
                 }</h2>
 <sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 
 <input type="button" value="Unsubscribe" 
-               class="ajax"
+               class="command"
                data-command="unsubscribeFeed"
                data-commandargument="{ feedId: '@Model.Id', folderId: '@Model.FolderId' }" />
 
 <input type="button" value="Refresh" 
-       class="ajax"
+       class="command"
        data-command="refreshFeed"
        data-commandargument="@Model.Id" />
 
 <input type="button" value="Mark all as read" 
-       class="ajax"
+       class="command"
        data-command="readFeed"
        data-commandargument="@Model.Id" />
 @{
     foreach (var item in Model.Items)
     {
     <div class="item">
-        <h3><a class="ajax item" 
+        <h3><a class="command item" 
                data-command="readItem"
                data-commandargument="{ feedId: '@item.FeedId', itemId : '@item.Id' }">@item.Name</a></h3>
         <sub>@item.PublishedDateTime</sub>
