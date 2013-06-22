@@ -76,9 +76,7 @@ namespace Rss.Server.Services
 
         public void Refresh(Guid id)
         {
-            var feed = _context.Feeds
-                            .Include("Items")
-                            .Single(f => f.Id == id);
+            var feed = _context.Feeds.Find(id);
 
             if (feed.LastUpdateDateTime > GetExpiryDate(feed))
                 return;
@@ -86,6 +84,10 @@ namespace Rss.Server.Services
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
 
             rssFeed.GetItemsFromWeb();
+
+            var itemQuery = _context.Entry(feed).Collection(f => f.Items).Query();
+
+            feed.Items = itemQuery.OrderByDescending(i => i.PublishedDateTime).Take(100).ToList();
 
             foreach (var rssItem in rssFeed.Items)
             {
