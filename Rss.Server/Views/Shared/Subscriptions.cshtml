@@ -9,16 +9,24 @@
 
 <script id="folderTemplate" type="text/x-jQuery-tmpl">
     <a href="#" class="expander">+</a>
-    <li class="folder ${unreadClass}"><a id="${id}" class="ajax" rel="#panel" href="/home/folder/${id}">${name} (${itemCount})</a>
+    <li class="folder ${unreadClass}">
+        <a id="${id}" class="ajax"
+            data-command="folder"
+            data-commandargument="${id}">${name} (${itemCount})</a>
         <ul class="nobullet">
             {{each items}}
-        <li class="feed ${unreadClass}"><a id="${id}" class="ajax" rel="#panel" href="/home/feed/${id}">${name} (${itemCount})</a></li>
+            <li class="feed ${unreadClass}">
+                <a id="${id}" class="ajax"
+                    data-command="feed"
+                    data-commandargument="${id}">${name} (${itemCount})</a></li>
             {{/each}}
         </ul>
     </li>
 </script>
 
 <script id="feedTemplate" type="text/x-jQuery-tmpl">
-    <li class="feed ${unreadClass}"><a id="${id}" class="ajax" rel="#panel" href="/home/feed/${id}">${name} (${itemCount})</a></li>
+    <li class="feed ${unreadClass}"><a id="${id}" class="ajax"
+        data-command="feed"
+        data-commandargument="${id}">${name} (${itemCount})</a></li>
 </script>
 
