@@ -23,8 +23,9 @@ namespace Rss.Server
 
 
             bundles.Add(new ScriptBundle("~/bundles/rss")
-                            .Include("~/Scripts/rss/namespace.js", "~/Scripts/rss/communication.js")
-                            .IncludeDirectory("~/Scripts/rss/Models", "*.js")
+                            .Include("~/Scripts/rss/namespace.js",
+                                        "~/Scripts/rss/commands.js")
+                            .IncludeDirectory("~/Scripts/rss/Commands", "*Command.js")
                             .IncludeDirectory("~/Scripts/rss/ViewModels", "*ViewModel.js")
                             // site must come last
                             .Include("~/Scripts/rss/site.js"));

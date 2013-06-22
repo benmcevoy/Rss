@@ -4,45 +4,36 @@
     ViewBag.Title = "Feed";
 }
 
-<h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a> @if (Model.FolderId.HasValue)
+<h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a>
+    @if (Model.FolderId.HasValue)
                                                              {
-    @:(in <a class="ajax" rel="#panel" href="/home/folder/@Model.FolderId">@Model.FolderName</a>)
+        @:(in <a class="ajax" 
+        data-command="folder"
+        data-commandargument="@Model.FolderId">@Model.FolderName</a>)
                 }</h2>
 <sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 
 <input type="button" value="Unsubscribe" 
                class="ajax"
-               data-postaction="/api/feed/unsubscribe"
-               data-id="@Model.Id"
-               data-getaction="/home/folder/@Model.FolderId"
-               data-getpanel='#panel' />
+               data-command="unsubscribeFeed"
+               data-commandargument="{ feedId: '@Model.Id', folderId: '@Model.FolderId' }" />
 
 <input type="button" value="Refresh" 
        class="ajax"
-       data-postaction="/api/feed/refresh"
-       data-id="@Model.Id"
-       data-getaction="/home/feed/@Model.Id"
-               data-getpanel='#panel' />
+       data-command="refreshFeed"
+       data-commandargument="@Model.Id" />
 
 <input type="button" value="Mark all as read" 
        class="ajax"
-               data-command="readFeed"
-               data-postaction="/api/feed/mark"
-               data-commandargument="@Model.Id"
-               data-getaction="/home/feed/@Model.Id"
-               data-getpanel="#panel" />
-
-
+       data-command="readFeed"
+       data-commandargument="@Model.Id" />
 @{
     foreach (var item in Model.Items)
     {
     <div class="item">
         <h3><a class="ajax item" 
-               rel="#panel" 
                data-command="readItem"
-               data-commandargument="@item.FeedId"
-               @*data-feedid="@item.FeedId" *@
-               href="/home/item/@item.Id">@item.Name</a></h3>
+               data-commandargument="{ feedId: '@item.FeedId', itemId : '@item.Id' }">@item.Name</a></h3>
         <sub>@item.PublishedDateTime</sub>
         <p>@item.Snippet</p>
         <hr />

@@ -13,8 +13,8 @@ rss.viewModels.SubscriptionsViewModel = function () {
 
     // load
     $.getJSON('/api/folder', function (data) {
-        var feeds = $.map(data.feeds, function (item) { return new rss.models.Item(item); });
-        var folders = $.map(data.folders, function (item) { return new rss.models.Item(item); });
+        var feeds = $.map(data.feeds, function (item) { return new rss.viewModels.ItemViewModel(item); });
+        var folders = $.map(data.folders, function (item) { return new rss.viewModels.ItemViewModel(item); });
 
         self.feeds(feeds);
         self.folders(folders);

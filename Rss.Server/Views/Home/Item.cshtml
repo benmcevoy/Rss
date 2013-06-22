@@ -3,7 +3,11 @@
     ViewBag.Title = "Item";
 }
 
-<h2><a class="ajax" rel="#panel" href="/home/feed/@Model.FeedId">@Model.FeedName</a></h2>
+<h2>
+    <a class="ajax"  
+             data-command="feed"
+             data-commandargument="@Model.FeedId">@Model.FeedName</a>
+</h2>
 
 <div class="item">
     <h3><a href="@Model.LinkUrl" target="_blank">@Model.Name</a></h3>
