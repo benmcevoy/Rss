@@ -28,10 +28,22 @@ namespace Rss.Server
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            AddDbTracing();
+        }
+
+        [Conditional("DEBUG")]
+        private static void AddDbTracing()
+        {
             DbTracing.Enable(
-                    new GenericDbTracingListener()
-                        .OnFinished(c => Debug.WriteLine("-- Command finished - time: {0}{1}{2}", c.Duration, Environment.NewLine, c.Command.ToTraceString()))
-                        .OnFailed(c => Debug.WriteLine("-- Command failed - time: {0}{1}{2}", c.Duration, Environment.NewLine, c.Command.ToTraceString()))
+                new GenericDbTracingListener()
+                    .OnFinished(
+                        c =>
+                        Debug.WriteLine("-- Command finished - time: {0}{1}{2}", c.Duration, Environment.NewLine,
+                                        c.Command.ToTraceString()))
+                    .OnFailed(
+                        c =>
+                        Debug.WriteLine("-- Command failed - time: {0}{1}{2}", c.Duration, Environment.NewLine,
+                                        c.Command.ToTraceString()))
                 );
         }
 

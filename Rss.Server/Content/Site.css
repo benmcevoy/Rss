@@ -50,8 +50,3 @@ ul.nobullet { list-style: none;}
 .unread { font-weight: 600;}
 .read { font-weight: 300;}
 
-#subscription-nav {
-    height: 600px;
-    overflow-y: scroll;
-    position: fixed;
-}

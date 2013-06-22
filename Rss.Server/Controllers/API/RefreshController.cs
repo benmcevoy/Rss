@@ -1,4 +1,5 @@
 ﻿using Rss.Server.Services;
+using System.Diagnostics;
 using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
@@ -14,8 +15,15 @@ namespace Rss.Server.Controllers.API
 
         public string Get()
         {
+            var sw = new Stopwatch();
+
+            sw.Start();
+            
             _feedService.RefreshAllFeeds();
-            return "Refresh complete";
+            
+            sw.Stop();
+
+            return "Refresh complete " + sw.ElapsedMilliseconds;
         }
     }
 }
