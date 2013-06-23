@@ -5,12 +5,11 @@
 }
 
 <h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a>
-    @if (Model.FolderId.HasValue)
-                                                             {
-        @:(in <a class="command" 
-        data-command="folder"
-        data-commandargument="@Model.FolderId">@Model.FolderName</a>)
-                }</h2>
+@if (Model.FolderId.HasValue){ 
+    @:(in <a class="command" data-command="folder" data-commandargument="@Model.FolderId">@Model.FolderName</a>)
+    }
+
+</h2>
 <sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 
 <input type="button" value="Unsubscribe" 
