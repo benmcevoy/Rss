@@ -68,6 +68,7 @@ rss.viewModels.SubscriptionsViewModel = function () {
     self.readFeed = function (feedid) {
         var match = findFeed(feedid);
 
+        // TODO: remove items from array
         if (match.feed) {
             var count = match.feed.itemCount();
 
@@ -86,15 +87,25 @@ rss.viewModels.SubscriptionsViewModel = function () {
 
                 folder.itemCount(result);
             }
+
+            rss.commands.publish({
+                command: 'notify',
+                commandargument: String.format('{0} marked as all read', match.feed.name)
+            });
         }
     };
 
     self.readFolder = function (folderid) {
         var folder = findFolder(folderid);
-
+        // TODO: remove items from array
         for (var i = 0; i < folder.items().length; i++) {
             self.readFeed(folder.items()[i].id);
         }
+        
+        rss.commands.publish({
+            command: 'notify',
+            commandargument: String.format('{0} folder marked as all read', folder.name)
+        });
     };
 
     // events

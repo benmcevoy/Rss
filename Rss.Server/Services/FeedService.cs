@@ -151,5 +151,27 @@ namespace Rss.Server.Services
                 DateTime.UtcNow.AddDays(-7 * feed.UpdateFrequency) :
                 DateTime.UtcNow.AddDays(-1); //default
         }
+
+        public Guid Add(Uri feedUrl, Guid? folderId)
+        {
+            var feed = _context.Feeds.Create();
+
+            feed.Id = Guid.NewGuid();
+            feed.FeedUrl = feedUrl.ToString();
+            feed.FolderId = folderId;
+            feed.UpdateFrequency = 3;
+            feed.UpdatePeriod = "Daily";
+
+            var rssFeed = new Rss.Manager.Feed(feedUrl);
+            rssFeed.GetItemsFromWeb();
+
+            feed.Name = rssFeed.Title;
+            feed.HtmlUrl = rssFeed.HtmlUri.ToString();
+            
+            _context.Feeds.Add(feed);
+            _context.SaveChanges();
+
+            return feed.Id;
+        }
     }
 }

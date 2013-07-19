@@ -8,6 +8,8 @@ namespace Rss.Server.Services
     {
         Folder Get(Guid id);
 
+        Folder Get(string folderName);
+
         RootFolder GetRoot();
 
         IEnumerable<Item> GetItems(Guid id, ReadOptions readOptions);
@@ -20,7 +22,7 @@ namespace Rss.Server.Services
 
         void Rename(Guid id, string name);
 
-        void Create(string name);
+        Folder Create(string name);
 
         void Refresh(Guid id);
 

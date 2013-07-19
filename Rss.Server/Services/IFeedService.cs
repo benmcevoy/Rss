@@ -14,5 +14,7 @@ namespace Rss.Server.Services
         void Mark(Guid id, MarkOptions markOptions);
 
         void Refresh(Guid id);
+
+        Guid Add(Uri feedUrl, Guid? folderId);
     }
 }

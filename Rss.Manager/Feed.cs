@@ -60,7 +60,7 @@ namespace Rss.Manager
                                 .Element("title").Value;
 
                         case "feed":
-                            return xml.Element("feed").Element("title").Value;
+                            return xml.Element(_atomNamespace + "feed").Element(_atomNamespace + "title").Value;
                     }
                 }
 
