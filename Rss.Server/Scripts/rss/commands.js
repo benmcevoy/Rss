@@ -1,5 +1,7 @@
 ﻿rss.messenger = new ko.subscribable();
 
+rss.commands.targetPanel = '#panel';
+
 rss.commands.invoke = function (data) {
     if (!data.command) return;
 
@@ -22,6 +24,8 @@ rss.commands.bind = function () {
 };
 
 rss.commands.publish = function (data) {
+    console.log(data);
+    
     if (data.command) {
         rss.messenger.notifySubscribers(data.commandargument, data.command);
     }
@@ -40,7 +44,7 @@ rss.commands.ajaxPostAndGet = function (id, postaction, getaction) {
 rss.commands.ajaxGet = function (action) {
     if (action) {
         $.get(action, {}, function (response) {
-            $('#panel').html(response);
+            $(rss.commands.targetPanel).html(response);
         });
     }
 };

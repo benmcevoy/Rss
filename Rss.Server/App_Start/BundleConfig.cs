@@ -24,10 +24,11 @@ namespace Rss.Server
 
             bundles.Add(new ScriptBundle("~/bundles/rss")
                             .Include("~/Scripts/rss/namespace.js",
-                                        "~/Scripts/rss/commands.js")
+                                     "~/Scripts/rss/commands.js",
+                                     "~/Scripts/rss/Notification/notification.js")
                             .IncludeDirectory("~/Scripts/rss/Commands", "*Command.js")
                             .IncludeDirectory("~/Scripts/rss/ViewModels", "*ViewModel.js")
-                            // site must come last
+                // site must come last
                             .Include("~/Scripts/rss/site.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));

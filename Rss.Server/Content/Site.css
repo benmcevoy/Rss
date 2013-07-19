@@ -42,11 +42,36 @@ mark {
     padding-right: 5px;
 }
 
-ul.nobullet { list-style: none;}
-.expander { float: left;}
+ul.nobullet {
+    list-style: none;
+}
 
-.item h3 { display: inline;}
+.expander {
+    float: left;
+}
 
-.unread { font-weight: 600;}
-.read { font-weight: 300;}
+.item h3 {
+    display: inline;
+}
 
+.unread {
+    font-weight: 600;
+}
+
+.read {
+    font-weight: 300;
+}
+
+
+#notification-container {
+    margin: 0 auto;   
+}
+#notification {
+    position: absolute;
+    top: 30px;
+    left: 32%;
+    width: 33%;
+    border: 1px solid yellow;
+    padding: 10px;
+    background: rgb(255, 255, 210);
+}

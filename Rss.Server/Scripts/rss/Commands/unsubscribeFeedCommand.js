@@ -1,4 +1,4 @@
 ﻿rss.commands.unsubscribeFeedCommand = function(data) {
-    // TODO:
+    rss.commands.ajaxPostAndGet(data.commandargument, '/api/feed/unsubscribe');
     rss.commands.publish(data);
 };
