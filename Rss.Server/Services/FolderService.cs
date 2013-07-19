@@ -63,8 +63,13 @@ FROM Folder INNER JOIN Feed
                                     }).ToList();
 
             return distinctFolder;
-
         }
+
+        public Folder Get(string folderName)
+        {
+            return _context
+                .Folders
+                .FirstOrDefault(f => f.Name == folderName);}
 
         public RootFolder GetRoot()
         {
@@ -169,7 +174,7 @@ FROM Folder INNER JOIN Feed
             _context.SaveChanges();
         }
 
-        public void Create(string name)
+        public Folder Create(string name)
         {
             var folder = _context.Folders.Create();
 
@@ -178,6 +183,8 @@ FROM Folder INNER JOIN Feed
             _context.Folders.Add(folder);
 
             _context.SaveChanges();
+
+            return folder;
         }
 
         public void Refresh(Guid id)
