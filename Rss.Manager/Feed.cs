@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -95,34 +96,29 @@ namespace Rss.Manager
                     {
                         return (from f in channelElement.Elements("item")
                                 let link = f.Element("link")
-                                where link != null
                                 let encoded = f.Element(_purlNamespace + "encoded")
                                 where encoded != null
                                 let title = f.Element("title")
                                 where title != null
                                 let pubDate = f.Element("pubDate")
-                                where pubDate != null
-                                select new Item(link.Value,
+                                select new Item(link == null? BaseUrl : link.Value,
                                                 encoded.Value,
                                                 title.Value,
-                                                pubDate.Value)).ToList();
+                                                pubDate == null ? DateTime.Now.ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
                     }
                 }
 
                 if (channelElement != null)
                     return (from f in channelElement.Elements("item")
                             let link = f.Element("link")
-                            where link != null
                             let description = f.Element("description")
-                            where description != null
                             let title = f.Element("title")
                             where title != null
                             let pubDate = f.Element("pubDate")
-                            where pubDate != null
-                            select new Item(link.Value,
-                                            description.Value,
+                            select new Item(link == null ? BaseUrl : link.Value,
+                                            description == null ? "" : description.Value,
                                             title.Value,
-                                            pubDate.Value)).ToList();
+                                            pubDate == null ? DateTime.Now.ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
             }
             return null;
         }
@@ -143,17 +139,14 @@ namespace Rss.Manager
 
             return (from f in xml.Descendants(_atomNamespace + "entry")
                     let id = f.Element(_atomNamespace + "id")
-                    where id != null
                     let content = f.Element(_atomNamespace + "content")
-                    where content != null
                     let title = f.Element(_atomNamespace + "title")
                     where title != null
                     let published = f.Element(_atomNamespace + "published")
-                    where published != null
-                    select new Item(id.Value,
-                                    content.Value,
+                    select new Item(id == null ? BaseUrl : id.Value,
+                                    content == null ? "" : content.Value,
                                     title.Value,
-                                    published.Value)).ToList();
+                                    published == null ? DateTime.Now.ToString(CultureInfo.InvariantCulture): published.Value)).ToList();
         }
 
         private XDocument GetXml(Uri feedUri)
