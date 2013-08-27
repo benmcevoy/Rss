@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Net.Http.Formatting;
+﻿using System.Net.Http.Formatting;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Rss.Server.App_Start;
+using Rss.Server.Filters;
 
 namespace Rss.Server
 {
@@ -11,6 +11,8 @@ namespace Rss.Server
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Filters.Add(new APISessionAuthorizationFilter());
+
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",
                 routeTemplate: "api/{controller}/{action}/{id}",

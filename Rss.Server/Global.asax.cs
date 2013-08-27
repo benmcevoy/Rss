@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Security.Principal;
+using System.Web.Security;
+using System.Web.SessionState;
 using Clutch.Diagnostics.EntityFramework;
 using Rss.Server.App_Start;
 using StackExchange.Profiling;
@@ -29,6 +32,19 @@ namespace Rss.Server
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             AddDbTracing();
+        }
+
+        protected void Application_PostAuthorizeRequest()
+        {
+            if (IsWebApiRequest())
+            {
+                HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);
+            }
+        }
+
+        private bool IsWebApiRequest()
+        {
+            return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("~/api");
         }
 
         [Conditional("DEBUG")]

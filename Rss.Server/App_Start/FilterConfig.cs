@@ -1,5 +1,5 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using Rss.Server.Filters;
 
 namespace Rss.Server
 {
@@ -8,6 +8,7 @@ namespace Rss.Server
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new SessionAuthorizationFilter());
         }
     }
 }
