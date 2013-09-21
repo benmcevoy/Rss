@@ -79,7 +79,7 @@ namespace Rss.Server.Controllers.API
         [HttpPost]
         public void Refresh([FromBody] Guid id)
         {
-            _feedService.Refresh(id);
+            _feedService.Refresh(id, true);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Rss.Server.Services
 
         void Mark(Guid id, MarkOptions markOptions);
 
-        void Refresh(Guid id);
+        void Refresh(Guid id, bool force = false);
 
         Guid Add(Uri feedUrl, Guid? folderId);
     }
