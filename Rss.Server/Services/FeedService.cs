@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Rss.Server.Models;
+﻿using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
@@ -74,11 +73,11 @@ namespace Rss.Server.Services
             _context.SaveChanges();
         }
 
-        public void Refresh(Guid id)
+        public void Refresh(Guid id, bool force = false)
         {
             var feed = _context.Feeds.Include(f => f.Items).Single(f => f.Id == id);
 
-            if (feed.LastUpdateDateTime > GetExpiryDate(feed))
+            if (!force && feed.LastUpdateDateTime > GetExpiryDate(feed))
                 return;
 
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
@@ -162,7 +161,7 @@ namespace Rss.Server.Services
             feed.UpdateFrequency = 3;
             feed.UpdatePeriod = "Daily";
 
-            var rssFeed = new Rss.Manager.Feed(feedUrl);
+            var rssFeed = new Manager.Feed(feedUrl);
             rssFeed.GetItemsFromWeb();
 
             feed.Name = rssFeed.Title;

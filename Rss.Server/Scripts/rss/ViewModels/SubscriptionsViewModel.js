@@ -10,6 +10,8 @@ rss.viewModels.SubscriptionsViewModel = function () {
     rss.messenger.subscribe(function (id) { self.readItem(id); }, self, "readItem");
     rss.messenger.subscribe(function (id) { self.readFeed(id); }, self, "readFeed");
     rss.messenger.subscribe(function (id) { self.readFolder(id); }, self, "readFolder");
+    rss.messenger.subscribe(function (id) { self.unsubscribeFeed(id); }, self, "unsubscribeFeed");
+    rss.messenger.subscribe(function (id) { self.unsubscribeFolder(id); }, self, "unsubscribeFolder");
 
     // load
     $.getJSON('/api/folder', function (data) {
@@ -97,7 +99,7 @@ rss.viewModels.SubscriptionsViewModel = function () {
 
     self.readFolder = function (folderid) {
         var folder = findFolder(folderid);
-        // TODO: remove items from array
+        
         for (var i = 0; i < folder.items().length; i++) {
             self.readFeed(folder.items()[i].id);
         }
@@ -106,6 +108,38 @@ rss.viewModels.SubscriptionsViewModel = function () {
             command: 'notify',
             commandargument: String.format('{0} folder marked as all read', folder.name)
         });
+    };
+
+    self.unsubscribeFeed = function(feedId) {
+        var match = findFeed(feedId);
+
+        if (match.feed) {
+            // update data
+            self.feeds.remove(match.feed);
+            // TODO: update UI, ko should be doing this?
+            $('#' + match.feed.id).parent().remove();
+
+            rss.commands.publish({
+                command: 'notify',
+                commandargument: String.format('unsubscribed from {0} feed', match.feed.name)
+            });
+        }
+    };
+    
+    self.unsubscribeFolder = function (folderid) {
+        var folder = findFolder(folderid);
+        
+        if (folder) {
+            // update data
+            self.folders.remove(folder);
+            // TODO: update UI, ko should be doing this?
+            $('#' + folder.id).parent().remove();
+
+            rss.commands.publish({
+                command: 'notify',
+                commandargument: String.format('unsubscribed from {0} folder', folder.name)
+            });
+        }
     };
 
     // events
