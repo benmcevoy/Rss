@@ -1,10 +1,11 @@
-﻿<section>
-    <div id="subscription-nav">
-        <h2>Subscriptions</h2>
-
+﻿<section id="subscription-nav">
+    <h2>Subscriptions</h2>
+    <nav>
         <ul id="folderContainer" class="nobullet" data-bind="template: { name: 'folderTemplate', foreach: folders }"></ul>
+    </nav>
+    <nav>
         <ul id="feedContainer" class="nobullet" data-bind="template: { name: 'feedTemplate', foreach: feeds }"></ul>
-    </div>
+    </nav>
 </section>
 
 <script id="folderTemplate" type="text/x-jQuery-tmpl">

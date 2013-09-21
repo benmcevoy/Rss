@@ -5,32 +5,36 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
 </head>
 <body>
-    <a href="/home">home</a>|<a href="/system">system</a>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/home">home</a></li>
+                <li><a href="/system">system</a></li>
+                <li><a href="/api/refresh">refresh</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div style="clear: both">&nbsp;</div>
-
-    <div style="float: left; margin-right: 40px; width: 400px;">
+    <section class="content">
         @{ Html.RenderPartial("Subscriptions"); }
-    </div>
 
-    <div style="float: left; max-width: 800px; left: 420px" id="panel">
-        @RenderBody()
-    </div>
+        <div id="panel">
+            @RenderBody()
+        </div>
+    </section>
 
-    <div style="clear: both">&nbsp;</div>
-
-    <div id="notification-container">
+    <aside id="notification-container">
         <div id="notification"></div>
-    </div>
-
-    @RenderSection("scripts", required: false)
+    </aside>
 
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/rss")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
