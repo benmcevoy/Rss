@@ -1,5 +1,4 @@
 ﻿html {
-    background-color: #e2e2e2;
     margin: 0;
     padding: 0;
 }
@@ -13,6 +12,10 @@ body {
     margin: 0;
     padding: 20px;
 }
+
+h1{ font-size: 1.4em;}
+h2{ font-size: 1.4em;}
+h3{ font-size: 1.1em;}
 
 a {
     color: #33F;
@@ -62,6 +65,10 @@ ul.nobullet {
     font-weight: 300;
 }
 
+.clear { clear: both;}
+
+header nav ul li { float: left; }
+
 
 #notification-container {
     margin: 0 auto;   
@@ -76,4 +83,11 @@ ul.nobullet {
     background: rgb(255, 255, 210);
 }
 
-#subscription-nav { width: 290px;}
+
+.item { max-width: 800px; margin-bottom: 20px;}
+.item .tagline { font-weight: lighter;font-size: smaller;color: #777;}
+.item .tagline a { color:  #777;}
+.item .tagline a:hover { color:  #33f;}
+
+#subscriptions { float: left; min-width: 300px; height: 100%}
+#panel { float: left;}

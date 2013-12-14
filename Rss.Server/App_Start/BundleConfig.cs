@@ -21,7 +21,7 @@ namespace Rss.Server
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout")
-                .Include("~/Scripts/knockout-2.2.1.js"));
+                .Include("~/Scripts/knockout-2.3.0.js"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/rss")

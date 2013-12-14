@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using Rss.Manager.Import;
 using Rss.Server.Models;
 using System.Web.Http;
+using Manager = Radio7.Portable.Rss;
 using Feed = Rss.Server.Models.Feed;
+using Radio7.Portable.Rss.Import;
 
 namespace Rss.Server.Controllers.API
 {

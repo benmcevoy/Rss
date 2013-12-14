@@ -2,7 +2,8 @@
 using System;
 using System.Linq;
 using System.Data.Entity;
-using RssFeed = Rss.Manager.Feed;
+using Manager = Radio7.Portable.Rss;
+using RssFeed = Radio7.Portable.Rss.Feed;
 
 namespace Rss.Server.Services
 {
@@ -96,8 +97,8 @@ namespace Rss.Server.Services
                 {
                     item.Name = rssItem.Title;
                     item.Raw = rssItem.Raw;
-                    item.Content = rssItem.Content;
-                    item.Snippet = rssItem.Snippet;
+                    item.Content = HtmlCleanerHelper.Clean(rssItem.Raw);
+                    item.Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200);
                     item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
                     continue;
                 }
@@ -109,8 +110,8 @@ namespace Rss.Server.Services
                     LinkUrl = rssItem.Id,
                     Name = rssItem.Title,
                     Raw = rssItem.Raw,
-                    Content = rssItem.Content,
-                    Snippet = rssItem.Snippet,
+                    Content = HtmlCleanerHelper.Clean(rssItem.Raw),
+                    Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200),
                     PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
                 });
             }
@@ -166,7 +167,7 @@ namespace Rss.Server.Services
 
             feed.Name = rssFeed.Title;
             feed.HtmlUrl = rssFeed.HtmlUri.ToString();
-            
+
             _context.Feeds.Add(feed);
             _context.SaveChanges();
 
