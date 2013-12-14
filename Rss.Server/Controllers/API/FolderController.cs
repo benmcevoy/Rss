@@ -76,7 +76,7 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ApiCache(60)]
+       // [ApiCache(60)]
         public Folder Get(Guid id)
         {
             return _folderService.Get(id);

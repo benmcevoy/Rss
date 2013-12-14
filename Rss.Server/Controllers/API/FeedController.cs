@@ -21,7 +21,7 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ApiCache(60)]
+       // [ApiCache(60)]
         public Feed Get(Guid id)
         {
             return _feedService.Get(id, ReadOptions.Unread);

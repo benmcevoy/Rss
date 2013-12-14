@@ -5,12 +5,12 @@
 }
 
 <h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a>
-@if (Model.FolderId.HasValue){ 
-    @:(in <a class="command" data-command="folder" data-commandargument="@Model.FolderId">@Model.FolderName</a>)
+    @if (Model.FolderId.HasValue)
+    { 
+        @:(in <a class="command" data-command="folder" data-commandargument="@Model.FolderId">@Model.FolderName</a>)
     }
-
+    <sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 </h2>
-<sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
 
 <input type="button" value="Unsubscribe" 
                class="command"
@@ -30,12 +30,20 @@
     foreach (var item in Model.Items)
     {
     <div class="item">
-        <h3><a class="command item" 
-               data-command="readItem"
-               data-commandargument="{ feedId: '@item.FeedId', itemId : '@item.Id' }">@item.Name</a></h3>
-        <sub>@item.PublishedDateTime</sub>
-        <p>@item.Snippet</p>
-        <hr />
+        <div>
+            <a class="command item"
+                data-command="readItem"
+                data-commandargument="{feedId:  '@item.FeedId', itemId : '@item.Id' }">
+                @item.Name</a>
+            <span>@item.Snippet</span>
+        </div>
+        <sub class="tagline">
+            <a class="command"
+                data-command="feed"
+                data-commandargument="${feedId}">@item.FeedName</a>
+            <span>(@item.PublishedDateTime)</span>
+        </sub>
     </div>
+    
     }
 }

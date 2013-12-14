@@ -28,21 +28,16 @@
                 {
                 <li class="item">
                     <div>
-                        <a class="command" 
+                        <a class="command item" data-command="readItem" data-commandargument="{feedId:  '@item.FeedId', itemId : '@item.Id' }">@item.Name</a>
+                        <span>@item.Snippet</span>
+                    </div>
+                    <sub class="tagline">
+                        <a class="command"
                             data-command="feed"
-                            data-commandargument="@item.FeedId">@item.FeedName</a>
-                    </div>
-                    <div>
-                        <a class="command item" 
-                           data-command="readItem"
-                           data-commandargument="{ feedId: '@item.FeedId', itemId: '@item.Id' }">
-                            <strong>@item.Name</strong> (@item.PublishedDateTime)
-                        </a>
-                    </div>
-                    <p>
-                        @item.Snippet
-                    </p>
-                    <hr />
+                            data-commandargument="${feedId}">@item.FeedName</a>
+                        <span>(@item.PublishedDateTime)</span>
+                    </sub>
+
                 </li>
                 }
             }

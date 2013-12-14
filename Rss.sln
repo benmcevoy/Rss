@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server", "Rss.Server\Rs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server.Tests", "Rss.Server.Tests\Rss.Server.Tests.csproj", "{0E906E8A-1213-4EB3-96FC-72A0A126447A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Manager", "Rss.Manager\Rss.Manager.csproj", "{2AA61EE0-3279-475A-A736-736865D6D41A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,10 +19,6 @@ Global
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AA61EE0-3279-475A-A736-736865D6D41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AA61EE0-3279-475A-A736-736865D6D41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AA61EE0-3279-475A-A736-736865D6D41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AA61EE0-3279-475A-A736-736865D6D41A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
