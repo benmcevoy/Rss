@@ -13,16 +13,19 @@
 <body>
     <header>
         <nav>
-            <ul>
+            <ul class="nobullet">
                 <li><a href="/home">home</a></li>
                 <li><a href="/system">system</a></li>
                 <li><a href="/api/refresh">refresh</a></li>
             </ul>
         </nav>
     </header>
+    <div class="clear"><div>
 
     <section class="content">
-        @{ Html.RenderPartial("Subscriptions"); }
+        <div id="subscriptions">
+            @{ Html.RenderPartial("Subscriptions"); }
+        </div>
 
         <div id="panel">
             @RenderBody()

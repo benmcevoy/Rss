@@ -23,19 +23,17 @@
 <script id="itemTemplate" type="text/x-jQuery-tmpl">
     <li class="item">
         <div>
+            <a class="command item"
+               data-command="readItem"
+               data-commandargument="{feedId: '${feedId}', itemId: '${id}' }">
+                ${name}</a>
+            <span>${snippet}</span>
+        </div>
+        <sub class="tagline">
             <a class="command" 
-                data-command="feed"
-                data-commandargument="${feedId}">${feedName}</a>
-        </div>
-        <div>
-            <a  class="command item" 
-                data-command="readItem"
-                data-commandargument="{feedId: '${feedId}', itemId: '${id}' }">
-                <strong>${name}</strong> (${publishedDateTime})</a>
-        </div>
-        <p>
-            ${snippet}
-        </p>
-        <hr />
+               data-command="feed"
+               data-commandargument="${feedId}">${feedName}</a>
+            <span>(${publishedDateTime})</span>
+        </sub>
     </li>
 </script>
