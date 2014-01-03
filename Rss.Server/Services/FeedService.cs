@@ -1,4 +1,5 @@
-﻿using Rss.Server.Models;
+﻿using System.Threading;
+using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
@@ -74,6 +75,7 @@ namespace Rss.Server.Services
             _context.SaveChanges();
         }
 
+        private static readonly ManualResetEvent RefreshResetEvent = new ManualResetEvent(false);
         public void Refresh(Guid id, bool force = false)
         {
             var feed = _context.Feeds.Include(f => f.Items).Single(f => f.Id == id);
@@ -83,42 +85,51 @@ namespace Rss.Server.Services
 
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
 
+            rssFeed.FeedLoaded += (sender, args) =>
+            {
+                foreach (var rssItem in rssFeed.Items)
+                {
+                    // exist?
+                    var item = feed.Items.FirstOrDefault(i => i.LinkUrl == rssItem.Id);
+                    // update
+                    if (item != null)
+                    {
+                        item.Name = rssItem.Title;
+                        item.Raw = rssItem.Raw;
+                        item.Content = HtmlCleanerHelper.Clean(rssItem.Raw);
+                        item.Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200);
+                        item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
+                        continue;
+                    }
+
+                    // insert
+                    feed.Items.Add(new Item
+                    {
+                        Id = Guid.NewGuid(),
+                        LinkUrl = rssItem.Id,
+                        Name = rssItem.Title,
+                        Raw = rssItem.Raw,
+                        Content = HtmlCleanerHelper.Clean(rssItem.Raw),
+                        Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200),
+                        PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
+                    });
+                }
+
+                feed.LastUpdateDateTime = DateTime.UtcNow;
+
+                _context.SaveChanges();
+                RefreshResetEvent.Set();
+            };
+
             rssFeed.GetItemsFromWeb();
+
+            // fucking hell. dbcontext is disposed when event callsback
+            // should await
+            RefreshResetEvent.WaitOne(TimeSpan.FromSeconds(20));
 
             //var itemQuery = _context.Entry(feed).Collection(f => f.Items).Query();
             //feed.Items = itemQuery.OrderByDescending(i => i.PublishedDateTime).Take(100).ToList();
 
-            foreach (var rssItem in rssFeed.Items)
-            {
-                // exist?
-                var item = feed.Items.FirstOrDefault(i => i.LinkUrl == rssItem.Id);
-                // update
-                if (item != null)
-                {
-                    item.Name = rssItem.Title;
-                    item.Raw = rssItem.Raw;
-                    item.Content = HtmlCleanerHelper.Clean(rssItem.Raw);
-                    item.Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200);
-                    item.PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime);
-                    continue;
-                }
-
-                // insert
-                feed.Items.Add(new Item
-                {
-                    Id = Guid.NewGuid(),
-                    LinkUrl = rssItem.Id,
-                    Name = rssItem.Title,
-                    Raw = rssItem.Raw,
-                    Content = HtmlCleanerHelper.Clean(rssItem.Raw),
-                    Snippet = HtmlCleanerHelper.GetSnippet(rssItem.Raw, 200),
-                    PublishedDateTime = GetPublishedDateTime(rssItem.PublishedDateTime)
-                });
-            }
-
-            feed.LastUpdateDateTime = DateTime.UtcNow;
-
-            _context.SaveChanges();
         }
 
         private static DateTime GetPublishedDateTime(string publishedDateTime)
@@ -163,13 +174,23 @@ namespace Rss.Server.Services
             feed.UpdatePeriod = "Daily";
 
             var rssFeed = new Manager.Feed(feedUrl);
+
+            RefreshResetEvent.Reset();
+
+            rssFeed.FeedLoaded += (sender, args) =>
+            {
+                feed.Name = rssFeed.Title ?? "can't find title";
+                feed.HtmlUrl = rssFeed.HtmlUri.ToString();
+
+                _context.Feeds.Add(feed);
+                _context.SaveChanges();
+
+                RefreshResetEvent.Set();
+            };
+
             rssFeed.GetItemsFromWeb();
 
-            feed.Name = rssFeed.Title;
-            feed.HtmlUrl = rssFeed.HtmlUri.ToString();
-
-            _context.Feeds.Add(feed);
-            _context.SaveChanges();
+            RefreshResetEvent.WaitOne(TimeSpan.FromSeconds(20));
 
             return feed.Id;
         }
