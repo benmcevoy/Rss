@@ -1,4 +1,5 @@
-﻿using Rss.Server.Models;
+﻿using System.Data.Entity;
+using Rss.Server.Models;
 using Rss.Server.Services;
 using Rss.Server.ViewModels;
 using System;
@@ -11,12 +12,14 @@ namespace Rss.Server.Controllers
         private readonly IFeedService _feedService;
         private readonly IFolderService _folderService;
         private readonly IItemService _itemService;
+        private readonly FeedsDbEntities _context;
 
-        public HomeController(IFeedService feedService, IFolderService folderService, IItemService itemService)
+        public HomeController(IFeedService feedService, IFolderService folderService, IItemService itemService, FeedsDbEntities context)
         {
             _feedService = feedService;
             _folderService = folderService;
             _itemService = itemService;
+            _context = context;
         }
 
         public ActionResult Index()
@@ -34,7 +37,7 @@ namespace Rss.Server.Controllers
                     FolderId = id,
                     FolderName = _folderService.Get(id).Name
                 };
-            
+
             return PartialView(vm);
         }
 
@@ -48,7 +51,18 @@ namespace Rss.Server.Controllers
         {
             var model = _itemService.Get(id);
             _itemService.Read(id);
+            _context.SaveChanges();
             return PartialView(model);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

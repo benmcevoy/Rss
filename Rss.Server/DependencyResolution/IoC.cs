@@ -16,18 +16,29 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.Data.Entity;
+using Rss.Server.Models;
 using StructureMap;
-namespace Rss.Server.DependencyResolution {
-    public static class IoC {
-        public static IContainer Initialize() {
-
-            ObjectFactory.Initialize(x => x.Scan(scan =>
+namespace Rss.Server.DependencyResolution
+{
+    public static class IoC
+    {
+        public static IContainer Initialize()
+        {
+            ObjectFactory.Initialize(x =>
             {
-                scan.TheCallingAssembly();
-                scan.WithDefaultConventions();
-                scan.IncludeNamespace("Rss.Server.Services");
-                scan.IncludeNamespace("Rss.Server.Controllers");
-            }));
+                x.For<FeedsDbEntities>().HttpContextScoped();
+
+                x.Scan(scan =>
+                {
+                    scan.TheCallingAssembly();
+                    scan.WithDefaultConventions();
+                    scan.IncludeNamespace("Rss.Server.Services");
+                    scan.IncludeNamespace("Rss.Server.Controllers");
+                });
+
+                
+            });
 
             return ObjectFactory.Container;
         }

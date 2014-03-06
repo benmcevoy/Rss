@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Ajax.Utilities;
 using Rss.Server.Models;
 using System;
 using System.Linq;
@@ -24,8 +27,6 @@ namespace Rss.Server.Services
                 .Single(f => f.Id == id);
 
             _context.Feeds.Remove(feed);
-
-            _context.SaveChanges();
         }
 
         public void Rename(Guid id, string name)
@@ -33,8 +34,6 @@ namespace Rss.Server.Services
             var feed = _context.Feeds.Find(id);
 
             feed.Name = name;
-
-            _context.SaveChanges();
         }
 
         public Feed Get(Guid id, ReadOptions readOptions = ReadOptions.Unread)
@@ -71,20 +70,30 @@ namespace Rss.Server.Services
             {
                 item.ReadDateTime = DateTime.Now;
             }
-
-            _context.SaveChanges();
         }
 
         private static readonly ManualResetEvent RefreshResetEvent = new ManualResetEvent(false);
-        public void Refresh(Guid id, bool force = false)
+        public async void Refresh(Guid id, bool force = false)
         {
+            // TODO: should return Task, avoid void
+            await RefreshAsync(id, force);
+        }
+
+        private Task<bool> RefreshAsync(Guid id, bool force = false)
+        {
+            var task = new TaskCompletionSource<bool>();
+
             var feed = _context.Feeds.Include(f => f.Items).Single(f => f.Id == id);
 
             if (!force && feed.LastUpdateDateTime > GetExpiryDate(feed))
-                return;
+            {
+                task.SetResult(true);
+                return task.Task;
+            }
 
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));
 
+            // async callback
             rssFeed.FeedLoaded += (sender, args) =>
             {
                 foreach (var rssItem in rssFeed.Items)
@@ -102,6 +111,8 @@ namespace Rss.Server.Services
                         continue;
                     }
 
+                    Debug.WriteLine("found new items");
+
                     // insert
                     feed.Items.Add(new Item
                     {
@@ -117,19 +128,13 @@ namespace Rss.Server.Services
 
                 feed.LastUpdateDateTime = DateTime.UtcNow;
 
-                _context.SaveChanges();
-                RefreshResetEvent.Set();
+                task.SetResult(true);
             };
 
+            // begin async load
             rssFeed.GetItemsFromWeb();
 
-            // fucking hell. dbcontext is disposed when event callsback
-            // should await
-            RefreshResetEvent.WaitOne(TimeSpan.FromSeconds(20));
-
-            //var itemQuery = _context.Entry(feed).Collection(f => f.Items).Query();
-            //feed.Items = itemQuery.OrderByDescending(i => i.PublishedDateTime).Take(100).ToList();
-
+            return task.Task;
         }
 
         private static DateTime GetPublishedDateTime(string publishedDateTime)
@@ -183,13 +188,13 @@ namespace Rss.Server.Services
                 feed.HtmlUrl = rssFeed.HtmlUri.ToString();
 
                 _context.Feeds.Add(feed);
-                _context.SaveChanges();
 
                 RefreshResetEvent.Set();
             };
 
             rssFeed.GetItemsFromWeb();
 
+            // TODO: consider async/await, but it's abit tricky without modifying the interface signature
             RefreshResetEvent.WaitOne(TimeSpan.FromSeconds(20));
 
             return feed.Id;
