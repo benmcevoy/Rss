@@ -1,6 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Data.Entity;
 using System.Linq;
-using Rss.Server.Filters;
 using Rss.Server.Models;
 using Rss.Server.PostModel;
 using Rss.Server.Services;
@@ -10,12 +9,13 @@ using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
 {
-    public class FolderController : ApiController
+    public class FolderController : DbContextApiController
     {
         private readonly IFolderService _folderService;
         private readonly IFeedService _feedService;
 
-        public FolderController(IFolderService folderService, IFeedService feedService)
+        public FolderController(IFolderService folderService, IFeedService feedService, FeedsDbEntities context)
+            : base(context)
         {
             _folderService = folderService;
             _feedService = feedService;
@@ -76,7 +76,7 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-       // [ApiCache(60)]
+        // [ApiCache(60)]
         public Folder Get(Guid id)
         {
             return _folderService.Get(id);
@@ -98,6 +98,7 @@ namespace Rss.Server.Controllers.API
             }
 
             _folderService.Delete(folder.Id);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -108,6 +109,7 @@ namespace Rss.Server.Controllers.API
         public void Rename(RenameDto renameDto)
         {
             _feedService.Rename(renameDto.Id, renameDto.Name);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -118,12 +120,14 @@ namespace Rss.Server.Controllers.API
         public void Mark([FromBody]Guid id)
         {
             _folderService.Mark(id, MarkOptions.All);
+            Context.SaveChanges();
         }
 
         [HttpPost]
         public void Refresh([FromBody] Guid id)
         {
             _folderService.Refresh(id);
+            Context.SaveChanges();
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using Rss.Server.Models;
-using System;
 using System.Collections.Generic;
-using System.Web.Http;
 using Rss.Server.Services;
 
 namespace Rss.Server.Controllers.API
 {
-    public class StreamController : ApiController
+    public class StreamController : DbContextApiController
     {
         private readonly IItemService _itemService;
 
-        public StreamController(IItemService itemService)
+        public StreamController(IItemService itemService, FeedsDbEntities context)
+            : base(context)
         {
             _itemService = itemService;
         }

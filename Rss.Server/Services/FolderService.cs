@@ -14,6 +14,7 @@ namespace Rss.Server.Services
         public FolderService(FeedsDbEntities context, IFeedService feedService)
         {
             _context = context;
+        
             _feedService = feedService;
         }
 
@@ -161,8 +162,6 @@ FROM Folder INNER JOIN Feed
             var folder = Get(id);
 
             _context.Folders.Remove(folder);
-
-            _context.SaveChanges();
         }
 
         public void Rename(Guid id, string name)
@@ -170,8 +169,6 @@ FROM Folder INNER JOIN Feed
             var folder = Get(id);
 
             folder.Name = name;
-
-            _context.SaveChanges();
         }
 
         public Folder Create(string name)
@@ -181,8 +178,6 @@ FROM Folder INNER JOIN Feed
             folder.Name = name;
 
             _context.Folders.Add(folder);
-
-            _context.SaveChanges();
 
             return folder;
         }

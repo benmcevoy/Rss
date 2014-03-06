@@ -1,14 +1,16 @@
-﻿using Rss.Server.Services;
+﻿using Rss.Server.Models;
+using Rss.Server.Services;
 using System;
 using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
 {
-    public class ItemController : ApiController
+    public class ItemController : DbContextApiController
     {
         private readonly IItemService _itemService;
 
-        public ItemController(IItemService itemService)
+        public ItemController(IItemService itemService, FeedsDbEntities context)
+            : base(context)
         {
             _itemService = itemService;
         }
@@ -21,6 +23,7 @@ namespace Rss.Server.Controllers.API
         public void Read([FromBody]Guid id)
         {
             _itemService.Read(id);
+            Context.SaveChanges();
         }
 
         [HttpPost]
