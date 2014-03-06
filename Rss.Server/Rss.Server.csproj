@@ -223,6 +223,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\DbContextApiController.cs" />
     <Compile Include="Controllers\API\FeedController.cs" />
     <Compile Include="Controllers\API\FolderController.cs" />
     <Compile Include="Controllers\API\ItemController.cs" />
@@ -357,6 +358,7 @@
     <Content Include="Views\Home\Item.cshtml" />
     <Content Include="Views\System\AddFeed.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\System\Repair.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

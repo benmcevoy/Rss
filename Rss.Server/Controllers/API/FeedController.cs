@@ -7,11 +7,12 @@ using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
 {
-    public class FeedController : ApiController
+    public class FeedController : DbContextApiController
     {
         private readonly IFeedService _feedService;
 
-        public FeedController(IFeedService feedService)
+        public FeedController(IFeedService feedService, FeedsDbEntities context)
+            : base(context)
         {
             _feedService = feedService;
         }
@@ -21,7 +22,7 @@ namespace Rss.Server.Controllers.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-       // [ApiCache(60)]
+        // [ApiCache(60)]
         public Feed Get(Guid id)
         {
             return _feedService.Get(id, ReadOptions.Unread);
@@ -46,6 +47,7 @@ namespace Rss.Server.Controllers.API
         public void Unsubscribe([FromBody]Guid id)
         {
             _feedService.Unsubscribe(id);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -55,6 +57,7 @@ namespace Rss.Server.Controllers.API
         public void Rename(RenameDto renameDto)
         {
             _feedService.Rename(renameDto.Id, renameDto.Name);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -65,6 +68,7 @@ namespace Rss.Server.Controllers.API
         public void Mark([FromBody]Guid id)
         {
             _feedService.Mark(id, MarkOptions.All);
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -80,6 +84,7 @@ namespace Rss.Server.Controllers.API
         public void Refresh([FromBody] Guid id)
         {
             _feedService.Refresh(id, true);
+            Context.SaveChanges();
         }
     }
 }

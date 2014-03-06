@@ -1,14 +1,15 @@
-﻿using Rss.Server.Services;
+﻿using Rss.Server.Models;
+using Rss.Server.Services;
 using System.Diagnostics;
-using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
 {
-    public class RefreshController : ApiController
+    public class RefreshController : DbContextApiController
     {
         private readonly IRefreshService _feedService;
 
-        public RefreshController(IRefreshService refreshService)
+        public RefreshController(IRefreshService refreshService, FeedsDbEntities context)
+            : base(context)
         {
             _feedService = refreshService;
         }
@@ -20,7 +21,9 @@ namespace Rss.Server.Controllers.API
             sw.Start();
             
             _feedService.RefreshAllFeeds();
-            
+
+            Context.SaveChanges();
+
             sw.Stop();
 
             return "Refresh complete " + sw.ElapsedMilliseconds;
