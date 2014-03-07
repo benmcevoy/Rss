@@ -1,4 +1,5 @@
 ﻿using Rss.Server.Models;
+using WebGrease.Css.Extensions;
 
 namespace Rss.Server.Services
 {
@@ -15,10 +16,7 @@ namespace Rss.Server.Services
 
         public void RefreshAllFeeds()
         {
-            foreach (var feed in _context.Feeds)
-            {
-                _feedService.Refresh(feed.Id);
-            }
+            _context.Feeds.ForEach(feed => _feedService.Refresh(feed.Id));
         }
     }
 }
