@@ -6,6 +6,7 @@ using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
+using WebGrease.Css.Extensions;
 using Manager = Radio7.Portable.Rss;
 using RssFeed = Radio7.Portable.Rss.Feed;
 
@@ -61,18 +62,9 @@ namespace Rss.Server.Services
 
         public void Mark(Guid id, MarkOptions markOptions)
         {
-            var feed = _context.Feeds
-                .Include("Items")
-                .Single(f => f.Id == id);
-
-            // TOOD: respect markOptions
-            foreach (var item in feed.Items)
-            {
-                item.ReadDateTime = DateTime.Now;
-            }
+            _context.MarkFeedAsReadCommand(id, markOptions);
         }
 
-        private static readonly ManualResetEvent RefreshResetEvent = new ManualResetEvent(false);
         public async void Refresh(Guid id, bool force = false)
         {
             // TODO: should return Task, avoid void
@@ -168,6 +160,7 @@ namespace Rss.Server.Services
                 DateTime.UtcNow.AddDays(-1); //default
         }
 
+        private static readonly ManualResetEvent RefreshResetEvent = new ManualResetEvent(false);
         public Guid Add(Uri feedUrl, Guid? folderId)
         {
             var feed = _context.Feeds.Create();
