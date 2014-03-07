@@ -3,6 +3,7 @@ using Rss.Server.Models;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using WebGrease.Css.Extensions;
 
 namespace Rss.Server.Services
 {
@@ -188,10 +189,8 @@ FROM Folder INNER JOIN Feed
                     .Include("Feeds")
                     .Single(f => f.Id == id);
 
-            foreach (var feed in folder.Feeds)
-            {
-                _feedService.Refresh(feed.Id);
-            }
+            folder.Feeds
+                .ForEach(feed => _feedService.Refresh(feed.Id));
         }
 
 
@@ -201,10 +200,8 @@ FROM Folder INNER JOIN Feed
                 .Include("Feeds")
                 .Single(f => f.Id == id);
 
-            foreach (var feed in folder.Feeds)
-            {
-                _feedService.Mark(feed.Id, markOptions);
-            }
+            folder.Feeds
+                .ForEach(feed => _feedService.Mark(feed.Id, markOptions));
         }
 
         public IEnumerable<Item> GetItems(Guid id, ReadOptions readOptions)
