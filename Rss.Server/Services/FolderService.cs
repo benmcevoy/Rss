@@ -196,12 +196,7 @@ FROM Folder INNER JOIN Feed
 
         public void Mark(Guid id, MarkOptions markOptions)
         {
-            var folder = _context.Folders
-                .Include("Feeds")
-                .Single(f => f.Id == id);
-
-            folder.Feeds
-                .ForEach(feed => _feedService.Mark(feed.Id, markOptions));
+            _context.MarkFolderAsReadCommand(id, markOptions);
         }
 
         public IEnumerable<Item> GetItems(Guid id, ReadOptions readOptions)
