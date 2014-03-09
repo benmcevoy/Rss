@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using Lucene.Net.Documents;
 
@@ -8,7 +9,8 @@ namespace Rss.Indexer
 {
     public static class IndexerExtensions
     {
-        private static readonly Dictionary<Type, PropertyInfo[]> PropertyCache = new Dictionary<Type, PropertyInfo[]>(8);
+        private static readonly Dictionary<Type, IEnumerable<LuceneFieldInfo>> FieldCache
+            = new Dictionary<Type, IEnumerable<LuceneFieldInfo>>(8);
 
         public static void ForEach<T>(this IEnumerable<T> set, Action<T> action)
         {
@@ -21,18 +23,16 @@ namespace Rss.Indexer
         public static Lucene.Net.Documents.Document ToLuceneDocument<T>(this T document)
         {
             var luceneDocument = new Lucene.Net.Documents.Document();
-            var properties = GetProperties(typeof(T));
+            var fields = GetLuceneFieldInfos(typeof(T));
 
-            foreach (var propertyInfo in properties)
+            foreach (var field in fields)
             {
-                var field = propertyInfo.GetCustomAttribute<LuceneFieldAttribute>();
+                if (field.LuceneFieldAttribute == null) continue;
 
-                if (field == null) continue;
+                var value = GetStringValue(document, field.PropertyInfo);
 
-                var value = GetStringValue(document, propertyInfo);
-
-                luceneDocument.Add(new Field(field.Name, value,
-                    field.Store, field.Index, field.TermVector));
+                luceneDocument.Add(new Field(field.LuceneFieldAttribute.Name, value,
+                    field.LuceneFieldAttribute.Store, field.LuceneFieldAttribute.Index, field.LuceneFieldAttribute.TermVector));
             }
 
             return luceneDocument;
@@ -48,33 +48,39 @@ namespace Rss.Indexer
         public static T ToResult<T>(this Lucene.Net.Documents.Document document) where T : new()
         {
             var result = new T();
-            var properties = GetProperties(typeof(T));
+            var fields = GetLuceneFieldInfos(typeof(T));
 
-            foreach (var propertyInfo in properties)
+            foreach (var field in fields.Where(field => field.LuceneFieldAttribute != null))
             {
-                var field = propertyInfo.GetCustomAttribute<LuceneFieldAttribute>();
-
-                if (field == null) continue;
-
                 object value;
 
-                if (TryConvertToType(document.GetField(field.Name).StringValue, propertyInfo.PropertyType, out value))
+                if (TryConvertToType(
+                    document.GetField(field.LuceneFieldAttribute.Name).StringValue, 
+                    field.PropertyInfo.PropertyType, 
+                    out value))
                 {
-                    propertyInfo.SetValue(result, value);
+                    field.PropertyInfo.SetValue(result, value);
                 }
             }
 
             return result;
         }
 
-        private static IEnumerable<PropertyInfo> GetProperties(Type type)
+        private static IEnumerable<LuceneFieldInfo> GetLuceneFieldInfos(Type type)
         {
-            if (!PropertyCache.ContainsKey(type))
-            {
-                PropertyCache[type] = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            }
+            if (FieldCache.ContainsKey(type)) return FieldCache[type];
 
-            return PropertyCache[type];
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            var fields = properties.Select(p => new LuceneFieldInfo
+            {
+                PropertyInfo = p,
+                LuceneFieldAttribute = p.GetCustomAttribute<LuceneFieldAttribute>()
+            });
+
+            FieldCache[type] = fields;
+
+            return FieldCache[type];
         }
 
         private static bool TryConvertToType(string value, Type type, out object result)
