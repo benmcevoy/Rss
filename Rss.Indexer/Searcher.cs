@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 
 namespace Rss.Indexer
 {
-    public class Searcher<T> where T: new()
+    public class Searcher<T> where T : new()
     {
         private readonly ISearchConfig _searchConfig;
 
@@ -26,26 +27,24 @@ namespace Rss.Indexer
 
         protected Query ToWildCardQuery(string query, string[] fields)
         {
-            var terms = query.ToLowerInvariant().Split(' ');
-            var result = new BooleanQuery();
+            var terms = query.ToLowerInvariant().Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var wildCardQuery = new BooleanQuery();
 
-            // terms may be in any field but must appear
-            // (name:evening* OR description:evening*) AND (name:design* OR description:design*)
             foreach (var term in terms)
             {
-                var termQuery = new BooleanQuery();
+                var booleanQuery = new BooleanQuery();
 
                 foreach (var field in fields)
                 {
-                    termQuery.Add(new WildcardQuery(
-                        new Term(field, term.Trim() + "*")),
+                    booleanQuery.Add(new WildcardQuery(
+                        new Term(field, string.Format("{0}*", term.Trim()))),
                         Occur.SHOULD);
                 }
 
-                result.Add(termQuery, Occur.MUST);
+                wildCardQuery.Add(booleanQuery, Occur.MUST);
             }
 
-            return result;
+            return wildCardQuery;
         }
     }
 }
