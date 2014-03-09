@@ -6,7 +6,7 @@ using Lucene.Net.Documents;
 
 namespace Rss.Indexer
 {
-    internal static class IndexerExtensions
+    public static class IndexerExtensions
     {
         private static readonly Dictionary<Type, PropertyInfo[]> PropertyCache = new Dictionary<Type, PropertyInfo[]>(8);
 
