@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Lucene.Net.Index;
 
 namespace Rss.Indexer
@@ -17,15 +18,20 @@ namespace Rss.Indexer
         public void Index()
         {
             var results = _indexConfig.GetDocumentsToIndex().ToList();
+            var count = results.Count;
 
             while (results.Any())
             {
+                Debug.WriteLine("Indexer processing - {0} documents found", count);
+
                 results.ForEach(Index);
 
                 _indexWriter.Commit();
                 _indexConfig.SetDocumentsIndexed(results);
                 
                 results = _indexConfig.GetDocumentsToIndex().ToList();
+
+                count += results.Count;
             }
         }
 
