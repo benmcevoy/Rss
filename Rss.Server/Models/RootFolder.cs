@@ -1,5 +1,4 @@
-﻿using Rss.Server.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Rss.Server.Models
 {

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Rss.Server.Models
 {
-
     public class Feed
     {
         public Feed()
