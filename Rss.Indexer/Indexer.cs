@@ -15,7 +15,7 @@ namespace Rss.Indexer
             _indexWriter = new IndexWriter(_indexConfig.Directory, _indexConfig.Analyzer, IndexWriter.MaxFieldLength.LIMITED);
         }
 
-        public void Index()
+        public virtual void Index()
         {
             var results = _indexConfig.GetDocumentsToIndex().ToList();
             var count = results.Count;
@@ -35,7 +35,7 @@ namespace Rss.Indexer
             }
         }
 
-        private void Index(T document)
+        protected void Index(T document)
         {
             _indexWriter.AddDocument(document.ToLuceneDocument());
         }

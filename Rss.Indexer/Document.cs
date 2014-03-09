@@ -2,6 +2,7 @@
 
 namespace Rss.Indexer
 {
+    // TODO: this class should be in the consumer project
     public class Document
     {
         public string[] Tags { get; set; }

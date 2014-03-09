@@ -13,9 +13,6 @@ namespace Rss.Indexer
 {
     // TODO: yes, should be two classes, i know...
     // and should be out of this project
-    // document definition could be generic?
-    // or lucene field attribute on a class
-    // some kind of mapping
     public class FeedsDbContextIndexSource : IIndexer<Document>, ISearchConfig
     {
         private readonly FeedsDbEntities _context;
