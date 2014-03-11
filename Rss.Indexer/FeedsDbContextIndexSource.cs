@@ -21,11 +21,10 @@ namespace Rss.Indexer
         {
             _context = context;
 
-            IndexBatchSize= batchSize;
+            IndexBatchSize = batchSize;
             SearchResultLimit = batchSize;
             Directory = new SimpleFSDirectory(new DirectoryInfo(@"D:\Dev\git\Rss\Rss.Server.Tests\TestIndex"));
             Analyzer = new StandardAnalyzer(Version.LUCENE_30);
-            Fields = new[] { "Title", "Context" };
         }
 
         public IEnumerable<Document> GetDocumentsToIndex()
@@ -45,7 +44,7 @@ namespace Rss.Indexer
         {
             documents.ForEach(doc =>
             {
-                var item = _context.Items.Find(doc.Id);
+                var item = _context.Items.Single(i => i.Id == doc.Id);
                 item.IndexedDateTime = DateTime.Now;
             });
 
@@ -53,8 +52,6 @@ namespace Rss.Indexer
         }
 
         public int SearchResultLimit { get; private set; }
-
-        public string[] Fields { get; private set; }
 
         public int IndexBatchSize { get; private set; }
 

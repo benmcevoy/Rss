@@ -1,4 +1,5 @@
-﻿using Lucene.Net.Store;
+﻿using System.Collections.Generic;
+using Lucene.Net.Store;
 
 namespace Rss.Indexer
 {
@@ -7,7 +8,5 @@ namespace Rss.Indexer
         Directory Directory { get; }
 
         int SearchResultLimit { get; }
-
-        string[] Fields { get; }
     }
 }

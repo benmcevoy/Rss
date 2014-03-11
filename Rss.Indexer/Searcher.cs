@@ -19,14 +19,14 @@ namespace Rss.Indexer
         {
             var searcher = new IndexSearcher(_searchConfig.Directory);
             var topDocs = searcher
-                .Search(ToWildCardQuery(query, _searchConfig.Fields), _searchConfig.SearchResultLimit);
+                .Search(ToWildCardQuery(query, new T().GetLuceneFieldInfos()), _searchConfig.SearchResultLimit);
 
             return topDocs.ScoreDocs
                 .Select(scoreDoc => 
                     searcher.Doc(scoreDoc.Doc).ToResult<T>());
         }
 
-        protected Query ToWildCardQuery(string query, string[] fields)
+        protected Query ToWildCardQuery(string query, IEnumerable<LuceneFieldInfo> fields)
         {
             var terms = query.ToLowerInvariant().Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             var wildCardQuery = new BooleanQuery();
@@ -34,11 +34,18 @@ namespace Rss.Indexer
             terms.ForEach(term =>
             {
                 var booleanQuery = new BooleanQuery();
+                
+                fields.ForEach(field =>
+                {
+                    var subQuery = new FuzzyQuery(
+                        new Term(field.LuceneFieldAttribute.Name, string.Format("{0}*", term.Trim())),
+                        field.LuceneFieldAttribute.Fuzziness)
+                    {
+                        Boost = field.LuceneFieldAttribute.Boost
+                    };
 
-                fields.ForEach(field => 
-                    booleanQuery.Add(new WildcardQuery(
-                            new Term(field, string.Format("{0}*", term.Trim()))),
-                            Occur.SHOULD));
+                    booleanQuery.Add(subQuery, Occur.SHOULD);
+                });
 
                 wildCardQuery.Add(booleanQuery, Occur.MUST);
             });

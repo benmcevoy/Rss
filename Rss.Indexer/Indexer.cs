@@ -7,12 +7,10 @@ namespace Rss.Indexer
     public class Indexer<T>
     {
         private readonly IIndexer<T> _indexConfig;
-        private readonly IndexWriter _indexWriter;
 
         public Indexer(IIndexer<T> indexConfig)
         {
             _indexConfig = indexConfig;
-            _indexWriter = new IndexWriter(_indexConfig.Directory, _indexConfig.Analyzer, IndexWriter.MaxFieldLength.LIMITED);
         }
 
         public virtual void Index()
@@ -23,21 +21,28 @@ namespace Rss.Indexer
             while (results.Any())
             {
                 Debug.WriteLine("Indexer processing - {0} documents found", count);
+                // commit in batches
+                // TODO: read the docs on indexwriter
+                using (
+                    var indexWriter = new IndexWriter(_indexConfig.Directory, _indexConfig.Analyzer,
+                        IndexWriter.MaxFieldLength.LIMITED))
+                {
+                    results.ForEach(doc => Index(indexWriter, doc));
 
-                results.ForEach(Index);
+                    _indexConfig.SetDocumentsIndexed(results);
 
-                _indexWriter.Commit();
-                _indexConfig.SetDocumentsIndexed(results);
-                
+                    indexWriter.Commit();
+                }
+
                 results = _indexConfig.GetDocumentsToIndex().ToList();
 
                 count += results.Count;
             }
         }
 
-        protected void Index(T document)
+        protected virtual void Index(IndexWriter indexWriter, T document)
         {
-            _indexWriter.AddDocument(document.ToLuceneDocument());
+            indexWriter.UpdateDocument(document.GetLuceneDocumentIdTerm(), document.ToLuceneDocument());
         }
     }
 }
