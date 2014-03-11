@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using System.Web.WebPages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rss.Indexer;
 using Rss.Server.Models;
-using Rss.Server.Services;
 
 namespace Rss.Server.Tests.Indexer
 {
