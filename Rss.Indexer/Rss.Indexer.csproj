@@ -61,6 +61,7 @@
     <Compile Include="IndexerExtensions.cs" />
     <Compile Include="FeedsDbContextIndexSource.cs" />
     <Compile Include="ISearchConfig.cs" />
+    <Compile Include="LuceneDocumentAttribute.cs" />
     <Compile Include="LuceneFieldAttribute.cs" />
     <Compile Include="LuceneFieldInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
