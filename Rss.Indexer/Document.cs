@@ -14,7 +14,7 @@ namespace Rss.Indexer
         [LuceneField("Content")]
         public string Content { get; set; }
 
-        [LuceneField("Id")]
+        //[LuceneField("Id")]
         public Guid Id { get; set; }
     }
 }

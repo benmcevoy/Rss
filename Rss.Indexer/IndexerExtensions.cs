@@ -29,6 +29,8 @@ namespace Rss.Indexer
             var luceneDocument = new Lucene.Net.Documents.Document();
             var fields = document.GetLuceneFieldInfos();
 
+            // TODO: ensure LuceneDOcumentAttribute id field is always included
+
             fields.ForEach(field =>
             {
                 var value = GetStringValue(document, field.PropertyInfo);
