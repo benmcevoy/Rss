@@ -29,26 +29,28 @@ namespace Rss.Indexer
 
         public IEnumerable<Document> GetDocumentsToIndex()
         {
-            return _context.Items
-                .Where(item => item.IndexedDateTime == null)
-                .Take(IndexBatchSize)
-                .Select(item => new Document
-            {
-                Content = item.Content,
-                Id = item.Id,
-                Title = item.Name
-            });
+            throw new NotImplementedException("TODO: the database schema regressed, IndexedDateTimedoes not exist");
+            //return _context.Items
+            //    .Where(item => item.IndexedDateTime == null)
+            //    .Take(IndexBatchSize)
+            //    .Select(item => new Document
+            //{
+            //    Content = item.Content,
+            //    Id = item.Id,
+            //    Title = item.Name
+            //});
         }
 
         public void SetDocumentsIndexed(IEnumerable<Document> documents)
         {
-            documents.ForEach(doc =>
-            {
-                var item = _context.Items.Single(i => i.Id == doc.Id);
-                item.IndexedDateTime = DateTime.Now;
-            });
+            throw new NotImplementedException("TODO: the database schema regressed, IndexedDateTimedoes not exist");
+            //documents.ForEach(doc =>
+            //{
+            //    var item = _context.Items.Single(i => i.Id == doc.Id);
+            //    item.IndexedDateTime = DateTime.Now;
+            //});
 
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public int SearchResultLimit { get; private set; }

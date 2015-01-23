@@ -14,7 +14,7 @@ namespace Rss.Server.Models
 
         public DateTime? ReadDateTime { get; set; }
 
-        public DateTime? IndexedDateTime { get; set; }
+       // public DateTime? IndexedDateTime { get; set; }
 
         public Guid FeedId { get; set; }
 
