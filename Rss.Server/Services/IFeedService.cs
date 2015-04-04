@@ -1,6 +1,5 @@
 ﻿using System;
 using Rss.Server.Models;
-using System.Threading.Tasks;
 
 namespace Rss.Server.Services
 {

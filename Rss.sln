@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server", "Rss.Server\Rss.Server.csproj", "{5CE78560-3E67-420A-BD8E-591CF6D2C85D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server.Tests", "Rss.Server.Tests\Rss.Server.Tests.csproj", "{0E906E8A-1213-4EB3-96FC-72A0A126447A}"
