@@ -177,8 +177,10 @@ namespace Rss.Server.Services
             {
                 feed.Name = rssFeed.Title ?? "can't find title";
                 feed.HtmlUrl = rssFeed.HtmlUri.ToString();
-
+                // oh man this is dodgy
+                // ah feel a rewrite a coming on
                 _context.Feeds.Add(feed);
+                _context.SaveChanges();
 
                 RefreshResetEvent.Set();
             };
