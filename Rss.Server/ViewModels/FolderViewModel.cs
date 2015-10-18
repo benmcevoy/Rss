@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD
-=======
-using System.Web;
->>>>>>> 391d87e017ca9adeb120e9805ce0db87310cca88
 
 namespace Rss.Server.ViewModels
 {

@@ -1,9 +1,5 @@
 ﻿using System;
 using Rss.Server.Models;
-<<<<<<< HEAD
-=======
-using System.Threading.Tasks;
->>>>>>> 391d87e017ca9adeb120e9805ce0db87310cca88
 
 namespace Rss.Server.Services
 {
