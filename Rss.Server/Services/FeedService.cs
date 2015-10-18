@@ -1,10 +1,18 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+<<<<<<< HEAD
+=======
+using Microsoft.Ajax.Utilities;
+>>>>>>> 391d87e017ca9adeb120e9805ce0db87310cca88
 using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
+<<<<<<< HEAD
+=======
+using WebGrease.Css.Extensions;
+>>>>>>> 391d87e017ca9adeb120e9805ce0db87310cca88
 using Manager = Radio7.Portable.Rss;
 using RssFeed = Radio7.Portable.Rss.Feed;
 
@@ -177,10 +185,15 @@ namespace Rss.Server.Services
             {
                 feed.Name = rssFeed.Title ?? "can't find title";
                 feed.HtmlUrl = rssFeed.HtmlUri.ToString();
+<<<<<<< HEAD
                 // oh man this is dodgy
                 // ah feel a rewrite a coming on
                 _context.Feeds.Add(feed);
                 _context.SaveChanges();
+=======
+
+                _context.Feeds.Add(feed);
+>>>>>>> 391d87e017ca9adeb120e9805ce0db87310cca88
 
                 RefreshResetEvent.Set();
             };
