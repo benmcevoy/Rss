@@ -1,10 +1,5 @@
-﻿using System.Diagnostics;
-using System.Security.Principal;
-using System.Web.Security;
-using System.Web.SessionState;
-using Clutch.Diagnostics.EntityFramework;
+﻿using System.Web.SessionState;
 using Rss.Server.App_Start;
-using StackExchange.Profiling;
 using System;
 using System.Text;
 using System.Web;
@@ -30,8 +25,6 @@ namespace Rss.Server
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            AddDbTracing();
         }
 
         protected void Application_PostAuthorizeRequest()
@@ -42,25 +35,9 @@ namespace Rss.Server
             }
         }
 
-        private bool IsWebApiRequest()
+        private static bool IsWebApiRequest()
         {
             return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("~/api");
-        }
-
-        [Conditional("DEBUG")]
-        private static void AddDbTracing()
-        {
-            DbTracing.Enable(
-                new GenericDbTracingListener()
-                    .OnFinished(
-                        c =>
-                        Debug.WriteLine("-- Command finished - time: {0}{1}{2}", c.Duration, Environment.NewLine,
-                                        c.Command.ToTraceString()))
-                    .OnFailed(
-                        c =>
-                        Debug.WriteLine("-- Command failed - time: {0}{1}{2}", c.Duration, Environment.NewLine,
-                                        c.Command.ToTraceString()))
-                );
         }
 
         protected void Application_Error(object sender, EventArgs e)

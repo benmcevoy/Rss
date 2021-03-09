@@ -1,1 +1,1 @@
-msbuild rss.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=default
+msbuild rss.sln /p:Configuration=Debug /p:DeployOnBuild=true /p:PublishProfile=default
