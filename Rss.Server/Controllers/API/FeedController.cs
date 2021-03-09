@@ -3,6 +3,7 @@ using Rss.Server.Models;
 using Rss.Server.PostModel;
 using Rss.Server.Services;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Rss.Server.Controllers.API
@@ -81,9 +82,9 @@ namespace Rss.Server.Controllers.API
         }
 
         [HttpPost]
-        public void Refresh([FromBody] Guid id)
+        public async Task Refresh([FromBody] Guid id)
         {
-            _feedService.Refresh(id, true);
+            await _feedService.Refresh(id, true);
             Context.SaveChanges();
         }
     }

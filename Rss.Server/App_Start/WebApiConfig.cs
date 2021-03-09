@@ -11,7 +11,7 @@ namespace Rss.Server
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Filters.Add(new ApiSessionAuthorizationFilter());
+            //config.Filters.Add(new ApiSessionAuthorizationFilter());
 
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",

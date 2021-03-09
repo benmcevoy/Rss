@@ -1,6 +1,8 @@
 ﻿using Rss.Server.Models;
 using Rss.Server.Services;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Rss.Server.Controllers.API
 {
@@ -14,7 +16,7 @@ namespace Rss.Server.Controllers.API
             _feedService = refreshService;
         }
 
-        public string Get()
+        public HttpResponseMessage Get()
         {
             var sw = new Stopwatch();
 
@@ -26,7 +28,12 @@ namespace Rss.Server.Controllers.API
 
             sw.Stop();
 
-            return "Refresh complete " + sw.ElapsedMilliseconds;
+            var response = new HttpResponseMessage
+            {
+                Content = new StringContent("<html><body><h1>Refresh complete " + sw.ElapsedMilliseconds + "</h1> <br/><a href='/'> Home </a> </body></html>")
+            };
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            return response;
         }
     }
 }

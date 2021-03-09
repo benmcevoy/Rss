@@ -11,7 +11,5 @@ namespace Rss.Server.Services
         IEnumerable<Item> Get(int count);
 
         void Read(Guid id);
-
-        void Delete(Guid id);
     }
 }

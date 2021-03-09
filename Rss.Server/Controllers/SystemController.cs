@@ -1,13 +1,9 @@
 ﻿using System.Data.SqlServerCe;
-using Rss.Server.Models;
 using Rss.Server.PostModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Rss.Server.Services;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Rss.Server.Controllers
 {
@@ -15,15 +11,11 @@ namespace Rss.Server.Controllers
     {
         private readonly IFeedService _feedService;
         private readonly IFolderService _folderService;
-        private readonly IItemService _itemService;
-        private readonly FeedsDbEntities _context;
-
-        public SystemController(IFeedService feedService, IFolderService folderService, IItemService itemService, FeedsDbEntities context)
+        
+        public SystemController(IFeedService feedService, IFolderService folderService)
         {
             _feedService = feedService;
             _folderService = folderService;
-            _itemService = itemService;
-            _context = context;
         }
 
         public ActionResult Index()
@@ -38,7 +30,7 @@ namespace Rss.Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddFeed(AddFeedDto addFeedPostModel)
+        public async Task<ActionResult> AddFeed(AddFeedDto addFeedPostModel)
         {
             var folder = _folderService.Get(addFeedPostModel.Folder);
 
@@ -49,12 +41,11 @@ namespace Rss.Server.Controllers
 
             var feedId = _feedService.Add(addFeedPostModel.Url, folder.Id);
 
-            _feedService.Refresh(feedId);
+            await _feedService.Refresh(feedId);
 
             return View();
         }
-
-
+        
         [HttpPost]
         public ActionResult Repair()
         {

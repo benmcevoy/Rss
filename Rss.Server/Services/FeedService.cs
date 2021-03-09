@@ -6,9 +6,7 @@ using Rss.Server.Models;
 using System;
 using System.Linq;
 using System.Data.Entity;
-using WebGrease.Css.Extensions;
-using Manager = Radio7.Portable.Rss;
-using RssFeed = Radio7.Portable.Rss.Feed;
+using RssFeed = Radio7.Rss.Feed;
 
 namespace Rss.Server.Services
 {
@@ -65,10 +63,9 @@ namespace Rss.Server.Services
             _context.MarkFeedAsReadCommand(id, markOptions);
         }
 
-        public async void Refresh(Guid id, bool force = false)
+        public Task<bool> Refresh(Guid id, bool force = false)
         {
-            // TODO: should return Task, avoid void
-            await RefreshAsync(id, force);
+            return RefreshAsync(id, force);
         }
 
         private Task<bool> RefreshAsync(Guid id, bool force = false)
@@ -171,7 +168,7 @@ namespace Rss.Server.Services
             feed.UpdateFrequency = 3;
             feed.UpdatePeriod = "Daily";
 
-            var rssFeed = new Manager.Feed(feedUrl);
+            var rssFeed = new RssFeed(feedUrl);
 
             RefreshResetEvent.Reset();
 

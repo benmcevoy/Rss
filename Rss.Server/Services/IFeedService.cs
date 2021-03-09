@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Rss.Server.Models;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Rss.Server.Services
 
         void Mark(Guid id, MarkOptions markOptions);
 
-        void Refresh(Guid id, bool force = false);
+        Task<bool> Refresh(Guid id, bool force = false);
 
         Guid Add(Uri feedUrl, Guid? folderId);
     }

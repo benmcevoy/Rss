@@ -13,8 +13,7 @@ namespace Rss.Server.Controllers
         {
             _cookieService = cookieService;
         }
-
-
+        
         public ActionResult Index()
         {
             return View();
@@ -32,6 +31,7 @@ namespace Rss.Server.Controllers
             }
 
             _cookieService.Remove(HttpContext);
+
             return RedirectToAction("Index");    
         }
     }

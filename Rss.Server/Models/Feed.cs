@@ -34,13 +34,7 @@ namespace Rss.Server.Models
 
         public virtual ICollection<Item> Items { get; set; }
 
-        public string FolderName
-        {
-            get
-            {
-                return Folder != null ? Folder.Name : "";
-            }
-        }
+        public string FolderName => Folder?.Name ?? "";
 
         public int ItemCount { get; set; }
     }

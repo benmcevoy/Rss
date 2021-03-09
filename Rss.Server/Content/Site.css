@@ -49,10 +49,6 @@ ul.nobullet {
     list-style: none;
 }
 
-.expander {
-    float: left;
-}
-
 .item h3 {
     display: inline;
 }

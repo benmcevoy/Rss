@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Rss.Server.Models;
 using System;
@@ -20,12 +19,8 @@ namespace Rss.Server.Services
             var item = _context.Items.Find(id);
 
             item.ReadDateTime = DateTime.Now;
-        }
 
-        public void Delete(Guid id)
-        {
-            var item = Get(id);
-            _context.Entry(item).State = EntityState.Deleted;
+            _context.SaveChanges();
         }
 
         public Item Get(Guid id)

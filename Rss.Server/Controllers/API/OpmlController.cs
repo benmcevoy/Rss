@@ -2,9 +2,8 @@
 using System.Linq;
 using Rss.Server.Models;
 using System.Web.Http;
-using Manager = Radio7.Portable.Rss;
+using Radio7.Rss.Import;
 using Feed = Rss.Server.Models.Feed;
-using Radio7.Portable.Rss.Import;
 
 namespace Rss.Server.Controllers.API
 {
@@ -657,7 +656,7 @@ namespace Rss.Server.Controllers.API
             return "OK";
         }
 
-        private Folder AddFolder(Manager.Folder rssFolder)
+        private Folder AddFolder(Radio7.Rss.Folder rssFolder)
         {
             var folder = _context.Folders.FirstOrDefault(f => f.Name == rssFolder.Name);
 
@@ -674,7 +673,7 @@ namespace Rss.Server.Controllers.API
             return folder;
         }
 
-        private void AddFeed(Folder folder, Manager.Feed feed)
+        private void AddFeed(Folder folder, Radio7.Rss.Feed feed)
         {
             var feedId = Guid.NewGuid();
             var feedUrl = feed.FeedUri.ToString();

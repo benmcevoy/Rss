@@ -144,11 +144,6 @@ rss.viewModels.SubscriptionsViewModel = function () {
 
     // events
     $('body').on('click', '.expander', function () {
-        $(this).next('li.folder').children('ul').toggle();
-        if ($(this).text() == '-') {
-            $(this).text('+');
-        } else {
-            $(this).text('-');
-        }
+        $(this).next('li.folder').andSelf().children('ul').toggle();
     });
 }
