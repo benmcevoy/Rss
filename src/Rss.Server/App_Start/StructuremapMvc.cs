@@ -20,10 +20,12 @@ using System.Web.Mvc;
 using StructureMap;
 using Rss.Server.DependencyResolution;
 
+[assembly: WebActivator.PreApplicationStartMethod(typeof(Rss.Server.App_Start.StructuremapMvc), "Start")]
+
 namespace Rss.Server.App_Start {
     public static class StructuremapMvc {
         public static void Start() {
-			IContainer container = IoC.Initialize();
+			var container = IoC.Initialize();
             DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
         }
