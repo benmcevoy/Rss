@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Add Feed";
+}
+
+<h2>Add Feed</h2>
+
+@using(Html.BeginForm()){
+<fieldset>
+    <legend>feed</legend>
+    <div class="field">
+        <label for="folder">folder</label>
+        <input type="text" name="Folder" />
+    </div>
+
+    <div class="field">
+        <label for="id">feed url</label>
+        <input type="text" name="Url" />
+    </div>
+
+    <input type="submit" value="Add" />
+</fieldset>
+}

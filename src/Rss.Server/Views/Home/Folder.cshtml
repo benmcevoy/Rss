@@ -1,0 +1,46 @@
+﻿@using Rss.Server.Models
+@model Rss.Server.ViewModels.FolderItemsViewModel
+
+@{
+    ViewBag.Title = "Folder";
+}
+
+<h1><a class="command" 
+       data-command="folder"
+       data-commandargument="@Model.FolderId">@Model.FolderName</a>
+
+    <input type="button" value="Refresh" 
+           class="command"
+           data-command="refreshFolder"
+           data-commandargument="@Model.FolderId"/>
+
+    <input type="button" value="Mark all as read" 
+           class="command"
+               data-command="readFolder"
+               data-commandargument="@Model.FolderId"/>
+</h1>
+
+<div id="body">
+    <section>
+        <ul id="stream" class="nobullet">
+            @{
+                foreach (var item in Model.Items)
+                {
+                <li class="item">
+                    <div>
+                        <a class="command item" data-command="readItem" data-commandargument="{feedId:  '@item.FeedId', itemId : '@item.Id' }">@item.Name</a>
+                        <span>@item.Snippet</span>
+                    </div>
+                    <sub class="tagline">
+                        <a class="command"
+                            data-command="feed"
+                            data-commandargument="${feedId}">@item.FeedName</a>
+                        <span>(@item.PublishedDateTime)</span>
+                    </sub>
+
+                </li>
+                }
+            }
+        </ul>
+    </section>
+</div>

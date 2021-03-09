@@ -1,0 +1,39 @@
+﻿<header>
+    <h1>
+        <a href="~/">Stream</a>
+    </h1>
+</header>
+
+<div id="body">
+    <section>
+        <ul id="stream" class="nobullet"></ul>
+    </section>
+</div>
+
+<script type="text/javascript">
+    $(function ($) {
+        $.ajax({
+            url: '/api/stream'
+        }).done(function (data) {
+            $('#itemTemplate').tmpl(data).appendTo('#stream');
+        });
+    });
+</script>
+
+<script id="itemTemplate" type="text/x-jQuery-tmpl">
+    <li class="item">
+        <div>
+            <a class="command item"
+               data-command="readItem"
+               data-commandargument="{feedId: '${feedId}', itemId: '${id}' }">
+                ${name}</a>
+            <span>${snippet}</span>
+        </div>
+        <sub class="tagline">
+            <a class="command" 
+               data-command="feed"
+               data-commandargument="${feedId}">${feedName}</a>
+            <span>(${publishedDateTime})</span>
+        </sub>
+    </li>
+</script>

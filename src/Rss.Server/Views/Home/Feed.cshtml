@@ -1,0 +1,49 @@
+﻿@model Rss.Server.Models.Feed
+
+@{
+    ViewBag.Title = "Feed";
+}
+
+<h2><a href="@Model.HtmlUrl" target="_blank">@Model.Name</a>
+    @if (Model.FolderId.HasValue)
+    { 
+        @:(in <a class="command" data-command="folder" data-commandargument="@Model.FolderId">@Model.FolderName</a>)
+    }
+    <sub><a href="@Model.HtmlUrl" target="_blank">@Model.HtmlUrl</a></sub>
+</h2>
+
+<input type="button" value="Unsubscribe" 
+               class="command"
+               data-command="unsubscribeFeed"
+               data-commandargument="{ feedId: '@Model.Id', folderId: '@Model.FolderId' }" />
+
+<input type="button" value="Refresh" 
+       class="command"
+       data-command="refreshFeed"
+       data-commandargument="@Model.Id" />
+
+<input type="button" value="Mark all as read" 
+       class="command"
+       data-command="readFeed"
+       data-commandargument="@Model.Id" />
+@{
+    foreach (var item in Model.Items)
+    {
+    <div class="item">
+        <div>
+            <a class="command item"
+                data-command="readItem"
+                data-commandargument="{feedId:  '@item.FeedId', itemId : '@item.Id' }">
+                @item.Name</a>
+            <span>@item.Snippet</span>
+        </div>
+        <sub class="tagline">
+            <a class="command"
+                data-command="feed"
+                data-commandargument="${feedId}">@item.FeedName</a>
+            <span>(@item.PublishedDateTime)</span>
+        </sub>
+    </div>
+    
+    }
+}
