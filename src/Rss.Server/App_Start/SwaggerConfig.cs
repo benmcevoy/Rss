@@ -15,6 +15,10 @@ namespace Rss.Server
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "Rss.Server");
+                })
+                .EnableSwaggerUi(c =>
+                {
+                    
                 });
         }
     }

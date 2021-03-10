@@ -2,8 +2,6 @@
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Rss.Server.App_Start;
-using Rss.Server.Filters;
 
 namespace Rss.Server
 {
@@ -11,29 +9,21 @@ namespace Rss.Server
     {
         public static void Register(HttpConfiguration config)
         {
-            //config.Filters.Add(new ApiSessionAuthorizationFilter());
-
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",
                 routeTemplate: "api/{controller}/{action}/{id}",
                  defaults: new { action = "get", id = RouteParameter.Optional }
             );
 
-            SetContentNegotiator(config);
-        }
-
-        private static void SetContentNegotiator(HttpConfiguration config)
-        {
-            var jsonFormatter = new JsonMediaTypeFormatter
+            config.Formatters.Clear();
+            config.Formatters.Add(new JsonMediaTypeFormatter
+            {
+                SerializerSettings =
                 {
-                    SerializerSettings =
-                        {
-                            Formatting = Formatting.Indented,
-                            ContractResolver = new CamelCasePropertyNamesContractResolver()
-                        }
-                };
-
-            config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(jsonFormatter));
+                    Formatting = Formatting.Indented,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }
+            });
         }
     }
 }
