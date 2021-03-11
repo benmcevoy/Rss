@@ -12,7 +12,7 @@ namespace Rss.Server
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",
                 routeTemplate: "api/{controller}/{action}/{id}",
-                 defaults: new { action = "get", id = RouteParameter.Optional }
+                defaults: new {action = "get", id = RouteParameter.Optional}
             );
 
             config.Formatters.Clear();

@@ -41,6 +41,8 @@ namespace Rss.Server.Controllers
 
             var feedId = _feedService.Add(addFeedPostModel.Url, folder.Id);
 
+            _feedService.Save();
+
             await _feedService.Refresh(feedId);
 
             return View();

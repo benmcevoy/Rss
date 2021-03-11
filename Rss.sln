@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server", "src\Rss.Serve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server.Tests", "src\Rss.Server.Tests\Rss.Server.Tests.csproj", "{0E906E8A-1213-4EB3-96FC-72A0A126447A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radio7.HtmlCleaner", "src\Radio7.HtmlCleaner\Radio7.HtmlCleaner.csproj", "{DE2E4E34-1F3C-4D83-B6A0-55291B978224}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radio7.Rss", "src\Radio7.Rss\Radio7.Rss.csproj", "{D132F0EF-DA56-48CF-B849-CF161FB9E359}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE2E4E34-1F3C-4D83-B6A0-55291B978224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE2E4E34-1F3C-4D83-B6A0-55291B978224}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE2E4E34-1F3C-4D83-B6A0-55291B978224}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE2E4E34-1F3C-4D83-B6A0-55291B978224}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Release|Any CPU.ActiveCfg = Release|Any CPU

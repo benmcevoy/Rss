@@ -35,9 +35,17 @@ rss.commands.ajaxPostAndGet = function (id, postaction, getaction) {
     $.ajax({
         type: "POST",
         url: postaction,
-        data: { '': id }
-    }).done(function () {
-        rss.commands.ajaxGet(getaction);
+        contentType: 'application/json',
+        data: JSON.stringify(id)
+    })
+    .done(function () {
+        rss.commands.ajaxGet(getaction); })
+    .error(function(e) {
+    rss.commands.publish({
+        command: 'notify',
+        commandargument: String.format('Uh-oh: {0}',
+            e.responseJSON.message)
+    });
     });
 };
 

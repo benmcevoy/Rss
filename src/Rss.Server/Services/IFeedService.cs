@@ -18,5 +18,7 @@ namespace Rss.Server.Services
         Task<bool> Refresh(Guid id, bool force = false);
 
         Guid Add(Uri feedUrl, Guid? folderId);
+
+        int Save();
     }
 }

@@ -189,5 +189,10 @@ namespace Rss.Server.Services
 
             return feed.Id;
         }
+
+        public int Save()
+        {
+            return _context.SaveChanges();
+        }
     }
 }
