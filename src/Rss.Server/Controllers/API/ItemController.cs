@@ -2,9 +2,11 @@
 using Rss.Server.Services;
 using System;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Rss.Server.Controllers.API
 {
+    [EnableCors(origins: "http://rss.local", headers: "*", methods: "*")]
     public class ItemController : DbContextApiController
     {
         private readonly IItemService _itemService;

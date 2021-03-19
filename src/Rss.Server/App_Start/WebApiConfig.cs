@@ -9,6 +9,8 @@ namespace Rss.Server
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors();
+
             config.Routes.MapHttpRoute(
                 name: "ControllerAndActionAndId",
                 routeTemplate: "api/{controller}/{action}/{id}",

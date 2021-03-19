@@ -6,9 +6,11 @@ using Rss.Server.Services;
 using Rss.Server.ViewModels;
 using System;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Rss.Server.Controllers.API
 {
+    [EnableCors(origins: "http://rss.local", headers:"*", methods:"*")]
     public class FolderController : DbContextApiController
     {
         private readonly IFolderService _folderService;

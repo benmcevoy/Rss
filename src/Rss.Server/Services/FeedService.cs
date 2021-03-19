@@ -165,8 +165,8 @@ namespace Rss.Server.Services
             feed.Id = Guid.NewGuid();
             feed.FeedUrl = feedUrl.ToString();
             feed.FolderId = folderId;
-            feed.UpdateFrequency = 3;
-            feed.UpdatePeriod = "Daily";
+            feed.UpdateFrequency = 12;
+            feed.UpdatePeriod = "Hourly";
 
             var rssFeed = new RssFeed(feedUrl);
 

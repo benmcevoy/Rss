@@ -30,7 +30,7 @@ namespace Rss.Server.Controllers.API
 
             var response = new HttpResponseMessage
             {
-                Content = new StringContent("<html><body><h1>Refresh complete " + sw.ElapsedMilliseconds + "</h1> <br/><a href='/'> Home </a> </body></html>")
+                Content = new StringContent("<!DOCTYPE html><html><head><title>Refresh</title><meta charset='utf-8'/></head><body><h1>Refresh complete " + sw.ElapsedMilliseconds + "</h1> <br/><a href='/'> Home </a> </body></html>")
             };
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
             return response;
