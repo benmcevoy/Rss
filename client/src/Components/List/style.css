@@ -1,0 +1,8 @@
+#list .item{
+    margin-bottom: 20px;
+}
+
+#list .item .tagline {
+    font-weight: lighter;
+    color: #777;
+}

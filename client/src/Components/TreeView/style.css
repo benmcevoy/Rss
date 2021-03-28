@@ -1,0 +1,7 @@
+.treeview-folder, .treeview-item{
+    font-weight: normal;
+}
+
+.treeview-folder.selected, .treeview-item.selected{
+    font-weight: bold;
+}

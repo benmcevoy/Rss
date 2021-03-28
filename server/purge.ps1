@@ -1,0 +1,1 @@
+﻿get-childitem ./build/wwwroot -exclude App_Data | remove-item -recurse -force -erroraction 'silentlycontinue'

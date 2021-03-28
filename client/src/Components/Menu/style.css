@@ -1,0 +1,8 @@
+.menu{
+    padding: 10px;
+}
+.menu-item {
+    float:left;
+    padding-right: 10px;
+    list-style: none;
+}
