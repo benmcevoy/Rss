@@ -13,7 +13,7 @@ namespace Rss.Api.Data
         public string Snippet { get; set; }
         public DateTime ReadDateTime { get; set; }
         public DateTime PublishedDateTime { get; set; }
-        public string LinkId { get; set; }
+        public string LinkUrl { get; set; }
         public Guid FeedId { get; set; }
         public Feed Feed { get; set; }
     }

@@ -15,15 +15,10 @@ namespace Rss.Api
     {
         private readonly IConfiguration _configuration;
 
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => _configuration = configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
             services.AddControllers();
             services.AddApiVersioning();
 
@@ -33,6 +28,8 @@ namespace Rss.Api
 
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlite(_configuration.GetConnectionString("DefaultSQLiteConnection")));
+
+            services.AddTransient<RefreshDataService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)

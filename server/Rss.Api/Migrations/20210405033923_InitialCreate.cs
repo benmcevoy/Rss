@@ -11,7 +11,7 @@ namespace Rss.Api.Migrations
                 name: "Folders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "BLOB", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     LastUpdateDateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -24,13 +24,13 @@ namespace Rss.Api.Migrations
                 name: "Feeds",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "BLOB", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    FolderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FolderId = table.Column<Guid>(type: "BLOB", nullable: true),
                     LastUpdateDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FeedUrl = table.Column<string>(type: "TEXT", nullable: true),
                     HtmlUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    LastBuildDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LastBuildDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatePeriod = table.Column<string>(type: "TEXT", nullable: true),
                     UpdateFrequency = table.Column<int>(type: "INTEGER", nullable: false),
                     FavIcon = table.Column<string>(type: "TEXT", nullable: true)
@@ -43,22 +43,22 @@ namespace Rss.Api.Migrations
                         column: x => x.FolderId,
                         principalTable: "Folders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "BLOB", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Raw = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     Snippet = table.Column<string>(type: "TEXT", nullable: true),
                     ReadDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     PublishedDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LinkId = table.Column<string>(type: "TEXT", nullable: true),
-                    FeedId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    LinkUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    FeedId = table.Column<Guid>(type: "BLOB", nullable: false)
                 },
                 constraints: table =>
                 {

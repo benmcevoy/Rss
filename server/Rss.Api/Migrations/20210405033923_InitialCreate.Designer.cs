@@ -9,7 +9,7 @@ using Rss.Api.Data;
 namespace Rss.Api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210405014318_InitialCreate")]
+    [Migration("20210405033923_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace Rss.Api.Migrations
                     b.Property<string>("FeedUrl")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("FolderId")
+                    b.Property<Guid?>("FolderId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HtmlUrl")
@@ -87,7 +87,7 @@ namespace Rss.Api.Migrations
                     b.Property<Guid>("FeedId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LinkId")
+                    b.Property<string>("LinkUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -114,20 +114,22 @@ namespace Rss.Api.Migrations
 
             modelBuilder.Entity("Rss.Api.Data.Feed", b =>
                 {
-                    b.HasOne("Rss.Api.Data.Folder", null)
+                    b.HasOne("Rss.Api.Data.Folder", "Folder")
                         .WithMany("Feeds")
-                        .HasForeignKey("FolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FolderId");
+
+                    b.Navigation("Folder");
                 });
 
             modelBuilder.Entity("Rss.Api.Data.Item", b =>
                 {
-                    b.HasOne("Rss.Api.Data.Feed", null)
+                    b.HasOne("Rss.Api.Data.Feed", "Feed")
                         .WithMany("Items")
                         .HasForeignKey("FeedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Feed");
                 });
 
             modelBuilder.Entity("Rss.Api.Data.Feed", b =>
