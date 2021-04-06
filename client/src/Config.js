@@ -1,18 +1,19 @@
 const config = {
     api: {
+        subscription: {
+            get: "http://localhost:53950/v1/subscription"
+        },
         folder: {
-            getRoot: "http://api.rss.local/api/Folder/Get",
-            get: "http://api.rss.local/api/v2_folder/Get"
+            get: "http://localhost:53950/v1/content/folder"
         },
         feed: {
-            getAll: "http://api.rss.local/api/feed/All",
-            get: "http://api.rss.local/api/v2_feed/Get",
+            get: "http://localhost:53950/v1/content/feed"
         },
         item: {
-            read:  "http://api.rss.local/api/item/read",
+            read: "http://localhost:53950/v1/content/read",
         },
         stream: {
-            get: 'http://api.rss.local/api/v2_Stream/get'
+            get: "http://localhost:53950/v1/content/stream"
         }
     }
 };

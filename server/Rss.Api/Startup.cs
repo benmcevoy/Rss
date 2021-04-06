@@ -21,6 +21,13 @@ namespace Rss.Api
         {
             services.AddControllers();
             services.AddApiVersioning();
+            services.AddCors(options => 
+                options.AddPolicy("Rss.Api.Policy", 
+                    builder => builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithOrigins(_configuration.GetSection("AllowedHosts").Get<string[]>())));
 
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -49,6 +56,8 @@ namespace Rss.Api
                         }
                     });
             }
+
+            app.UseCors("Rss.Api.Policy");
 
             app.UseRouting()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });

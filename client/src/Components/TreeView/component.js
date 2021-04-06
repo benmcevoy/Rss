@@ -10,7 +10,7 @@ export default class TreeView extends React.Component {
 			viewModel: null,
 		};
 
-		fetch(Config.api.folder.getRoot)
+		fetch(Config.api.subscription.get)
 			.then(x => x.json())
 			.then(x => this.setState({ viewModel: x }));
 	}
@@ -36,11 +36,11 @@ export default class TreeView extends React.Component {
 									const folderSelected = folder.id === ctx.current.folder ? "treeview-folder selected" : "treeview-folder";
 									// TODO: recursion would tidy this up
 									return (
-										<li class={folderSelected} onClick={(e) => this.update(e, ctx, folder.id)}>{folder.name} ({folder.itemCount})
+										<li class={folderSelected} onClick={(e) => this.update(e, ctx, folder.id)}>{folder.name} ({folder.count})
 											<ul>{
 												folder.feeds.map((feed) => {
 													const itemSelected = feed.id === ctx.current.feed ? "treeview-item selected" : "treeview-item";
-													return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, folder.id, feed.id)}>{feed.name} ({feed.itemCount})</li>)
+													return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, folder.id, feed.id)}>{feed.name} ({feed.count})</li>)
 												})}
 											</ul>
 										</li>)
@@ -49,7 +49,7 @@ export default class TreeView extends React.Component {
 							<ul class="treeview-items">
 								{this.state.viewModel.feeds.map((feed) => {
 									const itemSelected = feed.id === ctx.current.feed ? "treeview-item selected" : "treeview-item";
-									return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, null, feed.id)}>{feed.name} ({feed.itemCount})</li>)
+									return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, null, feed.id)}>{feed.name} ({feed.count})</li>)
 								})}
 							</ul>
 						</nav>

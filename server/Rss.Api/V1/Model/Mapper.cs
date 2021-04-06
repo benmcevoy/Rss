@@ -10,7 +10,7 @@ namespace Rss.Api.V1.Model
             {
                 Id = source.Id,
                 Name = source.Name,
-                Feeds = source.Feeds.Select(Map).ToList()
+                Feeds = source.Feeds.Select(Map).ToList(),
             };
         }
 
@@ -21,7 +21,8 @@ namespace Rss.Api.V1.Model
                 Id = source.Id,
                 Name = source.Name,
                 LastUpdatedDateTime = source.LastUpdateDateTime,
-                WebsiteUrl = source.HtmlUrl
+                WebsiteUrl = source.HtmlUrl,
+                Count = source.Items.Count
             };
         }
 

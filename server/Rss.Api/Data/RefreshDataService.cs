@@ -15,7 +15,7 @@ namespace Rss.Api.Data
 
         public async Task Refresh() => await _context.Feeds.ForEachAsync(async feed => await RefreshAsync(feed.Id));
         
-        public Task RefreshFeed(Guid feedId, bool force = false) => RefreshAsync(feedId, force);
+        public async Task RefreshFeed(Guid feedId, bool force = false) => await RefreshAsync(feedId, force);
 
         private async Task RefreshAsync(Guid feedId, bool force = false)
         {
@@ -26,7 +26,7 @@ namespace Rss.Api.Data
             if (!force && feed.LastUpdateDateTime > GetExpiryDate(feed))
             {
                 task.SetResult(0);
-                return; //task.Task;
+                return;
             }
 
             var rssFeed = new RssFeed(new Uri(feed.FeedUrl));

@@ -75,8 +75,7 @@ export default class ItemView extends React.Component {
 				</div>
 				<nav>
 					<ul class="items">
-						{viewModel.feeds
-							.flatMap((feed) => feed.items)
+						{viewModel.rssItems
 							.map(item => 
 									<div class="item">
 										<div>

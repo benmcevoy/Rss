@@ -24,7 +24,9 @@ namespace Rss.Api.V1
         [HttpGet]
         public Subscription Get()
         {
-            var folders = _context.Folders.Include(x => x.Feeds);
+            var folders = _context.Folders
+                .Include(x => x.Feeds)
+                .ThenInclude(x => x.Items);
 
             return new Subscription
             {

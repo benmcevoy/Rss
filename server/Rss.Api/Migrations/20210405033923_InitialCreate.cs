@@ -30,7 +30,6 @@ namespace Rss.Api.Migrations
                     LastUpdateDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     FeedUrl = table.Column<string>(type: "TEXT", nullable: true),
                     HtmlUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    LastBuildDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatePeriod = table.Column<string>(type: "TEXT", nullable: true),
                     UpdateFrequency = table.Column<int>(type: "INTEGER", nullable: false),
                     FavIcon = table.Column<string>(type: "TEXT", nullable: true)
@@ -51,13 +50,13 @@ namespace Rss.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "BLOB", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Raw = table.Column<string>(type: "TEXT", nullable: true),
-                    Content = table.Column<string>(type: "TEXT", nullable: true),
-                    Snippet = table.Column<string>(type: "TEXT", nullable: true),
-                    ReadDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Raw = table.Column<string>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Snippet = table.Column<string>(type: "TEXT", nullable: false),
+                    ReadDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     PublishedDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LinkUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    LinkUrl = table.Column<string>(type: "TEXT", nullable: false),
                     FeedId = table.Column<Guid>(type: "BLOB", nullable: false)
                 },
                 constraints: table =>

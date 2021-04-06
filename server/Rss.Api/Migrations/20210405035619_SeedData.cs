@@ -12,8 +12,8 @@ namespace Rss.Api.Migrations
 
             migrationBuilder.InsertData("Folders", new[] { "Id", "Name", "LastUpdateDateTime" }, new object[] { devFolderId, "Dev", epoch });
             migrationBuilder.InsertData("Feeds",
-                new[] { "Id","Name","FolderId","LastUpdateDateTime","FeedUrl","HtmlUrl","LastBuildDate","UpdatePeriod","UpdateFrequency","FavIcon" },
-                new object[] { Guid.NewGuid(), "Dev", devFolderId, epoch, "http://feeds.feedburner.com/ReflectivePerspective", "http://blog.cwa.me.uk/", null, "Daily", 1, null });
+                new[] { "Id","Name","FolderId","LastUpdateDateTime","FeedUrl","HtmlUrl","UpdatePeriod","UpdateFrequency","FavIcon" },
+                new object[] { Guid.NewGuid(), "Reflective Perspective", devFolderId, epoch, "http://feeds.feedburner.com/ReflectivePerspective", "http://blog.cwa.me.uk/", "Daily", 1, null });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

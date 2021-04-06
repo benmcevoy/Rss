@@ -8,5 +8,6 @@ namespace Rss.Api.V1.Model
         public DateTime LastUpdatedDateTime { get; set; }
         public string Name { get; set; }
         public string WebsiteUrl { get; set; }
+        public int Count { get; set; }
     }
 }
