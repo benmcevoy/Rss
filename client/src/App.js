@@ -6,7 +6,8 @@ import AppContext from "./AppContext";
 
 import TreeView from "./Components/TreeView/component.js";
 import Menu from "./Components/Menu/component.js";
-import List from "./Components/List/component";
+import List from "./Components/List/component.js";
+import Item from "./Components/Item/component.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -41,7 +42,10 @@ export default class App extends React.Component {
             <TwoColumn
                 header={<Menu />}
                 aside={<TreeView title="Subscriptions" />}
-                main={<List title="Stream" />}
+                main={<div id="main-wrapper">
+                    <List title="Stream" />
+                    <Item title="Stream" />
+                </div>}
             />
         </AppContext.Provider>
 }

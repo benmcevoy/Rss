@@ -39,7 +39,8 @@ namespace Rss.Api.V1.Model
                 FeedWebsiteUrl = source.Feed.HtmlUrl,
                 PublishedDateTime = source.PublishedDateTime,
                 Snippet = source.Snippet,
-                Tags = new [] { source.Feed.Folder?.Name ?? "" }
+                Tags = new [] { source.Feed.Folder?.Name ?? "" },
+                FolderId = source.Feed.FolderId
             };
         }
     }

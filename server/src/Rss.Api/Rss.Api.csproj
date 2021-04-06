@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>7ba85a59-4488-4cb1-86a5-f52a33d1be74</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Radio7.Rss\Radio7.Rss.csproj" />
+    <ProjectReference Include="..\Radio7.Rss\Radio7.Rss.csproj" />
   </ItemGroup>
 
 </Project>

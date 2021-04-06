@@ -3,7 +3,7 @@ import React from "react";
 import Config from "../../config";
 import AppContext from "../../AppContext";
 
-export default class ItemView extends React.Component {
+export default class ListView extends React.Component {
 	static contextType = AppContext;
 
 	constructor(props) {
@@ -63,6 +63,8 @@ export default class ItemView extends React.Component {
 	render() {
 		const viewModel = this.state.viewModel;
 
+		if(this.context.current.item !== null) return null;
+
 		if (viewModel === null) {
 			return (<div class="component" id="list"><h3>Loading...</h3></div>);
 		}
@@ -76,16 +78,16 @@ export default class ItemView extends React.Component {
 				<nav>
 					<ul class="items">
 						{viewModel.rssItems
-							.map(item => 
-									<div class="item">
-										<div>
-											<a href="#" onClick={(e) => this.onItemSelected(e, item)}>{item.name}</a>
-											<div>{item.snippet}</div>
-										</div>
-										<sub class="tagline">
-											<a href="#" onClick={(e) => this.onFeedSelected(e, item)}>{item.feedName}</a> <span>{item.publishedDateTime}</span>
-										</sub>
+							.map(item =>
+								<div class="item">
+									<div>
+										<a href="#" onClick={(e) => this.onItemSelected(e, item)}>{item.name}</a>
+										<div>{item.snippet}</div>
 									</div>
+									<sub class="tagline">
+										<a href="#" onClick={(e) => this.onFeedSelected(e, item)}>{item.feedName}</a> <span>{item.publishedDateTime}</span>
+									</sub>
+								</div>
 							)}
 					</ul>
 				</nav>

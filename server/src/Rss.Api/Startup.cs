@@ -44,18 +44,20 @@ namespace Rss.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(
-                    options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint(
-                                $"/swagger/{description.GroupName}/swagger.json",
-                                description.GroupName.ToUpperInvariant());
-                        }
-                    });
+                
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options =>
+                {
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            description.GroupName.ToUpperInvariant());
+                    }
+                });
 
             app.UseCors("Rss.Api.Policy");
 

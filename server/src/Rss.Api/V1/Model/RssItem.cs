@@ -15,6 +15,7 @@ namespace Rss.Api.V1.Model
         public DateTime FeedLastUpdatedDateTime { get; set; }
         public string FeedName { get; set; }
         public string FeedWebsiteUrl { get; set; }
+        public Guid? FolderId { get; set; }
     }
 }
 

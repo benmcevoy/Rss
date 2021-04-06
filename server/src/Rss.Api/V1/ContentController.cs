@@ -74,7 +74,10 @@ namespace Rss.Api.V1
         [HttpGet, Route("Read/{id}")]
         public RssItem Read(Guid id)
         {
-            var item = _databaseContext.Items.Find(id);
+            var item = _databaseContext.Items
+                .Include(x => x.Feed)
+                .ThenInclude(x => x.Folder)
+                .Single(x=>x.Id == id);
 
             // TODO: mark as read
 

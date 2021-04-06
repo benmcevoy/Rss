@@ -7,12 +7,12 @@ export default function TwoColumn(props) {
                 </div>
             </div>
         </header>
-        <div class="row">
-            <div class="container">
-                <aside className="App-aside col-sm-4">
+        <div class="container">
+            <div class="row">
+                <aside className="App-aside col">
                     {props.aside}
                 </aside>
-                <main className="App-main col-sm-8">
+                <main className="App-main col-8">
                     {props.main}
                 </main>
             </div>
