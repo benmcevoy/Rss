@@ -14,23 +14,16 @@ export default class ItemView extends React.Component {
 		};
 
 		this.fetchData = this.fetchData.bind(this);
-		this.onFeedSelected = this.onFeedSelected.bind(this);
-		// this.context appears not to be available here, so use componentDidMount
-	}
-
-	onFeedSelected(e, item) {
-		e.preventDefault();
-		this.context.updateCurrent(item.folderId, item.feedId, null);
 	}
 
 	fetchData() {
-		const ctx = this.context.current;
+		const current = this.context.current;
 		let url, id;
 
-		if (ctx.item !== null) {
-			id = ctx.item;
-			url = Config.api.item.read+ `/${id}`;
-		}
+		if (current.item === null) return;
+
+		id = current.item;
+		url = Config.api.item.read+ `/${id}`;
 
 		// unchanged
 		if (id === this.state.id) return;
@@ -45,8 +38,9 @@ export default class ItemView extends React.Component {
 
 	render() {
 		const viewModel = this.state.viewModel;
+		const ctx = this.context;
 
-		if(this.context.current.item === null) return null;
+		if(ctx.current.item === null) return null;
 
 		if (viewModel === null) {
 			return (<div class="component" id="item"><h3>Loading...</h3></div>);
@@ -55,7 +49,7 @@ export default class ItemView extends React.Component {
 		return (
 			<div class="component" id="item">
 				<div class="header">
-					<h3><a href="#" onClick={(e) => this.onFeedSelected(e, viewModel)}>{viewModel.feedName || "List"}</a></h3>
+					<h3><a onClick={() => ctx.updateCurrent(viewModel.folderId, viewModel.feedId)}>{viewModel.feedName || "Feed"}</a></h3>
 				</div>
 				<div class="body">
 					<h5><a href="{viewModel.linkUrl}" target="_blank">{viewModel.name}</a></h5>

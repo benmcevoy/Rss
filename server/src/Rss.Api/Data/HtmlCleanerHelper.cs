@@ -15,7 +15,7 @@ namespace Rss.Api.Data
 
         internal static string GetSnippet(string html, int length)
         {
-            html = StripTagsCharArray(html);
+            html = System.Web.HttpUtility.HtmlDecode(StripTagsCharArray(html)) ?? "";
 
             if (html.Length <= length)
             {

@@ -15,11 +15,6 @@ export default class TreeView extends React.Component {
 			.then(x => this.setState({ viewModel: x }));
 	}
 
-	update(e, ctx, folderId, feedId) {
-		e.stopPropagation();
-		ctx.updateCurrent(folderId, feedId);
-	}
-
 	render() {
 		if (this.state.viewModel === null) {
 			return (<div class="component" id="treeview"><h3>Loading...</h3></div>);
@@ -29,18 +24,18 @@ export default class TreeView extends React.Component {
 			<AppContext.Consumer>
 				{(ctx) => (
 					<div class="component" id="treeview">
-						<h3>{this.props.title || "Tree view"}</h3>
+						<h3><a onClick={() => ctx.updateCurrent()}>{this.props.title || "Tree view"}</a></h3>
 						<nav>
 							<ul class="treeview-root">
 								{this.state.viewModel.folders.map((folder) => {
 									const folderSelected = folder.id === ctx.current.folder ? "treeview-folder selected" : "treeview-folder";
 									// TODO: recursion would tidy this up
 									return (
-										<li class={folderSelected} onClick={(e) => this.update(e, ctx, folder.id)}>{folder.name} ({folder.count})
+										<li class={folderSelected}><a onClick={() => ctx.updateCurrent(folder.id)}>{folder.name} ({folder.count})</a>
 											<ul>{
 												folder.feeds.map((feed) => {
 													const itemSelected = feed.id === ctx.current.feed ? "treeview-item selected" : "treeview-item";
-													return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, folder.id, feed.id)}>{feed.name} ({feed.count})</li>)
+													return (<li class={itemSelected} onClick={() => ctx.updateCurrent(folder.id, feed.id)}>{feed.name} ({feed.count})</li>)
 												})}
 											</ul>
 										</li>)
@@ -49,7 +44,7 @@ export default class TreeView extends React.Component {
 							<ul class="treeview-items">
 								{this.state.viewModel.feeds.map((feed) => {
 									const itemSelected = feed.id === ctx.current.feed ? "treeview-item selected" : "treeview-item";
-									return (<li class={itemSelected} onClick={(e) => this.update(e, ctx, null, feed.id)}>{feed.name} ({feed.count})</li>)
+									return (<li class={itemSelected}><a onClick={() => ctx.updateCurrent(null, feed.id)}>{feed.name} ({feed.count})</a></li>)
 								})}
 							</ul>
 						</nav>

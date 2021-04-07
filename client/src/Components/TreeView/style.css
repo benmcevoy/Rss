@@ -1,3 +1,7 @@
+#treeview ul{
+    list-style-type: none;
+}
+
 .treeview-folder, .treeview-item{
     font-weight: normal;
 }

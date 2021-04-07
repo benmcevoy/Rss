@@ -25,10 +25,11 @@ namespace Rss.Api.V1
                 .Items
                 .Include(x => x.Feed)
                 .ThenInclude(x => x.Folder);
-                
+
             return new RssItemList
             {
                 Name = "Stream",
+                Type = "Stream",
                 RssItems = stream.Select(Mapper.Map).ToList()
             };
         }
@@ -49,6 +50,7 @@ namespace Rss.Api.V1
             {
                 Id = folder.Id,
                 Name = folder.Name,
+                Type = "Folder",
                 RssItems = folder.Feeds.SelectMany(f => f.Items).Select(Mapper.Map).ToList()
             };
         }
@@ -60,13 +62,14 @@ namespace Rss.Api.V1
                 .Feeds
                 .Include(x => x.Items)
                 .Single(f => f.Id == id);
-            
+
             // TODO: needs some more predicate to exclude read items
 
             return new RssItemList
             {
                 Id = feed.Id,
                 Name = feed.Name,
+                Type = "Feed",
                 RssItems = feed.Items.Select(Mapper.Map).ToList()
             };
         }
@@ -77,11 +80,18 @@ namespace Rss.Api.V1
             var item = _databaseContext.Items
                 .Include(x => x.Feed)
                 .ThenInclude(x => x.Folder)
-                .Single(x=>x.Id == id);
+                .Single(x => x.Id == id);
 
             // TODO: mark as read
 
             return Mapper.Map(item);
         }
+
+        [HttpPost, Route("Refresh")]
+        public bool Refresh(string type, Guid? id) => throw new NotImplementedException();
+
+        [HttpPost, Route("MarkAsRead")]
+        public bool MarkAsRead(string type, Guid? id) => throw new NotImplementedException();
+
     }
 }
