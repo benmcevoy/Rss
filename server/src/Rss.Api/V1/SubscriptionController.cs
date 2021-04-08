@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
@@ -13,13 +11,8 @@ namespace Rss.Api.V1
     public class SubscriptionController
     {
         private readonly DatabaseContext _context;
-        private readonly RefreshDataService _refreshDataService;
 
-        public SubscriptionController(DatabaseContext context, RefreshDataService refreshDataService)
-        {
-            _context = context;
-            _refreshDataService = refreshDataService;
-        }
+        public SubscriptionController(DatabaseContext context) => _context = context;
 
         [HttpGet]
         public Subscription Get()
@@ -33,8 +26,5 @@ namespace Rss.Api.V1
                 Folders = folders.Select(Mapper.Map).ToList()
             };
         }
-
-        [HttpPost, Route("Refresh")]
-        public async Task Refresh() => await _refreshDataService.Refresh();
     }
 }

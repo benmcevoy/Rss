@@ -42,7 +42,7 @@ export default class App extends React.Component {
         console.log(`app.refresh: ${type ?? null}, ${id ?? null}`);
 
         fetch(Config.api.refresh + `?type=${type}&id=${id ?? ""}`, { method: "POST" })
-            .then(x => this.fetchListData());
+            .then(x => this.fetchSubscription());
     }
 
     markAsRead = (type, id) => {
