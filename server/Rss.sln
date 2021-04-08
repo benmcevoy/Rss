@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server", "src\Rss.Server\Rss.Server.csproj", "{5CE78560-3E67-420A-BD8E-591CF6D2C85D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Server.Tests", "src\Rss.Server.Tests\Rss.Server.Tests.csproj", "{0E906E8A-1213-4EB3-96FC-72A0A126447A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radio7.Rss", "src\Radio7.Rss\Radio7.Rss.csproj", "{D132F0EF-DA56-48CF-B849-CF161FB9E359}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rss.Api", "src\Rss.Api\Rss.Api.csproj", "{B1EBCB3F-1B19-4074-80E7-50F8FD046F9B}"
@@ -21,10 +19,6 @@ Global
 		{5CE78560-3E67-420A-BD8E-591CF6D2C85D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE78560-3E67-420A-BD8E-591CF6D2C85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE78560-3E67-420A-BD8E-591CF6D2C85D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E906E8A-1213-4EB3-96FC-72A0A126447A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D132F0EF-DA56-48CF-B849-CF161FB9E359}.Release|Any CPU.ActiveCfg = Release|Any CPU
