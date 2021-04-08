@@ -13,9 +13,14 @@ namespace Rss.Api.Data
 
         public RefreshDataService(DatabaseContext context) => _context = context;
 
-        public async Task Refresh() => await _context.Feeds.ForEachAsync(async feed => await RefreshAsync(feed.Id));
-        
-        public async Task RefreshFeed(Guid feedId, bool force = false) => await RefreshAsync(feedId, force);
+        public async Task Refresh() => 
+            await _context.Feeds.ForEachAsync(async feed => await RefreshAsync(feed.Id));
+
+        public async Task RefreshFolder(Guid id, bool force = false) =>
+            await _context.Feeds.Where(x => x.FolderId == id).ForEachAsync(async feed => await RefreshAsync(feed.Id, force));
+
+        public async Task RefreshFeed(Guid id, bool force = false) => 
+            await RefreshAsync(id, force);
 
         private async Task RefreshAsync(Guid feedId, bool force = false)
         {

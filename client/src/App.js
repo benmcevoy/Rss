@@ -18,6 +18,7 @@ export default class App extends React.Component {
         this.markAsRead = this.markAsRead.bind(this);
         this.updateCurrent = this.updateCurrent.bind(this);
         this.fetchListData = this.fetchListData.bind(this);
+        this.fetchSubscription = this.fetchSubscription.bind(this);
 
         this.state = {
             current: {
@@ -25,23 +26,28 @@ export default class App extends React.Component {
                 feed: null,
                 item: null
             },
-            viewModel: null,
-            id: null,
+            listViewModel: null,
+            listId: null,
+            subscriptionViewModel: null,
             updateCurrent: this.updateCurrent,
             refresh: this.refresh,
             markAsRead: this.markAsRead
         };
 
+        this.fetchSubscription();
         this.fetchListData();
     }
 
     refresh = (type, id) => {
         console.log(`app.refresh: ${type ?? null}, ${id ?? null}`);
-    };
+
+        fetch(Config.api.refresh + `?type=${type}&id=${id ?? ""}`, { method: "POST" })
+            .then(x => this.fetchListData());
+    }
 
     markAsRead = (type, id) => {
         console.log(`app.markAsRead: ${type ?? null}, ${id ?? null}`);
-    };
+    }
 
     updateCurrent = (folderId, feedId, itemId) => {
         console.log(`app.updateCurrent: ${folderId ?? null}, ${feedId ?? null}, ${itemId ?? null}`);
@@ -55,7 +61,9 @@ export default class App extends React.Component {
         });
     }
 
-    fetchListData() {
+    fetchListData = () => {
+        console.log(`app.fetchListData:`);
+
         const ctx = this.state.current;
         let url, id;
 
@@ -77,23 +85,31 @@ export default class App extends React.Component {
         }
 
         // unchanged
-        if (id === this.state.id) return;
+        if (id === this.state.listId) return;
 
         fetch(url)
             .then(x => x.json())
-            .then(x => this.setState({ viewModel: x, id: id }));
+            .then(x => this.setState({ listViewModel: x, listId: id }));
     }
 
-    componentDidMount = () => this.fetchListData();
-	componentDidUpdate = () => this.fetchListData();
+    fetchSubscription = () => {
+        console.log(`app.fetchSubscription:`);
+
+        fetch(Config.api.subscription.get)
+            .then(x => x.json())
+            .then(x => this.setState({ subscriptionViewModel: x }));
+    }
+
+    // equivalent to useEffect
+    componentDidUpdate = () => this.fetchListData();
 
     render = () =>
         <AppContext.Provider value={this.state}>
             <TwoColumn
                 header={<Menu />}
-                aside={<TreeView title="Subscriptions" />}
+                aside={<TreeView title="Subscriptions" viewModel={this.state.subscriptionViewModel} />}
                 main={<div id="main-wrapper">
-                    <List title="Stream" viewModel={this.state.viewModel} />
+                    <List title="Stream" viewModel={this.state.listViewModel} />
                     <Item title="Item" />
                 </div>}
             />

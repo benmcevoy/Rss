@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
 using Rss.Api.V1.Model;
@@ -12,8 +13,13 @@ namespace Rss.Api.V1
     public class ContentController
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly RefreshDataService _refreshDataService;
 
-        public ContentController(DatabaseContext databaseContext) => _databaseContext = databaseContext;
+        public ContentController(DatabaseContext databaseContext, RefreshDataService refreshDataService)
+        {
+            _databaseContext = databaseContext;
+            _refreshDataService = refreshDataService;
+        }
 
         [HttpGet, Route("Stream")]
         public RssItemList Stream()
@@ -88,10 +94,19 @@ namespace Rss.Api.V1
         }
 
         [HttpPost, Route("Refresh")]
-        public bool Refresh(string type, Guid? id) => throw new NotImplementedException();
+        public Task Refresh(string type, Guid? id)
+        {
+            switch (type.ToLowerInvariant())
+            {
+                case "stream": return _refreshDataService.Refresh();
+                case "folder": return _refreshDataService.RefreshFolder(id.GetValueOrDefault());
+                case "feed": return _refreshDataService.RefreshFeed(id.GetValueOrDefault());
+            }
+            
+            throw new NotSupportedException("refresh type or id is not supported");
+        }
 
         [HttpPost, Route("MarkAsRead")]
         public bool MarkAsRead(string type, Guid? id) => throw new NotImplementedException();
-
     }
 }

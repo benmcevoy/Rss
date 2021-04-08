@@ -10,11 +10,12 @@ const config = {
             get: "http://api.rss.local/v1/content/feed"
         },
         item: {
-            read: "http://api.rss.local/v1/content/read",
+            read: "http://api.rss.local/v1/content/read"
         },
         stream: {
             get: "http://api.rss.local/v1/content/stream"
-        }
+        },
+        refresh: "http://api.rss.local/v1/content/refresh"
     }
 };
 
