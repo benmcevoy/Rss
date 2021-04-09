@@ -15,7 +15,10 @@ const config = {
         stream: {
             get: "http://api.rss.local/v1/content/stream"
         },
-        refresh: "http://api.rss.local/v1/content/refresh"
+        refresh: "http://api.rss.local/v1/content/refresh",
+        markAsRead: "http://api.rss.local/v1/content/markasread",
+        subscribe: "http://api.rss.local/v1/subscription/subscribe",
+        unsubscribe: "http://api.rss.local/v1/subscription/unsubscribe",
     }
 };
 

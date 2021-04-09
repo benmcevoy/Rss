@@ -2,7 +2,7 @@ import "./style.css"
 import React from "react";
 import {useAppContext} from "../../AppContext";
 
-export default function ItemView(props) {
+export default function AddFeed(props) {
 	const viewModel = props.viewModel;
 	const ctx = useAppContext();
 

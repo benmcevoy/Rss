@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Rss.Api.Data;
+using Rss.Api.Data.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Rss.Api
@@ -37,6 +38,7 @@ namespace Rss.Api
                 options.UseSqlite(_configuration.GetConnectionString("DefaultSQLiteConnection")));
 
             services.AddTransient<RefreshDataService>();
+            services.AddTransient<MarkAsReadDataService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)

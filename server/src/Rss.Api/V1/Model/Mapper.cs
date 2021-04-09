@@ -40,7 +40,8 @@ namespace Rss.Api.V1.Model
                 PublishedDateTime = source.PublishedDateTime,
                 Snippet = source.Snippet,
                 Tags = new [] { source.Feed.Folder?.Name ?? "" },
-                FolderId = source.Feed.FolderId
+                FolderId = source.Feed.FolderId,
+                Url = source.LinkUrl
             };
         }
     }

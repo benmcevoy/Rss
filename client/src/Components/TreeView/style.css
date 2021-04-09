@@ -6,6 +6,6 @@
     font-weight: normal;
 }
 
-.treeview-folder.selected, .treeview-item.selected{
+.treeview-folder.selected>button.link-button, .treeview-item.selected>button.link-button{
     font-weight: bold;
 }

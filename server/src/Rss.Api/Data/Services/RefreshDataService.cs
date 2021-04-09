@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RssFeed = Radio7.Rss.Feed;
 
-namespace Rss.Api.Data
+namespace Rss.Api.Data.Services
 {
     public class RefreshDataService
     {
@@ -13,22 +13,22 @@ namespace Rss.Api.Data
 
         public RefreshDataService(DatabaseContext context) => _context = context;
 
-        public async Task Refresh() => 
+        public async Task RefreshAll() => 
             await _context.Feeds.ForEachAsync(async feed => await RefreshAsync(feed.Id));
 
-        public async Task RefreshFolder(Guid id, bool force = false) =>
-            await _context.Feeds.Where(x => x.FolderId == id).ForEachAsync(async feed => await RefreshAsync(feed.Id, force));
+        public async Task RefreshFolder(Guid id) =>
+            await _context.Feeds.Where(x => x.FolderId == id).ForEachAsync(async feed => await RefreshAsync(feed.Id));
 
-        public async Task RefreshFeed(Guid id, bool force = false) => 
-            await RefreshAsync(id, force);
+        public async Task RefreshFeed(Guid id) => 
+            await RefreshAsync(id);
 
-        private async Task RefreshAsync(Guid feedId, bool force = false)
+        private async Task RefreshAsync(Guid feedId)
         {
             // the RSS api is not async/awaitable, so we can use TaskCompletionSource to bridge that
             var task = new TaskCompletionSource<int>();
             var feed = _context.Feeds.Include(f => f.Items).Single(f => f.Id == feedId);
 
-            if (!force && feed.LastUpdateDateTime > GetExpiryDate(feed))
+            if (feed.LastUpdateDateTime > GetExpiryDate(feed))
             {
                 task.SetResult(0);
                 return;

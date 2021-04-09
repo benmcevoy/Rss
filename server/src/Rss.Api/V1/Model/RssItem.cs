@@ -11,6 +11,7 @@ namespace Rss.Api.V1.Model
         public string Content { get; set; }
         public DateTime PublishedDateTime { get; set; }
         public IList<string> Tags { get; set; } = new List<string>();
+        public string Url { get; set; }
         public Guid FeedId { get; set; }
         public DateTime FeedLastUpdatedDateTime { get; set; }
         public string FeedName { get; set; }

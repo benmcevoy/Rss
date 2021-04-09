@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
+using Rss.Api.Data.Services;
 using Rss.Api.V1.Model;
 
 namespace Rss.Api.V1
@@ -14,23 +15,25 @@ namespace Rss.Api.V1
     {
         private readonly DatabaseContext _databaseContext;
         private readonly RefreshDataService _refreshDataService;
+        private readonly MarkAsReadDataService _markAsReadDataService;
 
-        public ContentController(DatabaseContext databaseContext, RefreshDataService refreshDataService)
+        public ContentController(DatabaseContext databaseContext, RefreshDataService refreshDataService,
+            MarkAsReadDataService markAsReadDataService)
         {
             _databaseContext = databaseContext;
             _refreshDataService = refreshDataService;
+            _markAsReadDataService = markAsReadDataService;
         }
 
         [HttpGet, Route("Stream")]
         public RssItemList Stream()
         {
-            // TODO: needs some more predicate to exclude read items
-            // OrderBy published desc
-
             var stream = _databaseContext
                 .Items
                 .Include(x => x.Feed)
-                .ThenInclude(x => x.Folder);
+                .ThenInclude(x => x.Folder)
+                .Where(item => item.ReadDateTime == null)
+                .OrderByDescending(item => item.PublishedDateTime);
 
             return new RssItemList
             {
@@ -49,15 +52,16 @@ namespace Rss.Api.V1
                 .ThenInclude(x => x.Items.Where(item => item.ReadDateTime == null))
                 .Single(f => f.Id == id);
 
-            // TODO: needs some more predicate to exclude read items
-            // OrderBy published desc
-
             return new RssItemList
             {
                 Id = folder.Id,
                 Name = folder.Name,
                 Type = "Folder",
-                RssItems = folder.Feeds.SelectMany(f => f.Items).Select(Mapper.Map).ToList()
+                RssItems = folder.Feeds
+                    .SelectMany(f => f.Items)
+                    .OrderByDescending(item => item.PublishedDateTime)
+                    .Select(Mapper.Map)
+                    .ToList()
             };
         }
 
@@ -66,21 +70,22 @@ namespace Rss.Api.V1
         {
             var feed = _databaseContext
                 .Feeds
-                .Include(x => x.Items)
+                .Include(x => x.Items.Where(item => item.ReadDateTime == null))
                 .Single(f => f.Id == id);
-
-            // TODO: needs some more predicate to exclude read items
 
             return new RssItemList
             {
                 Id = feed.Id,
                 Name = feed.Name,
                 Type = "Feed",
-                RssItems = feed.Items.Select(Mapper.Map).ToList()
+                RssItems = feed.Items
+                    .Select(Mapper.Map)
+                    .OrderByDescending(item => item.PublishedDateTime)
+                    .ToList()
             };
         }
 
-        [HttpGet, Route("Read/{id}")]
+        [HttpPost, Route("Read")]
         public RssItem Read(Guid id)
         {
             var item = _databaseContext.Items
@@ -88,25 +93,32 @@ namespace Rss.Api.V1
                 .ThenInclude(x => x.Folder)
                 .Single(x => x.Id == id);
 
-            // TODO: mark as read
+            // mark as read
+            item.ReadDateTime = DateTime.UtcNow;
+
+            _databaseContext.SaveChanges();
 
             return Mapper.Map(item);
         }
 
         [HttpPost, Route("Refresh")]
-        public Task Refresh(string type, Guid? id)
-        {
-            switch (type.ToLowerInvariant())
+        public Task Refresh(string type, Guid? id) =>
+            type.ToLowerInvariant() switch
             {
-                case "stream": return _refreshDataService.Refresh();
-                case "folder": return _refreshDataService.RefreshFolder(id.GetValueOrDefault());
-                case "feed": return _refreshDataService.RefreshFeed(id.GetValueOrDefault());
-            }
-            
-            throw new NotSupportedException("refresh type or id is not supported");
-        }
+                "stream" => _refreshDataService.RefreshAll(),
+                "folder" => _refreshDataService.RefreshFolder(id.GetValueOrDefault()),
+                "feed" => _refreshDataService.RefreshFeed(id.GetValueOrDefault()),
+                _ => throw new NotSupportedException("refresh type or id is not supported")
+            };
 
         [HttpPost, Route("MarkAsRead")]
-        public bool MarkAsRead(string type, Guid? id) => throw new NotImplementedException();
+        public Task MarkAsRead(string type, Guid? id) =>
+            type.ToLowerInvariant() switch
+            {
+                "stream" => _markAsReadDataService.MarkAsReadAll(),
+                "folder" => _markAsReadDataService.MarkAsReadFolder(id.GetValueOrDefault()),
+                "feed" => _markAsReadDataService.MarkAsReadFeed(id.GetValueOrDefault()),
+                _ => throw new NotSupportedException("MarkAsRead type or id is not supported")
+            };
     }
 }
