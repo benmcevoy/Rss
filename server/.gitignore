@@ -5,6 +5,8 @@
 
 _archive/
 build/
+# db is too big for GIT
+*.sqllite
 
 # User-specific files
 *.rsuser
