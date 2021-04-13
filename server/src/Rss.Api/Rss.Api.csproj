@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Radio7.Rss\Radio7.Rss.csproj" />
   </ItemGroup>
 
