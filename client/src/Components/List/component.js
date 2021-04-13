@@ -19,11 +19,11 @@ export default function ListView(props) {
 				<button onClick={() => ctx.refresh(viewModel.type, viewModel.id)}>Refresh</button>
 				<button onClick={() => ctx.markAsRead(viewModel.type, viewModel.id)}>Mark as read</button>
 				{
-				viewModel.type === "Feed" &&
+					viewModel.type === "Feed" &&
 					<button onClick={() => ctx.unsubscribe(viewModel.id)}>Unsubscribe</button>
 				}
 				{
-				viewModel.type === "Folder" &&
+					viewModel.type === "Folder" &&
 					<button onClick={() => ctx.subscribe(viewModel.id)}>Add feed</button>
 				}
 			</div>
@@ -41,8 +41,8 @@ export default function ListView(props) {
 								</sub>
 							</div>)}
 				</ul>
+				{viewModel.rssItems.length === 0 && (<div>No results.</div>)}
 			</nav>
 		</div>
 	);
 }
-

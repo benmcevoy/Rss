@@ -9,6 +9,7 @@ import TreeView from "./Components/TreeView/component.js";
 import Menu from "./Components/Menu/component.js";
 import List from "./Components/List/component.js";
 import Item from "./Components/Item/component.js";
+import AddFeed from "./Components/AddFeed/component.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -22,7 +23,9 @@ export default class App extends React.Component {
         this.readItem = this.readItem.bind(this);
         this.subscribe = this.subscribe.bind(this);
         this.unsubscribe = this.unsubscribe.bind(this);
+        this.subscribeSave = this.subscribeSave.bind(this);
 
+        // TODO: this is kinda bullshit - flags
         this.state = {
             currentFolder: null,
             currentFeed: null,
@@ -39,7 +42,11 @@ export default class App extends React.Component {
             refresh: this.refresh,
             markAsRead: this.markAsRead,
             subscribe: this.subscribe,
-            unsubscribe: this.unsubscribe
+            unsubscribe: this.unsubscribe,
+            subscribeSave: this.subscribeSave,
+
+            showAddFeed: false,
+            folderName: ""
         };
 
         this.fetchSubscription();
@@ -55,7 +62,8 @@ export default class App extends React.Component {
                 listId: null,
                 itemViewModel: null,
                 itemId: null,
-                subscriptionId: null
+                subscriptionId: null,
+                showAddFeed: false
             }));
     }
 
@@ -75,6 +83,32 @@ export default class App extends React.Component {
 
     subscribe = (id) => {
         console.log(`app.subscribe: ${id ?? null}`);
+
+        console.log(this.state.listViewModel.name);
+
+
+        this.setState({ showAddFeed: true, folderName: this.state.listViewModel.name });
+    }
+
+    subscribeSave = (postModel) => {
+        fetch(Config.api.subscribe,
+            {
+                method: "POST",
+                body: JSON.stringify(postModel),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            // invalidate
+            .then(x => this.setState({
+                listViewModel: null,
+                listId: null,
+                itemViewModel: null,
+                itemId: null,
+                subscriptionId: null,
+                showAddFeed: false
+            }));
     }
 
     unsubscribe = (id) => {
@@ -89,7 +123,8 @@ export default class App extends React.Component {
                 listId: null,
                 itemViewModel: null,
                 itemId: null,
-                subscriptionId: null
+                subscriptionId: null,
+                showAddFeed: false
             }));
     }
 
@@ -134,7 +169,8 @@ export default class App extends React.Component {
                 listViewModel: x,
                 listId: id,
                 itemViewModel: null,
-                itemId: null
+                itemId: null,
+                showAddFeed: false
             }));
     }
 
@@ -172,7 +208,8 @@ export default class App extends React.Component {
                 itemId: id,
                 listViewModel: null,
                 listId: null,
-                subscriptionId: null
+                subscriptionId: null,
+                showAddFeed: false
             }));
     }
 
@@ -191,6 +228,7 @@ export default class App extends React.Component {
                 main={<div id="main-wrapper">
                     <List title="Stream" viewModel={this.state.listViewModel} />
                     <Item title="Item" viewModel={this.state.itemViewModel} />
+                    <AddFeed isVisible={this.state.showAddFeed} folder={this.state.folderName} folderId={this.state.currentFolder} />
                 </div>}
             />
         </AppContext.Provider>

@@ -39,6 +39,7 @@ namespace Rss.Api
 
             services.AddTransient<RefreshDataService>();
             services.AddTransient<MarkAsReadDataService>();
+            services.AddTransient<FeedDataService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)

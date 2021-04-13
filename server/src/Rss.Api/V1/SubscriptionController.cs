@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
+using Rss.Api.Data.Services;
 using Rss.Api.V1.Model;
 using Feed = Rss.Api.V1.Model.Feed;
 
@@ -14,8 +15,13 @@ namespace Rss.Api.V1
     public class SubscriptionController
     {
         private readonly DatabaseContext _context;
+        private readonly FeedDataService _feedDataService;
 
-        public SubscriptionController(DatabaseContext context) => _context = context;
+        public SubscriptionController(DatabaseContext context, FeedDataService feedDataService)
+        {
+            _context = context;
+            _feedDataService = feedDataService;
+        }
 
         [HttpGet]
         public Subscription Get()
@@ -31,9 +37,11 @@ namespace Rss.Api.V1
         }
 
         [HttpPost, Route("Subscribe")]
-        public Task Subscribe(string feedUrl, string folder)
+        public Task Subscribe(SubscribePostModel postModel)
         {
-            throw new NotImplementedException();
+            _feedDataService.Add(new Uri(postModel.FeedUrl), postModel.FolderId);
+
+            return Task.CompletedTask;
         }
 
         [HttpPost, Route("Unsubscribe")]
