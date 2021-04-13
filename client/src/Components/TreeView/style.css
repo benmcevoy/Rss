@@ -1,0 +1,11 @@
+#treeview ul{
+    list-style-type: none;
+}
+
+.treeview-folder, .treeview-item{
+    font-weight: normal;
+}
+
+.treeview-folder.selected>button.link-button, .treeview-item.selected>button.link-button{
+    font-weight: bold;
+}
