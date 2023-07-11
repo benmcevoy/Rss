@@ -1,9 +1,9 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+﻿import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import React from "react";
 import TwoColumn from "./Layouts/TwoColumn/component";
-import AppContext from "./AppContext";
-import Config from "./config";
+import AppContext from "./AppContext.js";
+import Config from "./Config.js";
 
 import TreeView from "./Components/TreeView/component.js";
 import Menu from "./Components/Menu/component.js";

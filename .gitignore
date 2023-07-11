@@ -5,3 +5,11 @@
 /.vs/Rss
 _archive/
 TODO.txt
+client/src/.idea/.idea.src.dir/.idea/encodings.xml
+client/src/.idea/.idea.src.dir/.idea/indexLayout.xml
+client/src/.idea/.idea.src.dir/.idea/misc.xml
+client/src/.idea/.idea.src.dir/.idea/vcs.xml
+server/install-service.sh
+server/publish.sh
+server/rss.service
+server/rss.conf

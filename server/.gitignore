@@ -5,6 +5,7 @@
 
 _archive/
 build/
+.idea/
 # db is too big for GIT
 *.sqllite
 

@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
 using Rss.Api.Data.Services;
 using Rss.Api.V1.Model;
-using Feed = Rss.Api.V1.Model.Feed;
 
 namespace Rss.Api.V1
 {

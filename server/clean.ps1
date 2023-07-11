@@ -1,1 +1,1 @@
-msbuild rss.sln -t:Clean
+msbuild ./rss.sln -t:Clean
