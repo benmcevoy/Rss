@@ -19,6 +19,13 @@ edit /etc/hosts for the hostname
 
 hit /swagger for api details
 
+server is installed as service via rss.service
+
+```
+sudo systemctl start rss.service
+sudo systemctl status rss.service
+```
+
 # Start Stop ngix
 
 
