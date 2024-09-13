@@ -1,6 +1,6 @@
 import "./style.css"
 import React from "react";
-import {useAppContext} from "../../AppContext";
+import {useAppContext}  from "../../AppContext";
 
 export default function ItemView(props) {
 	const viewModel = props.viewModel;
