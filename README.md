@@ -5,7 +5,7 @@ My own google reader replacement.  Basic, but fun to write and does the job.
 
 # Client
 requires node installed for the react jsx support
-i cannot remember how to build this, i presume `npm build`
+i cannot remember how to build this, i presume `npm run build`
 
 
 
