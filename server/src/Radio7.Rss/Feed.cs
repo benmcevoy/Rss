@@ -175,7 +175,7 @@ namespace Radio7.Rss
                     var element = xElement.Element(_atomNamespace + "id");
                     if (element != null)
                     {
-                        useIdForHref = element.Value.StartsWith("http://");
+                        useIdForHref = element.Value.StartsWith("http://") || element.Value.StartsWith("https://");
                     }
                 }
             }
@@ -196,11 +196,12 @@ namespace Radio7.Rss
                     let title = f.Element(_atomNamespace + "title")
                     where title != null
                     let pubDate = f.Element(_atomNamespace + "published")
+                    let updated = f.Element(_atomNamespace + "updated")
 
                     select new Item(useIdForHref ? id.Value : link.Attribute("href").Value,
                                     content?.Value ?? "no description found...",
                                     WebUtility.HtmlDecode(title.Value),
-                                    pubDate?.Value ?? new DateTime().ToString(CultureInfo.InvariantCulture),
+                                    pubDate?.Value ?? updated?.Value  ?? new DateTime().ToString(CultureInfo.InvariantCulture),
                                     f.Elements().GetMedia())).ToList();
         }
 

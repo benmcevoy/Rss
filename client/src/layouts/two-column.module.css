@@ -1,0 +1,13 @@
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  flex: 1;
+}
+
+.aside {
+  overflow-y: auto;
+}
+
+.main {
+  min-width: 0;
+}

@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
 using Rss.Api.Data.Services;
 using Rss.Api.V1.Model;
+using Asp.Versioning;
 
 namespace Rss.Api.V1
 {
     [ApiController, ApiVersion("1")]
     [Route("v{version:apiVersion}/content")]
-    public class ContentController
+    public class ContentController : ControllerBase
     {
         private readonly DatabaseContext _databaseContext;
         private readonly RefreshDataService _refreshDataService;

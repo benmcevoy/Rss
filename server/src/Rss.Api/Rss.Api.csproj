@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UserSecretsId>7ba85a59-4488-4cb1-86a5-f52a33d1be74</UserSecretsId>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
@@ -12,12 +12,11 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+    <PackageReference Include="Asp.Versioning.Mvc" Version="10.2.1" />
+    <PackageReference Include="Asp.Versioning.OpenApi" Version="10.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>

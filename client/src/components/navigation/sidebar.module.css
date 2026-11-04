@@ -1,0 +1,40 @@
+@scope (.sidebar) {
+  :scope {
+    width: 260px;
+    height: 100vh;
+    padding: 16px 8px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  ul ul { padding-left: 16px; }
+
+  summary {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  summary a,
+  li li a {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  li li a {
+    padding: 5px 8px;
+    border-radius: var(--radius);
+    color: #555;
+  }
+
+  summary:hover,
+  li li a:hover { background: var(--hover-bg); }
+
+  .count { font-size: 12px; color: var(--text-faint); }
+}

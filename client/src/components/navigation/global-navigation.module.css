@@ -1,0 +1,5 @@
+@scope(.globalNavigation) {
+    ul {
+        list-style: none;
+    }
+}
