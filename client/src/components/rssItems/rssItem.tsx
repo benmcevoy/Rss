@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify'
 import styles from './rssItems.module.css'
 import type { RssItem } from "../../api/rss"
 
@@ -13,7 +14,7 @@ export function RssItem({ data }: { data: RssItem | null }) {
                 <time dateTime={data.publishedDateTime}>{data.publishedDateTime}</time>
             </div>
 
-            <div dangerouslySetInnerHTML={{ __html: data.content! }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content ?? "") }} />
         </div>
     </>
 }
