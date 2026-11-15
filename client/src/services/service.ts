@@ -4,7 +4,7 @@ import {
     type Subscription,
     type RssItemList,
     type RssItem,
-    getV1ContentStream, getV1Subscription, getV1ContentFolderById, getV1ContentFeedById, postV1ContentRead
+    getV2ContentStream, getV2Subscription, getV2ContentFolderById, getV2ContentFeedById, postV2ContentRead
 } from "../api/rss"
 
 export type Current =
@@ -47,14 +47,14 @@ function LoadContent(route: RouteInfo): Promise<Current> {
 }
 
 async function GetSubscriptions(): Promise<Subscription> {
-    const { data } = await getV1Subscription({
+    const { data } = await getV2Subscription({
         throwOnError: true,
     })
     return data
 }
 
 async function GetStream(): Promise<RssItemList> {
-    const { data } = await getV1ContentStream({
+    const { data } = await getV2ContentStream({
 
         throwOnError: true,
     })
@@ -62,7 +62,7 @@ async function GetStream(): Promise<RssItemList> {
 };
 
 async function GetFolder(id: string): Promise<RssItemList> {
-    const { data } = await getV1ContentFolderById({
+    const { data } = await getV2ContentFolderById({
         path: { id: id },
         throwOnError: true,
     })
@@ -70,7 +70,7 @@ async function GetFolder(id: string): Promise<RssItemList> {
 };
 
 async function GetFeed(id: string): Promise<RssItemList> {
-    const { data } = await getV1ContentFeedById({
+    const { data } = await getV2ContentFeedById({
         path: { id: id },
         throwOnError: true,
     })
@@ -78,7 +78,7 @@ async function GetFeed(id: string): Promise<RssItemList> {
 };
 
 async function GetArticle(id: string): Promise<RssItem> {
-    const { data } = await postV1ContentRead({
+    const { data } = await postV2ContentRead({
         query: { id: id },
         throwOnError: true,
     })

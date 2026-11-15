@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
 using Rss.Api.Data.Services;
-using Rss.Api.V1.Model;
+using Rss.Api.V2.Model;
 using Asp.Versioning;
 
-namespace Rss.Api.V1
+namespace Rss.Api.V2
 {
-    [ApiController, ApiVersion("1")]
+    [ApiController, ApiVersion("2")]
     [Route("v{version:apiVersion}/content")]
     public class ContentController : ControllerBase
     {
@@ -18,8 +18,9 @@ namespace Rss.Api.V1
         private readonly RefreshDataService _refreshDataService;
         private readonly MarkAsReadDataService _markAsReadDataService;
 
-        public ContentController(DatabaseContext databaseContext, RefreshDataService refreshDataService,
-            MarkAsReadDataService markAsReadDataService)
+        public ContentController(DatabaseContext databaseContext,
+                RefreshDataService refreshDataService,
+                MarkAsReadDataService markAsReadDataService)
         {
             _databaseContext = databaseContext;
             _refreshDataService = refreshDataService;
@@ -34,12 +35,21 @@ namespace Rss.Api.V1
                 .Include(x => x.Feed)
                 .ThenInclude(x => x.Folder)
                 .Where(item => item.ReadDateTime == null)
-                .OrderByDescending(item => item.PublishedDateTime);
+                .OrderByDescending(item => item.PublishedDateTime)
+                .ToList();
+
+            var feedIds = stream.Select(i => i.FeedId).Distinct().ToList();
+
+            var feeds = _databaseContext.Feeds
+                .Include(f => f.Folder)
+                .Where(f => feedIds.Contains(f.Id))
+                .ToList();
 
             return new RssItemList
             {
                 Name = "Stream",
                 Type = "Stream",
+                Feeds = feeds.Select(Mapper.Map).ToList(),
                 RssItems = stream.Select(Mapper.Map).ToList()
             };
         }
@@ -58,6 +68,7 @@ namespace Rss.Api.V1
                 Id = folder.Id,
                 Name = folder.Name,
                 Type = "Folder",
+                Feeds = folder.Feeds.Select(Mapper.Map).ToList(),
                 RssItems = folder.Feeds
                     .SelectMany(f => f.Items)
                     .OrderByDescending(item => item.PublishedDateTime)
@@ -79,6 +90,7 @@ namespace Rss.Api.V1
                 Id = feed.Id,
                 Name = feed.Name,
                 Type = "Feed",
+                Feeds = [Mapper.Map(feed)],
                 RssItems = feed.Items
                     .Select(Mapper.Map)
                     .OrderByDescending(item => item.PublishedDateTime)
@@ -87,7 +99,7 @@ namespace Rss.Api.V1
         }
 
         [HttpPost, Route("Read")]
-        public RssItem Read(Guid id)
+        public Article Read(Guid id)
         {
             var item = _databaseContext.Items
                 .Include(x => x.Feed)
@@ -99,7 +111,7 @@ namespace Rss.Api.V1
 
             _databaseContext.SaveChanges();
 
-            return Mapper.Map(item);
+            return Mapper.MapArticle(item);
         }
 
         [HttpPost, Route("Refresh")]

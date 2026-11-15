@@ -1,16 +1,16 @@
 import DOMPurify from 'dompurify'
 import styles from './rssItems.module.css'
-import type { RssItem } from "../../api/rss"
+import type { Article } from "../../api/rss"
 
-export function RssItem({ data }: { data: RssItem | null }) {
+export function RssItem({ data }: { data: Article | null }) {
     if (data === null) return <></>;
 
     return <>
         <div className={styles.rssItems}>
-            <a className={styles.title} href={`/article/${data.id}`}>{data.name}</a>
+            <a className={styles.title} href={data.url ?? `/article/${data.id}`}>{data.name}</a>
 
             <div className={styles.meta}>
-                <a href={`/feed/${data.feedId}`}>{data.feedName}</a>
+                <img className="favIcon" src={data?.feedFavIcon ?? "/icon-rss.png"} /> <a href={data.feedWebsiteUrl ?? `/feed/${data.feedId}`}>{data.feedName}</a>
                 <time dateTime={data.publishedDateTime}>{data.publishedDateTime}</time>
             </div>
 

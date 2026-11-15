@@ -7,7 +7,7 @@
     line-height: 1.5;
   }
 
-  li { padding: 16px 0; border-bottom: 1px solid var(--border); }
+  li { padding: 8px 0; border-bottom: 1px solid var(--border); }
 
   .title { font-size: 17px; font-weight: 700; color: #222; }
 
@@ -20,7 +20,7 @@
     overflow: hidden;
   }
 
-  .meta { display: flex; gap: 8px; font-size: 12px; color: var(--text-faint); }
+  .meta { display: flex; gap: 8px; font-size: 12px; color: var(--text-faint); margin-bottom: 8px }
   .meta a { color: var(--text-muted); font-weight: 600; }
   .meta time::before { content: "·"; margin-right: 8px; }
 }

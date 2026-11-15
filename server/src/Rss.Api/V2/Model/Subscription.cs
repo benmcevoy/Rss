@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Rss.Api.V1.Model
+namespace Rss.Api.V2.Model
 {
     public class Subscription
     {

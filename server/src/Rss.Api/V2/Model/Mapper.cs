@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Rss.Api.V1.Model
+namespace Rss.Api.V2.Model
 {
     public class Mapper
     {
@@ -22,7 +22,8 @@ namespace Rss.Api.V1.Model
                 Name = source.Name,
                 LastUpdatedDateTime = source.LastUpdateDateTime,
                 WebsiteUrl = source.HtmlUrl,
-                Count = source.Items.Count
+                Count = source.Items.Count,
+                FavIcon = source.FavIcon
             };
         }
 
@@ -32,16 +33,32 @@ namespace Rss.Api.V1.Model
             {
                 Id = source.Id,
                 Name = source.Name,
-                FeedName = source.Feed.Name,
                 Content = source.Content,
                 FeedId = source.FeedId,
-                FeedLastUpdatedDateTime = source.Feed.LastUpdateDateTime,
-                FeedWebsiteUrl = source.Feed.HtmlUrl,
                 PublishedDateTime = source.PublishedDateTime,
                 Snippet = source.Snippet,
-                Tags = new [] { source.Feed.Folder?.Name ?? "" },
+                Tags = [source.Feed.Folder?.Name ?? ""],
                 FolderId = source.Feed.FolderId,
                 Url = source.LinkUrl
+            };
+        }
+
+        public static Article MapArticle(Data.Item source)
+        {
+            return new Article
+            {
+                Id = source.Id,
+                Name = source.Name,
+                Content = source.Content,
+                FeedId = source.FeedId,
+                PublishedDateTime = source.PublishedDateTime,
+                Snippet = source.Snippet,
+                Tags = [source.Feed.Folder?.Name ?? ""],
+                FolderId = source.Feed.FolderId,
+                Url = source.LinkUrl,
+                FeedFavIcon = source.Feed.FavIcon,
+                FeedName = source.Feed.Name,
+                FeedWebsiteUrl = source.Feed.HtmlUrl
             };
         }
     }

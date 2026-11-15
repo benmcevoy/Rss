@@ -4,12 +4,28 @@ export type ClientOptions = {
     baseUrl: 'http://api.rss.local/' | (string & {});
 };
 
+export type Article = {
+    feedName?: null | string;
+    feedFavIcon?: null | string;
+    feedWebsiteUrl?: null | string;
+    id?: string;
+    name?: null | string;
+    snippet?: null | string;
+    content?: null | string;
+    publishedDateTime?: string;
+    tags?: null | Array<string>;
+    url?: null | string;
+    feedId?: string;
+    folderId?: null | string;
+};
+
 export type Feed = {
     id?: string;
     lastUpdatedDateTime?: string;
     name?: null | string;
     websiteUrl?: null | string;
     count?: number | string;
+    favIcon?: null | string;
 };
 
 export type Folder = {
@@ -28,9 +44,6 @@ export type RssItem = {
     tags?: null | Array<string>;
     url?: null | string;
     feedId?: string;
-    feedLastUpdatedDateTime?: string;
-    feedName?: null | string;
-    feedWebsiteUrl?: null | string;
     folderId?: null | string;
 };
 
@@ -38,6 +51,7 @@ export type RssItemList = {
     name?: null | string;
     type?: null | string;
     id?: null | string;
+    feeds?: null | Array<Feed>;
     rssItems?: null | Array<RssItem>;
 };
 
@@ -52,150 +66,150 @@ export type Subscription = {
     feeds?: null | Array<Feed>;
 };
 
-export type GetV1ContentStreamData = {
+export type GetV2ContentStreamData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/content/Stream';
+    url: '/v2/content/Stream';
 };
 
-export type GetV1ContentStreamResponses = {
+export type GetV2ContentStreamResponses = {
     /**
      * OK
      */
     200: RssItemList;
 };
 
-export type GetV1ContentStreamResponse = GetV1ContentStreamResponses[keyof GetV1ContentStreamResponses];
+export type GetV2ContentStreamResponse = GetV2ContentStreamResponses[keyof GetV2ContentStreamResponses];
 
-export type GetV1ContentFolderByIdData = {
+export type GetV2ContentFolderByIdData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/v1/content/Folder/{id}';
+    url: '/v2/content/Folder/{id}';
 };
 
-export type GetV1ContentFolderByIdResponses = {
+export type GetV2ContentFolderByIdResponses = {
     /**
      * OK
      */
     200: RssItemList;
 };
 
-export type GetV1ContentFolderByIdResponse = GetV1ContentFolderByIdResponses[keyof GetV1ContentFolderByIdResponses];
+export type GetV2ContentFolderByIdResponse = GetV2ContentFolderByIdResponses[keyof GetV2ContentFolderByIdResponses];
 
-export type GetV1ContentFeedByIdData = {
+export type GetV2ContentFeedByIdData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/v1/content/Feed/{id}';
+    url: '/v2/content/Feed/{id}';
 };
 
-export type GetV1ContentFeedByIdResponses = {
+export type GetV2ContentFeedByIdResponses = {
     /**
      * OK
      */
     200: RssItemList;
 };
 
-export type GetV1ContentFeedByIdResponse = GetV1ContentFeedByIdResponses[keyof GetV1ContentFeedByIdResponses];
+export type GetV2ContentFeedByIdResponse = GetV2ContentFeedByIdResponses[keyof GetV2ContentFeedByIdResponses];
 
-export type PostV1ContentReadData = {
+export type PostV2ContentReadData = {
     body?: never;
     path?: never;
     query?: {
         id?: string;
     };
-    url: '/v1/content/Read';
+    url: '/v2/content/Read';
 };
 
-export type PostV1ContentReadResponses = {
+export type PostV2ContentReadResponses = {
     /**
      * OK
      */
-    200: RssItem;
+    200: Article;
 };
 
-export type PostV1ContentReadResponse = PostV1ContentReadResponses[keyof PostV1ContentReadResponses];
+export type PostV2ContentReadResponse = PostV2ContentReadResponses[keyof PostV2ContentReadResponses];
 
-export type PostV1ContentRefreshData = {
+export type PostV2ContentRefreshData = {
     body?: never;
     path?: never;
     query?: {
         type?: string;
         id?: string;
     };
-    url: '/v1/content/Refresh';
+    url: '/v2/content/Refresh';
 };
 
-export type PostV1ContentRefreshResponses = {
+export type PostV2ContentRefreshResponses = {
     /**
      * OK
      */
     200: unknown;
 };
 
-export type PostV1ContentMarkAsReadData = {
+export type PostV2ContentMarkAsReadData = {
     body?: never;
     path?: never;
     query?: {
         type?: string;
         id?: string;
     };
-    url: '/v1/content/MarkAsRead';
+    url: '/v2/content/MarkAsRead';
 };
 
-export type PostV1ContentMarkAsReadResponses = {
+export type PostV2ContentMarkAsReadResponses = {
     /**
      * OK
      */
     200: unknown;
 };
 
-export type GetV1SubscriptionData = {
+export type GetV2SubscriptionData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/subscription';
+    url: '/v2/subscription';
 };
 
-export type GetV1SubscriptionResponses = {
+export type GetV2SubscriptionResponses = {
     /**
      * OK
      */
     200: Subscription;
 };
 
-export type GetV1SubscriptionResponse = GetV1SubscriptionResponses[keyof GetV1SubscriptionResponses];
+export type GetV2SubscriptionResponse = GetV2SubscriptionResponses[keyof GetV2SubscriptionResponses];
 
-export type PostV1SubscriptionSubscribeData = {
+export type PostV2SubscriptionSubscribeData = {
     body: SubscribePostModel;
     path?: never;
     query?: never;
-    url: '/v1/subscription/Subscribe';
+    url: '/v2/subscription/Subscribe';
 };
 
-export type PostV1SubscriptionSubscribeResponses = {
+export type PostV2SubscriptionSubscribeResponses = {
     /**
      * OK
      */
     200: unknown;
 };
 
-export type PostV1SubscriptionUnsubscribeData = {
+export type PostV2SubscriptionUnsubscribeData = {
     body?: never;
     path?: never;
     query?: {
         id?: string;
     };
-    url: '/v1/subscription/Unsubscribe';
+    url: '/v2/subscription/Unsubscribe';
 };
 
-export type PostV1SubscriptionUnsubscribeResponses = {
+export type PostV2SubscriptionUnsubscribeResponses = {
     /**
      * OK
      */

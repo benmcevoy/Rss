@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rss.Api.V1.Model
+namespace Rss.Api.V2.Model
 {
     public class Feed 
     {
@@ -9,5 +9,6 @@ namespace Rss.Api.V1.Model
         public string Name { get; set; }
         public string WebsiteUrl { get; set; }
         public int Count { get; set; }
+        public string FavIcon { get; set; }
     }
 }

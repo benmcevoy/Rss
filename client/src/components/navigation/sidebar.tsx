@@ -20,7 +20,7 @@ export default function Sidebar({ data }: { data: Subscription | null }) {
                                 {folder.feeds?.map((feed, feedIndex) => (
                                     <li key={`folder-${folderIndex}-${feedIndex}`}>
                                          <a href={`/feed/${feed.id}`}>
-                                            <span>{feed.name}</span>
+                                            <span><img className="favIcon" src={feed.favIcon ?? "/icon-rss.png"} /> {feed.name}</span>
                                             <span className={styles.count}>{feed.count}</span>
                                         </a>
                                     </li>

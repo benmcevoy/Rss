@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Rss.Api.V1.Model
+namespace Rss.Api.V2.Model
 {
     public class RssItem
     {
@@ -13,10 +13,15 @@ namespace Rss.Api.V1.Model
         public IList<string> Tags { get; set; } = new List<string>();
         public string Url { get; set; }
         public Guid FeedId { get; set; }
-        public DateTime FeedLastUpdatedDateTime { get; set; }
-        public string FeedName { get; set; }
-        public string FeedWebsiteUrl { get; set; }
         public Guid? FolderId { get; set; }
     }
+
+    public class Article: RssItem
+    {
+        public string FeedName { get; set; }
+        public string FeedFavIcon { get; set; }
+        public string FeedWebsiteUrl { get; set; }
+    }
 }
+
 

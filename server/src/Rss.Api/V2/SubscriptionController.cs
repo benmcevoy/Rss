@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rss.Api.Data;
 using Rss.Api.Data.Services;
-using Rss.Api.V1.Model;
+using Rss.Api.V2.Model;
 
-namespace Rss.Api.V1
+namespace Rss.Api.V2
 {
-    [ApiController, ApiVersion("1")]
+    [ApiController, ApiVersion("2")]
     [Route("v{version:apiVersion}/subscription")]
     public class SubscriptionController
     {
@@ -37,21 +37,19 @@ namespace Rss.Api.V1
         }
 
         [HttpPost, Route("Subscribe")]
-        public Task Subscribe(SubscribePostModel postModel)
+        public async Task Subscribe(SubscribePostModel postModel)
         {
-            _feedDataService.Add(new Uri(postModel.FeedUrl), postModel.FolderId);
-
-            return Task.CompletedTask;
+            await _feedDataService.Add(new Uri(postModel.FeedUrl), postModel.FolderId);
         }
 
         [HttpPost, Route("Unsubscribe")]
-        public Task Unsubscribe(Guid id)
+        public async Task Unsubscribe(Guid id)
         {
             var feed = _context.Feeds.Single(f => f.Id == id);
 
             _context.Feeds.Remove(feed);
 
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

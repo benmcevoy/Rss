@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using HtmlAgilityPack;
 
 namespace Radio7.Rss
 {
@@ -13,7 +15,9 @@ namespace Radio7.Rss
     {
         private readonly XNamespace _atomNamespace = "http://www.w3.org/2005/Atom";
         private readonly XNamespace _purlNamespace = "http://purl.org/rss/1.0/modules/content/";
-        
+
+        private readonly HttpClient _httpClient = new HttpClient();
+
         public Feed(Uri feedUri) : this(feedUri, feedUri) { }
 
         public Feed(Uri feedUri, Uri htmlUri)
@@ -23,9 +27,40 @@ namespace Radio7.Rss
             HtmlUri = htmlUri;
         }
 
-        public void GetItemsFromWeb()
+        public async Task GetItemsFromWebAsync(bool includeFavIcon)
         {
-            GetXml(FeedUri);
+            await GetXmlAsync(FeedUri);
+            if(includeFavIcon) await GetFaviconAsync(HtmlUri);
+        }
+
+        private async Task GetFaviconAsync(Uri htmlUri)
+        {
+            var stream = await _httpClient.GetStreamAsync(htmlUri);
+            var doc = new HtmlDocument();
+            
+            doc.Load(stream);
+
+            var href = doc.DocumentNode
+                .SelectSingleNode("//link[contains(@rel,\"icon\")]")
+                ?.GetAttributeValue("href", null);
+
+            if (href?.StartsWith("data:", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                FavIcon = href;
+                return;
+            }
+
+            var iconUri = href is null
+                ? new Uri(htmlUri, "/favicon.ico")
+                : new Uri(htmlUri, href);
+
+            var response = await _httpClient.GetAsync(iconUri);
+            if (!response.IsSuccessStatusCode) return;
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            var mime = response.Content.Headers.ContentType?.MediaType ?? "image/x-icon";
+
+            FavIcon = $"data:{mime};base64,{Convert.ToBase64String(bytes)}";
         }
 
         private void SetXml(XDocument xml)
@@ -201,34 +236,23 @@ namespace Radio7.Rss
                     select new Item(useIdForHref ? id.Value : link.Attribute("href").Value,
                                     content?.Value ?? "no description found...",
                                     WebUtility.HtmlDecode(title.Value),
-                                    pubDate?.Value ?? updated?.Value  ?? new DateTime().ToString(CultureInfo.InvariantCulture),
+                                    pubDate?.Value ?? updated?.Value ?? new DateTime().ToString(CultureInfo.InvariantCulture),
                                     f.Elements().GetMedia())).ToList();
         }
 
-        private void GetXml(Uri feedUri)
+        private async Task GetXmlAsync(Uri feedUri)
         {
-            // should request feed url as xml and construct list of items
-            var request = WebRequest.Create(feedUri);
-            request.BeginGetResponse(ResponseComplete, request);
-        }
+            using var stream = await _httpClient.GetStreamAsync(feedUri);
 
-        private void ResponseComplete(IAsyncResult result)
-        {
             XDocument xDocument = null;
-            var request = (HttpWebRequest)result.AsyncState;
 
             try
             {
-                var response = (HttpWebResponse)request.EndGetResponse(result);
-
-                using (var dataStream = response.GetResponseStream())
+                if (stream != null)
                 {
-                    if (dataStream != null)
-                    {
-                        var reader = new StreamReader(dataStream);
-                        // Read the content.
-                        xDocument = XDocument.Parse(reader.ReadToEnd());
-                    }
+                    var reader = new StreamReader(stream);
+                    // Read the content.
+                    xDocument = XDocument.Parse(reader.ReadToEnd());
                 }
             }
             catch (Exception)
@@ -241,8 +265,6 @@ namespace Radio7.Rss
             }
 
             SetXml(xDocument);
-
-            FeedLoaded?.Invoke(this, EventArgs.Empty);
         }
 
         public string Title { get; set; }
@@ -258,6 +280,8 @@ namespace Radio7.Rss
         public string UpdateFrequency { get; set; }
 
         public string UpdatePeriod { get; set; }
+
+        public string FavIcon { get; set; }
 
         public string ETag { get; set; }
 
@@ -284,7 +308,5 @@ namespace Radio7.Rss
         {
             return FeedUri.GetHashCode();
         }
-
-        public event EventHandler FeedLoaded;
     }
 }

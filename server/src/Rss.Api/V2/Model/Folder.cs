@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Rss.Api.V1.Model
+namespace Rss.Api.V2.Model
 {
     public class Folder
     {

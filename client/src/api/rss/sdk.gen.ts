@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetV1ContentFeedByIdData, GetV1ContentFeedByIdResponses, GetV1ContentFolderByIdData, GetV1ContentFolderByIdResponses, GetV1ContentStreamData, GetV1ContentStreamResponses, GetV1SubscriptionData, GetV1SubscriptionResponses, PostV1ContentMarkAsReadData, PostV1ContentMarkAsReadResponses, PostV1ContentReadData, PostV1ContentReadResponses, PostV1ContentRefreshData, PostV1ContentRefreshResponses, PostV1SubscriptionSubscribeData, PostV1SubscriptionSubscribeResponses, PostV1SubscriptionUnsubscribeData, PostV1SubscriptionUnsubscribeResponses } from './types.gen';
+import type { GetV2ContentFeedByIdData, GetV2ContentFeedByIdResponses, GetV2ContentFolderByIdData, GetV2ContentFolderByIdResponses, GetV2ContentStreamData, GetV2ContentStreamResponses, GetV2SubscriptionData, GetV2SubscriptionResponses, PostV2ContentMarkAsReadData, PostV2ContentMarkAsReadResponses, PostV2ContentReadData, PostV2ContentReadResponses, PostV2ContentRefreshData, PostV2ContentRefreshResponses, PostV2SubscriptionSubscribeData, PostV2SubscriptionSubscribeResponses, PostV2SubscriptionUnsubscribeData, PostV2SubscriptionUnsubscribeResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -18,22 +18,22 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
 
-export const getV1ContentStream = <ThrowOnError extends boolean = false>(options?: Options<GetV1ContentStreamData, ThrowOnError>): RequestResult<GetV1ContentStreamResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetV1ContentStreamResponses, unknown, ThrowOnError>({ url: '/v1/content/Stream', ...options });
+export const getV2ContentStream = <ThrowOnError extends boolean = false>(options?: Options<GetV2ContentStreamData, ThrowOnError>): RequestResult<GetV2ContentStreamResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetV2ContentStreamResponses, unknown, ThrowOnError>({ url: '/v2/content/Stream', ...options });
 
-export const getV1ContentFolderById = <ThrowOnError extends boolean = false>(options: Options<GetV1ContentFolderByIdData, ThrowOnError>): RequestResult<GetV1ContentFolderByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetV1ContentFolderByIdResponses, unknown, ThrowOnError>({ url: '/v1/content/Folder/{id}', ...options });
+export const getV2ContentFolderById = <ThrowOnError extends boolean = false>(options: Options<GetV2ContentFolderByIdData, ThrowOnError>): RequestResult<GetV2ContentFolderByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetV2ContentFolderByIdResponses, unknown, ThrowOnError>({ url: '/v2/content/Folder/{id}', ...options });
 
-export const getV1ContentFeedById = <ThrowOnError extends boolean = false>(options: Options<GetV1ContentFeedByIdData, ThrowOnError>): RequestResult<GetV1ContentFeedByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetV1ContentFeedByIdResponses, unknown, ThrowOnError>({ url: '/v1/content/Feed/{id}', ...options });
+export const getV2ContentFeedById = <ThrowOnError extends boolean = false>(options: Options<GetV2ContentFeedByIdData, ThrowOnError>): RequestResult<GetV2ContentFeedByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetV2ContentFeedByIdResponses, unknown, ThrowOnError>({ url: '/v2/content/Feed/{id}', ...options });
 
-export const postV1ContentRead = <ThrowOnError extends boolean = false>(options?: Options<PostV1ContentReadData, ThrowOnError>): RequestResult<PostV1ContentReadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV1ContentReadResponses, unknown, ThrowOnError>({ url: '/v1/content/Read', ...options });
+export const postV2ContentRead = <ThrowOnError extends boolean = false>(options?: Options<PostV2ContentReadData, ThrowOnError>): RequestResult<PostV2ContentReadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV2ContentReadResponses, unknown, ThrowOnError>({ url: '/v2/content/Read', ...options });
 
-export const postV1ContentRefresh = <ThrowOnError extends boolean = false>(options?: Options<PostV1ContentRefreshData, ThrowOnError>): RequestResult<PostV1ContentRefreshResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV1ContentRefreshResponses, unknown, ThrowOnError>({ url: '/v1/content/Refresh', ...options });
+export const postV2ContentRefresh = <ThrowOnError extends boolean = false>(options?: Options<PostV2ContentRefreshData, ThrowOnError>): RequestResult<PostV2ContentRefreshResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV2ContentRefreshResponses, unknown, ThrowOnError>({ url: '/v2/content/Refresh', ...options });
 
-export const postV1ContentMarkAsRead = <ThrowOnError extends boolean = false>(options?: Options<PostV1ContentMarkAsReadData, ThrowOnError>): RequestResult<PostV1ContentMarkAsReadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV1ContentMarkAsReadResponses, unknown, ThrowOnError>({ url: '/v1/content/MarkAsRead', ...options });
+export const postV2ContentMarkAsRead = <ThrowOnError extends boolean = false>(options?: Options<PostV2ContentMarkAsReadData, ThrowOnError>): RequestResult<PostV2ContentMarkAsReadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV2ContentMarkAsReadResponses, unknown, ThrowOnError>({ url: '/v2/content/MarkAsRead', ...options });
 
-export const getV1Subscription = <ThrowOnError extends boolean = false>(options?: Options<GetV1SubscriptionData, ThrowOnError>): RequestResult<GetV1SubscriptionResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetV1SubscriptionResponses, unknown, ThrowOnError>({ url: '/v1/subscription', ...options });
+export const getV2Subscription = <ThrowOnError extends boolean = false>(options?: Options<GetV2SubscriptionData, ThrowOnError>): RequestResult<GetV2SubscriptionResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetV2SubscriptionResponses, unknown, ThrowOnError>({ url: '/v2/subscription', ...options });
 
-export const postV1SubscriptionSubscribe = <ThrowOnError extends boolean = false>(options: Options<PostV1SubscriptionSubscribeData, ThrowOnError>): RequestResult<PostV1SubscriptionSubscribeResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostV1SubscriptionSubscribeResponses, unknown, ThrowOnError>({
-    url: '/v1/subscription/Subscribe',
+export const postV2SubscriptionSubscribe = <ThrowOnError extends boolean = false>(options: Options<PostV2SubscriptionSubscribeData, ThrowOnError>): RequestResult<PostV2SubscriptionSubscribeResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostV2SubscriptionSubscribeResponses, unknown, ThrowOnError>({
+    url: '/v2/subscription/Subscribe',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -41,4 +41,4 @@ export const postV1SubscriptionSubscribe = <ThrowOnError extends boolean = false
     }
 });
 
-export const postV1SubscriptionUnsubscribe = <ThrowOnError extends boolean = false>(options?: Options<PostV1SubscriptionUnsubscribeData, ThrowOnError>): RequestResult<PostV1SubscriptionUnsubscribeResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV1SubscriptionUnsubscribeResponses, unknown, ThrowOnError>({ url: '/v1/subscription/Unsubscribe', ...options });
+export const postV2SubscriptionUnsubscribe = <ThrowOnError extends boolean = false>(options?: Options<PostV2SubscriptionUnsubscribeData, ThrowOnError>): RequestResult<PostV2SubscriptionUnsubscribeResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostV2SubscriptionUnsubscribeResponses, unknown, ThrowOnError>({ url: '/v2/subscription/Unsubscribe', ...options });

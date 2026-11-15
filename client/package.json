@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "generate": "openapi-ts -i http://api.rss.local/openapi/v1.json -o ./src/api/rss"
+    "generate": "openapi-ts -i http://api.rss.local/openapi/v2.json -o ./src/api/rss"
   },
   "dependencies": {
     "@hey-api/openapi-ts": "^0.99.0",
