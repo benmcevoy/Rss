@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { ParseRoute, type RouteInfo } from './router'
 import {
     type Subscription,
     type RssItemList,
     type RssItem,
-    getV2ContentStream, getV2Subscription, getV2ContentFolderById, getV2ContentFeedById, postV2ContentRead
+    getV2ContentStream, getV2Subscription, getV2ContentFolderById, getV2ContentFeedById, postV2ContentRead,
+    postV2ContentRefresh,
+    postV2ContentMarkAsRead
 } from "../api/rss"
 
 export type Current =
@@ -14,23 +16,71 @@ export type Current =
 
 export type ViewModel = {
     subscriptions: Subscription,
-    content: Current
+    content: Current,
+    refresh: VoidFunction
 }
 
 export function useLoadPage(location: string): ViewModel {
     const route = ParseRoute(location!);
     const [content, setContent] = useState<Current>({ kind: 'none' })
     const [subscriptions, setSubscriptions] = useState<Subscription | null>(null);
+    const [version, setVersion] = useState(0);
+    const refresh = useCallback(() => setVersion(v => v + 1), []);
 
-    useEffect(() => { GetSubscriptions().then(res => setSubscriptions(res ?? null)) }, [location]);
+    useEffect(() => { GetSubscriptions().then(res => setSubscriptions(res ?? null)) }, [location, version]);
 
     useEffect(() => {
         let ignore = false
         LoadContent(route).then(c => { if (!ignore) setContent(c) })
         return () => { ignore = true }
-    }, [location])
-    
-    return { subscriptions: subscriptions!, content: content }
+    }, [location, version])
+
+    return { subscriptions: subscriptions!, content, refresh }
+}
+
+export async function Refresh(location: string) {
+    const route = ParseRoute(location!);
+
+    switch (route.kind) {
+        case 'folder':
+        case 'feed': {
+            await postV2ContentRefresh({
+                query: { type: route.kind, id: route.id },
+                throwOnError: true
+            });
+            break;
+        }
+        case 'home': {
+            await postV2ContentRefresh({
+                query: { type: "stream" },
+                throwOnError: true
+            });
+            break;
+        }
+    }
+}
+
+export async function MarkAsRead(location: string) {
+    const route = ParseRoute(location!);
+
+    switch (route.kind) {
+        case 'folder':
+        case 'feed':
+        case 'article': {
+            await postV2ContentMarkAsRead({
+                query: { type: route.kind, id: route.id },
+                throwOnError: true
+            });
+            break;
+        }
+        case 'home': {
+            await postV2ContentMarkAsRead({
+                query: { type: "stream" },
+                throwOnError: true
+            });
+            break;
+        }
+    }
 }
 
 function LoadContent(route: RouteInfo): Promise<Current> {
@@ -55,7 +105,6 @@ async function GetSubscriptions(): Promise<Subscription> {
 
 async function GetStream(): Promise<RssItemList> {
     const { data } = await getV2ContentStream({
-
         throwOnError: true,
     })
     return data

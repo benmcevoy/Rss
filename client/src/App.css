@@ -18,8 +18,28 @@ body {
 }
 
 /* shared resets */
-ul { list-style: none; margin: 0; padding: 0; }
-a { color: inherit; text-decoration: none; }
-a:hover { color: var(--accent); }
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-.favIcon { height: 16px; width: 16px; vertical-align: center;}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+button {
+  margin-right: 5px;
+  vertical-align: center;
+}
+
+.favIcon {
+  height: 16px;
+  width: 16px;
+  vertical-align: center;
+}

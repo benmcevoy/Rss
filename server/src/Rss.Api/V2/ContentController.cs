@@ -125,13 +125,18 @@ namespace Rss.Api.V2
             };
 
         [HttpPost, Route("MarkAsRead")]
-        public Task MarkAsRead(string type, Guid? id) =>
-            type.ToLowerInvariant() switch
-            {
-                "stream" => _markAsReadDataService.MarkAsReadAll(),
-                "folder" => _markAsReadDataService.MarkAsReadFolder(id.GetValueOrDefault()),
-                "feed" => _markAsReadDataService.MarkAsReadFeed(id.GetValueOrDefault()),
-                _ => throw new NotSupportedException("MarkAsRead type or id is not supported")
-            };
+        public Task MarkAsRead(string type, Guid? id)
+        {
+            switch (type.ToLowerInvariant()) {
+                case "stream": return _markAsReadDataService.MarkAsReadAll();
+                case "folder": return _markAsReadDataService.MarkAsReadFolder(id.GetValueOrDefault());
+                case "feed": return _markAsReadDataService.MarkAsReadFeed(id.GetValueOrDefault());
+                case "article": {
+                     Read(id.GetValueOrDefault());
+                     return Task.CompletedTask;
+                }
+                default: throw new NotSupportedException("MarkAsRead type or id is not supported");
+            }
+        }
     }
 }

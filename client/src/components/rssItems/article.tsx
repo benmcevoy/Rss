@@ -2,7 +2,7 @@ import DOMPurify from 'dompurify'
 import styles from './rssItems.module.css'
 import type { Article } from "../../api/rss"
 
-export function RssItem({ data }: { data: Article | null }) {
+export function Article({ data }: { data: Article | null }) {
     if (data === null) return <></>;
 
     return <>
@@ -11,7 +11,13 @@ export function RssItem({ data }: { data: Article | null }) {
 
             <div className={styles.meta}>
                 <img className="favIcon" src={data?.feedFavIcon ?? "/icon-rss.png"} /> <a href={data.feedWebsiteUrl ?? `/feed/${data.feedId}`}>{data.feedName}</a>
-                <time dateTime={data.publishedDateTime}>{data.publishedDateTime}</time>
+                {data.publishedDateTime && (
+                    <time dateTime={data.publishedDateTime}>
+                        {new Date(data.publishedDateTime).toLocaleDateString('en-AU', {
+                            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
+                        })}
+                    </time>
+                )}
             </div>
 
             <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.content ?? "") }} />
